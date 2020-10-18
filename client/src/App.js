@@ -11,27 +11,30 @@ import BookListNew from "./components/BookListNew";
 
 // Apollo client setup:
 const client = new ApolloClient({
-	uri: "http://localhost:4000/graphql",
+  uri:
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:4000/graphql"
+      : "/graphql",
 });
 
 class App extends Component {
-	render() {
-		return (
-			<ApolloProvider client={client}>
-				<BrowserRouter>
-					<div>
-						<Navigation />
-						<Switch>
-							<Route path="/" exact component={BookList} />
-							<Route path="/admin" component={AdminPage} />
-							<Route path="/list-new" component={BookListNew} />
-							<Route render={() => <h4>Page not found.</h4>} />
-						</Switch>
-					</div>
-				</BrowserRouter>
-			</ApolloProvider>
-		);
-	}
+  render() {
+    return (
+      <ApolloProvider client={client}>
+        <BrowserRouter>
+          <div>
+            <Navigation />
+            <Switch>
+              <Route path="/" exact component={BookList} />
+              <Route path="/admin" component={AdminPage} />
+              <Route path="/list-new" component={BookListNew} />
+              <Route render={() => <h4>Page not found.</h4>} />
+            </Switch>
+          </div>
+        </BrowserRouter>
+      </ApolloProvider>
+    );
+  }
 }
 
 export default App;
