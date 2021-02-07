@@ -1,26 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-function App() {
+//components:
+import BookList from "./components/BookList";
+import AdminPage from "./components/AdminPage";
+import Navigation from "./components/Navigation";
+import BookListNew from "./components/BookListNew";
+
+// Apollo client setup:
+const client = new ApolloClient({
+  uri:
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:4000/graphql"
+      : "/graphql",
+  cache: new InMemoryCache(),
+});
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ApolloProvider client={client}>
+      <BrowserRouter>
+        <div>
+          <Navigation />
+          <Switch>
+            <Route path="/" exact component={BookList} />
+            <Route path="/admin" component={AdminPage} />
+            <Route path="/list-new" component={BookListNew} />
+            <Route render={() => <h4>Page not found.</h4>} />
+          </Switch>
+        </div>
+      </BrowserRouter>
+    </ApolloProvider>
   );
-}
+};
 
 export default App;
