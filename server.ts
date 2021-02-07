@@ -1,17 +1,17 @@
-const express = require("express");
-const graphqlHTTP = require("express-graphql");
-const mongoose = require("mongoose");
-const schema = require("./schema/schema");
-const cors = require("cors");
-const path = require("path");
+import express, { Request, Response } from "express";
+import mongoose from "mongoose";
+import graphqlHTTP from "express-graphql";
+import cors from "cors";
+import path from "path";
+import dotenv from "dotenv";
+import schema from "./schema/schema";
 if (process.env.NODE_ENV !== "production") {
-  require("dotenv").config();
+  dotenv.config();
 }
 
 const MONGO_URI =
   "mongodb+srv://sergebasangovs:calvi187439@@cluster0-lknea.mongodb.net/test?retryWrites=true&w=majority";
 const app = express();
-
 // allow CORS cross-origin requests:
 app.use(cors());
 const port = process.env.PORT || 4000; // when we deploy on heroku - it sets PORT env variable for us.
@@ -34,6 +34,7 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
+// hookup GraphQL server:
 app.use(
   "/graphql",
   graphqlHTTP({
@@ -42,7 +43,11 @@ app.use(
   })
 );
 
-app.listen(port, (error) => {
-  if (error) throw error;
+// error handling:
+app.use((error: Error, req: Request, res: Response) => {
+  res.status(500).json({ message: error.message });
+});
+
+app.listen(port, () => {
   console.log(`server running on http://localhost:${port}`);
 });
