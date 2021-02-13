@@ -21,6 +21,7 @@ const port = process.env.PORT || 4000; // when we deploy on heroku - it sets POR
 mongoose.connect(MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useFindAndModify: false,
 });
 
 mongoose.connection.once("open", () => {
