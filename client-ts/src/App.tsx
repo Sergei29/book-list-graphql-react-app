@@ -7,11 +7,14 @@ import BookListPage from "./pages/BookListPage";
 import AdminPage from "./pages/AdminPage";
 import Navigation from "./components/Navigation";
 import BookListNew from "./components/BookListNew";
+//styles:
+import GlobalStyle from "./GlobalStyle/GlobalStyle";
 
 const App: React.FC = () => {
   return (
     <ApolloProvider>
       <BrowserRouter>
+        <GlobalStyle />
         <Navigation />
         <Switch>
           <Route path="/" exact component={BookListPage} />

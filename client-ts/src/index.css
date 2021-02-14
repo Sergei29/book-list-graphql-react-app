@@ -1,4 +1,4 @@
-body {
+/* body {
   background: #eee;
   font-family: "Nunito", Arial, sans-serif;
 }
@@ -82,7 +82,7 @@ form#add-book button {
   box-shadow: -2px -3px 5px rgba(0, 0, 0, 0.3);
   box-sizing: border-box;
   color: #fff;
-}
+} */
 .navbar ul {
   margin: 0;
   padding: 0;
