@@ -11,14 +11,12 @@ if (process.env.NODE_ENV !== "production") {
   dotenv.config();
 }
 
-const MONGO_URI =
-  "mongodb+srv://sergebasangovs:calvi187439@@cluster0-lknea.mongodb.net/test?retryWrites=true&w=majority";
 const app = express();
 // allow CORS cross-origin requests:
 app.use(arrMiddleware);
 const port = process.env.PORT || 4000; // when we deploy on heroku - it sets PORT env variable for us.
 
-mongoose.connect(MONGO_URI, {
+mongoose.connect(process.env.MONGO_URI!, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
@@ -48,7 +46,7 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-// authentication service:
+// authentication service (currently - REST instead the GraphQL):
 app.post("/login", loginRouter);
 
 // error handling:
