@@ -30,7 +30,7 @@ mongoose.connection.once("open", () => {
 
 // GraphQL server:
 const typeDefs = gql(
-  fs.readFileSync("./schema/schema.graphql", { encoding: "utf8" })
+  fs.readFileSync("./server/schema/schema.graphql", { encoding: "utf8" })
 );
 
 const apolloServer = new ApolloServer({
