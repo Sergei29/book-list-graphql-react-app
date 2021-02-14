@@ -1,5 +1,5 @@
 import React from "react";
-import { getBooksQuery } from "../queries/queries";
+import { getBooksQuery } from "../../queries/queries";
 
 const BookListNew = () => {
   return (

@@ -5,7 +5,7 @@ import {
   removeBookMutation,
   removeAuthorMutation,
   getAdminAuthorsQuery,
-} from "../queries/queries";
+} from "../../queries/queries";
 
 const AdminPage = () => {
   return (
