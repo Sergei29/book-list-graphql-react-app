@@ -1,0 +1,62 @@
+query getBooks {
+  books {
+    name
+    id
+  }
+}
+
+query getAuthors {
+  authors {
+    name
+    id
+  }
+}
+
+query getAdminAuthors {
+  authors {
+    name
+    id
+    books {
+      name
+      id
+    }
+  }
+}
+
+query getBookDetails($id: ID!) {
+  book(id: $id) {
+    id
+    name
+    genre
+    author {
+      id
+      name
+      age
+      books {
+        name
+        id
+      }
+    }
+  }
+}
+
+mutation addBook($name: String!, $genre: String!, $authorId: ID!) {
+  addBook(name: $name, genre: $genre, authorId: $authorId) {
+    name
+    id
+  }
+}
+
+mutation removeBook($id: ID!) {
+  removeBook(id: $id) {
+    id
+    name
+  }
+}
+
+mutation removeAuthor($id: ID!) {
+  removeAuthor(id: $id) {
+    name
+    id
+  }
+}

@@ -16,11 +16,15 @@ const app = express();
 app.use(arrMiddleware);
 const port = process.env.PORT || 4000; // when we deploy on heroku - it sets PORT env variable for us.
 
-mongoose.connect(process.env.MONGO_URI!, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false,
-});
+mongoose
+  .connect(process.env.MONGO_URI!, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+  })
+  .catch((error) => {
+    console.log("Error connecting to DB: ", error.message);
+  });
 
 mongoose.connection.once("open", () => {
   console.log("connected to database.");
