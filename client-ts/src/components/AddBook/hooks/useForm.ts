@@ -23,7 +23,7 @@ export const useForm = () => {
 
   const objAuthorsQueryResponse = useGetAuthorsQuery();
   const objBookQueryResponse = useGetBooksQuery();
-  const [addBookMutation, objAddBookMutationResponse] = useAddBookMutation({
+  const [funcAddBookMutation, objAddBookMutationResponse] = useAddBookMutation({
     refetchQueries: [{ query: GetBooksDocument }],
   });
 
@@ -61,7 +61,7 @@ export const useForm = () => {
     if (!objFormValidaton.bIsValid) return;
 
     // if ok, submit:
-    addBookMutation({ variables: objBook });
+    funcAddBookMutation({ variables: objBook });
 
     // clear form
     clearForm();

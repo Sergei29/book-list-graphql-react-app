@@ -1,18 +1,22 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+// styles:
+import { NavbarStyled } from "./Navigation.styled";
 
 const Navigation: React.FC = () => {
   return (
-    <nav className="navbar container">
+    <NavbarStyled>
       <ul>
         <li>
-          <NavLink to="/">Home</NavLink>
+          <NavLink exact to="/">
+            Home
+          </NavLink>
         </li>
         <li>
           <NavLink to="/admin">Admin</NavLink>
         </li>
       </ul>
-    </nav>
+    </NavbarStyled>
   );
 };
 

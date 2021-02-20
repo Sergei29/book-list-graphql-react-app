@@ -31,13 +31,13 @@ const BookListPage: React.FC = () => {
    * @description callback on button click to display form
    * @returns {undefined} sets local state
    */
-  const showForm = useCallback(() => setBdisplayForm(true), []);
+  const handleShowForm = useCallback(() => setBdisplayForm(true), []);
 
   /**
    * @description callback to dismiss form
    * @returns {undefined} sets local state
    */
-  const dismissForm = useCallback(() => setBdisplayForm(false), []);
+  const handleDismissForm = useCallback(() => setBdisplayForm(false), []);
 
   return (
     <BookListPageStyled>
@@ -45,9 +45,9 @@ const BookListPage: React.FC = () => {
       <BookList onBookSelect={onBookSelect} />
       <BookDetails nstrBookId={nstrSelectedBookId} />
       {bDisplayForm ? (
-        <AddBook funcHideForm={dismissForm} />
+        <AddBook funcHideForm={handleDismissForm} />
       ) : (
-        <AddButton handleClick={showForm} title="Add New Book" />
+        <AddButton handleClick={handleShowForm} title="Add New Book" />
       )}
     </BookListPageStyled>
   );
