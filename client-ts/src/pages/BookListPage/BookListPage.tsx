@@ -3,6 +3,7 @@ import React, { useState, useCallback } from "react";
 import BookList from "../../components/BookList";
 import BookDetails from "../../components/BookDetails";
 import AddBook from "../../components/AddBook";
+import AddButton from "../../components/AddButton";
 //styles:
 import { BookListPageStyled, Heading } from "./BookListPage.styled";
 
@@ -14,6 +15,7 @@ const BookListPage: React.FC = () => {
   const [nstrSelectedBookId, setNStrSelectedBookId] = useState<null | string>(
     null
   );
+  const [bDisplayForm, setBdisplayForm] = useState(false);
 
   /**
    * @description callback on book click
@@ -25,12 +27,28 @@ const BookListPage: React.FC = () => {
     []
   );
 
+  /**
+   * @description callback on button click to display form
+   * @returns {undefined} sets local state
+   */
+  const showForm = useCallback(() => setBdisplayForm(true), []);
+
+  /**
+   * @description callback to dismiss form
+   * @returns {undefined} sets local state
+   */
+  const dismissForm = useCallback(() => setBdisplayForm(false), []);
+
   return (
     <BookListPageStyled>
       <Heading>My Reading List</Heading>
       <BookList onBookSelect={onBookSelect} />
       <BookDetails nstrBookId={nstrSelectedBookId} />
-      <AddBook />
+      {bDisplayForm ? (
+        <AddBook funcHideForm={dismissForm} />
+      ) : (
+        <AddButton handleClick={showForm} title="Add New Book" />
+      )}
     </BookListPageStyled>
   );
 };

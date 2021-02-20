@@ -7,6 +7,13 @@ export const AddBookForm = styled.form`
   left: 0;
   bottom: 0;
   width: 400px;
+
+  & > svg {
+    position: absolute;
+    top: -6px;
+    right: -12px;
+    cursor: pointer;
+  }
 `;
 
 export const FormControl = styled.div`
@@ -38,15 +45,13 @@ export const ErrorMessage = styled.span`
 
 export const SubmitButton = styled.button`
   color: #fff;
-  font-size: 2em;
+  font-size: 1em;
   background: #ad1457;
   border: 0;
-  padding: 16px;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+  padding: 8px 16px;
+  border-radius: 4px;
   position: absolute;
-  bottom: 10px;
+  bottom: 25px;
   left: 10px;
   display: flex;
   align-items: center;

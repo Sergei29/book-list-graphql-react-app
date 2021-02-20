@@ -1,6 +1,7 @@
 import React from "react";
 import { AuthorType } from "../../types/types";
 import { useForm } from "./hooks/useForm";
+import { TimesCircle } from "@styled-icons/fa-regular";
 // styles:
 import {
   AddBookForm,
@@ -12,11 +13,14 @@ import {
   ErrorMessage,
 } from "./AddBook.styled";
 
+type Props = {
+  funcHideForm: () => void;
+};
 /**
  * @description add new book form
  * @returns {JSX} component markup
  */
-const AddBook = () => {
+const AddBook: React.FC<Props> = ({ funcHideForm }) => {
   const {
     objFormValidaton,
     objAddBookMutationResponse,
@@ -57,6 +61,12 @@ const AddBook = () => {
       {objMutationError && (
         <ErrorMessage>{objMutationError.message}</ErrorMessage>
       )}
+      <TimesCircle
+        onClick={funcHideForm}
+        size="25"
+        title="close the form"
+        color="#444"
+      />
       <FormControl className="field">
         <InputLabel>Book name:</InputLabel>
         <TextInput
@@ -93,7 +103,7 @@ const AddBook = () => {
         type="submit"
         disabled={!objFormValidaton.bIsValid || bMutationLoading}
       >
-        <span>+</span>
+        Add Book
       </SubmitButton>
     </AddBookForm>
   );

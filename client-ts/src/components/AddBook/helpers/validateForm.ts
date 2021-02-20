@@ -1,7 +1,11 @@
-import { BookType, ValidationType } from "../../../types/types";
+import {
+  AddBookFormStateType,
+  BookType,
+  ValidationType,
+} from "../../../types/types";
 
 export const validateForm = (
-  objBook: BookType | null,
+  objBook: AddBookFormStateType | null,
   arrBooks?: (BookType | null)[]
 ): ValidationType => {
   const { name, genre, authorId } = objBook!;

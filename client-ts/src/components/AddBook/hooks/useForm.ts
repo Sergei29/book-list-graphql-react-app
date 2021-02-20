@@ -6,28 +6,23 @@ import {
   useAddBookMutation,
 } from "../../../generated/graphql";
 import { validateForm } from "../helpers/validateForm";
-import { ValidationType } from "../../../types/types";
+import { ValidationType, AddBookFormStateType } from "../../../types/types";
 
-type StateType = {
-  name: string;
-  genre: string;
-  authorId: string;
-};
-const INITIAL_BOOK: Readonly<StateType> = {
+const INITIAL_BOOK: Readonly<AddBookFormStateType> = {
   name: "",
   genre: "",
   authorId: "",
 };
 
 export const useForm = () => {
-  const [objBook, setObjBook] = useState<StateType>(INITIAL_BOOK);
+  const [objBook, setObjBook] = useState<AddBookFormStateType>(INITIAL_BOOK);
   const [objFormValidaton, setObjFormValidaton] = useState<ValidationType>({
     bIsValid: false,
     nstrErrorMessage: null,
   });
 
   const objAuthorsQueryResponse = useGetAuthorsQuery();
-  const { data: objQueryData } = useGetBooksQuery();
+  const objBookQueryResponse = useGetBooksQuery();
   const [addBookMutation, objAddBookMutationResponse] = useAddBookMutation({
     refetchQueries: [{ query: GetBooksDocument }],
   });
@@ -77,7 +72,8 @@ export const useForm = () => {
    * @returns {undefined} sets validation state
    */
   useEffect(() => {
-    const arrBooks = (!!objQueryData && objQueryData.books) || [];
+    const { data } = objBookQueryResponse;
+    const arrBooks = (!!data && data.books) || [];
     setObjFormValidaton(validateForm(objBook, arrBooks));
   }, [objBook]);
 
