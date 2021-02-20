@@ -1,7 +1,5 @@
 import React from "react";
-import { useQuery } from "@apollo/client";
-import { getBooksQuery } from "../../queries/queries";
-import { BookType } from "../../types/types";
+import { useGetBooksQuery } from "../../generated/graphql";
 //styles:
 import { ListItemStyled } from "./BookList.styled";
 
@@ -15,17 +13,17 @@ type Props = {
  * @returns {JSX} coponent markup
  */
 const BookList: React.FC<Props> = ({ onBookSelect }) => {
-  const { data, loading, error } = useQuery(getBooksQuery);
+  const { data, loading, error } = useGetBooksQuery();
 
   if (loading) return <p>Loading books...</p>;
   if (error) return <p>Error: {error.message}</p>;
-  if (data.books.length === 0) return <p>No books.</p>;
+  if (data?.books?.length === 0) return <p>No books.</p>;
 
   return (
     <ul>
-      {data.books.map((objBook: BookType) => (
-        <ListItemStyled key={objBook.id} onClick={onBookSelect!(objBook.id)}>
-          {objBook.name}
+      {data?.books?.map((objBook) => (
+        <ListItemStyled key={objBook!.id} onClick={onBookSelect!(objBook!.id)}>
+          {objBook!.name}
         </ListItemStyled>
       ))}
     </ul>

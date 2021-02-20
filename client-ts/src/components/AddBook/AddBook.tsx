@@ -19,11 +19,17 @@ import {
 const AddBook = () => {
   const {
     objFormValidaton,
+    objAddBookMutationResponse,
     objAuthorsQueryResponse,
     objBook,
     handleSubmit,
     handleChange,
   } = useForm();
+
+  const {
+    error: objMutationError,
+    loading: bMutationLoading,
+  } = objAddBookMutationResponse;
 
   /**
    * @description display authors select options
@@ -33,10 +39,11 @@ const AddBook = () => {
     const { data, loading, error } = objAuthorsQueryResponse;
     if (loading) return <option>loading authors...</option>;
     if (error) return <option>no authors.</option>;
-    if (data.authors) {
-      return data.authors.map((objAuthor: AuthorType) => (
-        <option value={objAuthor.id} key={objAuthor.id}>
-          {objAuthor.name}
+    if (!data) return <option>no authors.</option>;
+    if (data!.authors) {
+      return data!.authors.map((objAuthor: AuthorType | null) => (
+        <option value={objAuthor!.id} key={objAuthor!.id}>
+          {objAuthor!.name}
         </option>
       ));
     }
@@ -46,6 +53,9 @@ const AddBook = () => {
     <AddBookForm id="add-book" onSubmit={handleSubmit}>
       {objFormValidaton.nstrErrorMessage && (
         <ErrorMessage>{objFormValidaton.nstrErrorMessage}</ErrorMessage>
+      )}
+      {objMutationError && (
+        <ErrorMessage>{objMutationError.message}</ErrorMessage>
       )}
       <FormControl className="field">
         <InputLabel>Book name:</InputLabel>
@@ -79,7 +89,10 @@ const AddBook = () => {
         </SelectInput>
       </FormControl>
 
-      <SubmitButton type="submit" disabled={!objFormValidaton.bIsValid}>
+      <SubmitButton
+        type="submit"
+        disabled={!objFormValidaton.bIsValid || bMutationLoading}
+      >
         <span>+</span>
       </SubmitButton>
     </AddBookForm>

@@ -1,10 +1,10 @@
 import { BookType, ValidationType } from "../../../types/types";
 
 export const validateForm = (
-  objBook: BookType,
-  arrBooks?: BookType[]
+  objBook: BookType | null,
+  arrBooks?: (BookType | null)[]
 ): ValidationType => {
-  const { name, genre, authorId } = objBook;
+  const { name, genre, authorId } = objBook!;
   let bHasName = false,
     bHasGenre = false,
     bHasAuthorId = false,
@@ -13,7 +13,7 @@ export const validateForm = (
   if (name.length > 0) {
     let bNameUnique = true;
     if (arrBooks) {
-      bNameUnique = !arrBooks.some((objBook) => objBook.name === name);
+      bNameUnique = !arrBooks.some((objBook) => objBook!.name === name);
       nstrErrorMessage = bNameUnique ? null : "Book name already exists.";
     }
     bHasName = true && bNameUnique;

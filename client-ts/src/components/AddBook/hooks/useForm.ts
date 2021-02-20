@@ -1,28 +1,36 @@
 import React, { useState, useEffect } from "react";
-import { useQuery } from "@apollo/client";
 import {
-  getAuthorsQuery,
-  addBookMutation,
-  getBooksQuery,
-} from "../../../queries/queries";
+  useGetAuthorsQuery,
+  useGetBooksQuery,
+  GetBooksDocument,
+  useAddBookMutation,
+} from "../../../generated/graphql";
 import { validateForm } from "../helpers/validateForm";
 import { ValidationType } from "../../../types/types";
 
-const INITIAL_BOOK = {
+type StateType = {
+  name: string;
+  genre: string;
+  authorId: string;
+};
+const INITIAL_BOOK: Readonly<StateType> = {
   name: "",
   genre: "",
   authorId: "",
 };
 
 export const useForm = () => {
-  const [objBook, setObjBook] = useState<Record<string, any>>(INITIAL_BOOK);
+  const [objBook, setObjBook] = useState<StateType>(INITIAL_BOOK);
   const [objFormValidaton, setObjFormValidaton] = useState<ValidationType>({
     bIsValid: false,
     nstrErrorMessage: null,
   });
 
-  const objAuthorsQueryResponse = useQuery(getAuthorsQuery);
-  const { loading, data, error } = useQuery(getBooksQuery);
+  const objAuthorsQueryResponse = useGetAuthorsQuery();
+  const { data: objQueryData } = useGetBooksQuery();
+  const [addBookMutation, objAddBookMutationResponse] = useAddBookMutation({
+    refetchQueries: [{ query: GetBooksDocument }],
+  });
 
   /**
    * @description callback on input change
@@ -58,19 +66,24 @@ export const useForm = () => {
     if (!objFormValidaton.bIsValid) return;
 
     // if ok, submit:
-    alert("Submit form.");
+    addBookMutation({ variables: objBook });
 
     // clear form
     clearForm();
   };
 
+  /**
+   * @description running validation when form data updated
+   * @returns {undefined} sets validation state
+   */
   useEffect(() => {
-    const arrBooks = (!!data && data.books) || [];
+    const arrBooks = (!!objQueryData && objQueryData.books) || [];
     setObjFormValidaton(validateForm(objBook, arrBooks));
   }, [objBook]);
 
   return {
     objFormValidaton,
+    objAddBookMutationResponse,
     objAuthorsQueryResponse,
     objBook,
     handleSubmit,
