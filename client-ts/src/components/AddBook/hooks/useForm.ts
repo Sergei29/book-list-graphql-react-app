@@ -4,18 +4,10 @@ import {
   useGetBooksQuery,
   GetBooksDocument,
   GetBookDetailsDocument,
-  GetAuthorsDocument,
-  GetAdminAuthorsDocument,
   useAddBookMutation,
-  AddBookMutation,
 } from "../../../generated/graphql";
 import { validateForm } from "../helpers/validateForm";
-import {
-  ValidationType,
-  AddBookFormStateType,
-  MaybeArrAuthors,
-} from "../../../types/types";
-import { stringify } from "querystring";
+import { ValidationType, AddBookFormStateType } from "../../../types/types";
 
 const INITIAL_BOOK: Readonly<AddBookFormStateType> = {
   name: "",
@@ -23,6 +15,11 @@ const INITIAL_BOOK: Readonly<AddBookFormStateType> = {
   authorId: "",
 };
 
+/**
+ * @description custom hook for add book form
+ * @param {null|String} nstrSelectedBookId currently selected book id , if any
+ * @returns {Object} form status and handler functions
+ */
 export const useForm = (nstrSelectedBookId: null | string) => {
   const [objBook, setObjBook] = useState<AddBookFormStateType>(INITIAL_BOOK);
   const [objFormValidaton, setObjFormValidaton] = useState<ValidationType>({
@@ -33,6 +30,9 @@ export const useForm = (nstrSelectedBookId: null | string) => {
   const objAuthorsQueryResponse = useGetAuthorsQuery();
   const objBookQueryResponse = useGetBooksQuery();
 
+  /**
+   * @description add book mutation, updates cache when created, and refetches a query for book details if any book is currently selected
+   */
   const [funcAddBookMutation, objAddBookMutationResponse] = useAddBookMutation({
     update: (cache, objAddBookMutationResponse) => {
       const objNewBook = objAddBookMutationResponse.data?.addBook;

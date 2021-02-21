@@ -4,11 +4,18 @@ import {
   ValidationType,
 } from "../../../types/types";
 
+/**
+ * @description validate form data helper function
+ * @param {Object} objBook form data
+ * @param {Array} arrBooks existing books list
+ * @returns {Object} info on validation and error message if any
+ */
 export const validateForm = (
   objBook: AddBookFormStateType | null,
   arrBooks?: (BookType | null)[]
 ): ValidationType => {
   const { name, genre, authorId } = objBook!;
+
   let bHasName = false,
     bHasGenre = false,
     bHasAuthorId = false,

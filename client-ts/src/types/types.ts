@@ -5,6 +5,7 @@ export type BookType = Book;
 export type AuthorType = Author;
 
 export type MaybeArrBooks = (Book | null)[] | undefined | null;
+
 export type MaybeArrAuthors = (Author | null)[] | undefined | null;
 
 export type ValidationType = {

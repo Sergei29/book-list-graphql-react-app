@@ -10,6 +10,10 @@ import {
   AuthorsContainer,
 } from "./AdminPage.styled";
 
+/**
+ * @description functional component
+ * @returns {JSX} admin page markup
+ */
 const AdminPage: React.FC = () => {
   const { arrAuthors, handleDeleteAuthor, handleDeleteBook } = useAdminPage();
 

@@ -7,6 +7,10 @@ import {
   useRemoveBookMutation,
 } from "../../../generated/graphql";
 
+/**
+ * @description custom hook for admin page logic
+ * @returns {Object} admin page data and handler functions
+ */
 const useAdminPage = () => {
   const { data: maybeAuthorsData } = useGetAdminAuthorsQuery();
 

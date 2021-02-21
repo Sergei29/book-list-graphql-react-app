@@ -6,7 +6,6 @@ import ApolloProvider from "./ApolloProvider/ApolloProvider";
 import BookListPage from "./pages/BookListPage";
 import AdminPage from "./pages/AdminPage";
 import Navigation from "./components/Navigation";
-import BookListNew from "./components/BookListNew";
 //styles:
 import GlobalStyle from "./GlobalStyle/GlobalStyle";
 
@@ -19,7 +18,6 @@ const App: React.FC = () => {
         <Switch>
           <Route path="/" exact component={BookListPage} />
           <Route path="/admin" component={AdminPage} />
-          <Route path="/list-new" component={BookListNew} />
           <Route render={() => <h4>Page not found.</h4>} />
         </Switch>
       </BrowserRouter>
