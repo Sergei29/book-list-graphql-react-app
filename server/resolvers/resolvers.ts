@@ -44,13 +44,12 @@ const resolvers: IResolvers = {
     removeAuthor: async (_: ObjType, args: ObjType) => {
       // 1. remove all author's books (if any)
       await BooksDB.deleteMany({ authorId: args.id });
-
       // 2. remove Author:
-      return await AuthorsDB.findById(args.id);
+      return await AuthorsDB.findByIdAndDelete(args.id);
     },
 
     removeBook: async (_: ObjType, args: ObjType) => {
-      return await BooksDB.findById(args.id);
+      return await BooksDB.findByIdAndDelete(args.id);
     },
 
     editBook: async (_: ObjType, args: ObjType) => {
