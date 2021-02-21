@@ -1,55 +1,17 @@
 import React from "react";
 import { TrashAlt } from "@styled-icons/fa-regular";
-import {
-  useGetAdminAuthorsQuery,
-  GetAdminAuthorsDocument,
-  useRemoveAuthorMutation,
-  useRemoveBookMutation,
-} from "../../generated/graphql";
 import { MaybeArrBooks } from "../../types/types";
+import useAdminPage from "./hooks/useAdminPage";
 // styles:
-import { AdminContainer, Author, AuthorBooks } from "./AdminPage.styled";
+import {
+  AdminContainer,
+  Author,
+  AuthorBooks,
+  AuthorsContainer,
+} from "./AdminPage.styled";
 
 const AdminPage: React.FC = () => {
-  const getAdminAuthorsResponse = useGetAdminAuthorsQuery();
-  const [
-    funcRemoveAuthorMutation,
-    objRemoveAuthorResponse,
-  ] = useRemoveAuthorMutation({
-    refetchQueries: [{ query: GetAdminAuthorsDocument }],
-  });
-  const [funcRemoveBook, objRemoveBookResponse] = useRemoveBookMutation();
-
-  /**
-   * @description callback on click delete author
-   * @param {String} strAuthorId author ID
-   * @param {String} strAuthorName author name
-   * @returns {Function} function that makes api call
-   */
-  const handleDeleteAuthor = (
-    strAuthorId: string,
-    strAuthorName: string
-  ) => () => {
-    const bConfirmDelete = window.confirm(
-      `Are you sure to delete author: ${strAuthorName} ?`
-    );
-    if (!bConfirmDelete) return;
-    funcRemoveAuthorMutation({ variables: { id: strAuthorId } });
-  };
-
-  /**
-   * @description callback on click delete book
-   * @param {String} strBookId book ID
-   * @param {String} strBookName book name
-   * @returns {Function} function that makes api call
-   */
-  const handleDeleteBook = (strBookId: string, strBookName: string) => () => {
-    const bConfirmDelete = window.confirm(
-      `Are you sure to delete book: "${strBookName}" ?`
-    );
-    if (!bConfirmDelete) return;
-    funcRemoveBook({ variables: { id: strBookId } });
-  };
+  const { arrAuthors, handleDeleteAuthor, handleDeleteBook } = useAdminPage();
 
   /**
    * @description render author's book list
@@ -76,8 +38,8 @@ const AdminPage: React.FC = () => {
   return (
     <AdminContainer>
       <h2>Admin page</h2>
-      <div>
-        {getAdminAuthorsResponse.data?.authors?.map((objAuthor) => {
+      <AuthorsContainer>
+        {arrAuthors?.map((objAuthor) => {
           if (!objAuthor) return <p>No author</p>;
 
           return (
@@ -96,7 +58,7 @@ const AdminPage: React.FC = () => {
             </div>
           );
         })}
-      </div>
+      </AuthorsContainer>
     </AdminContainer>
   );
 };

@@ -1,14 +1,16 @@
 import styled from "styled-components";
 
 export const AdminContainer = styled.div`
-  text-align: center;
   color: #444;
 `;
 
-export const AuthorContainer = styled.div``;
+export const AuthorsContainer = styled.div`
+  width: 50%;
+  margin: 0 auto;
+`;
+
 export const Author = styled.div`
   display: flex;
-  justify-content: center;
   & > h4 {
     margin-top: 16px;
     margin-bottom: 16px;
@@ -25,8 +27,14 @@ export const Author = styled.div`
 export const AuthorBooks = styled.div`
   & > ul > li {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     margin-bottom: 4px;
+    padding: 4px 6px;
+    border-radius: 4px;
+    &:hover {
+      background-color: #444;
+      color: #fff;
+    }
     & > svg {
       margin: 0 16px;
       &:hover,
