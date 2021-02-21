@@ -3,10 +3,19 @@ import {
   useGetAuthorsQuery,
   useGetBooksQuery,
   GetBooksDocument,
+  GetBookDetailsDocument,
+  GetAuthorsDocument,
+  GetAdminAuthorsDocument,
   useAddBookMutation,
+  AddBookMutation,
 } from "../../../generated/graphql";
 import { validateForm } from "../helpers/validateForm";
-import { ValidationType, AddBookFormStateType } from "../../../types/types";
+import {
+  ValidationType,
+  AddBookFormStateType,
+  MaybeArrAuthors,
+} from "../../../types/types";
+import { stringify } from "querystring";
 
 const INITIAL_BOOK: Readonly<AddBookFormStateType> = {
   name: "",
@@ -14,7 +23,7 @@ const INITIAL_BOOK: Readonly<AddBookFormStateType> = {
   authorId: "",
 };
 
-export const useForm = () => {
+export const useForm = (nstrSelectedBookId: null | string) => {
   const [objBook, setObjBook] = useState<AddBookFormStateType>(INITIAL_BOOK);
   const [objFormValidaton, setObjFormValidaton] = useState<ValidationType>({
     bIsValid: false,
@@ -23,8 +32,25 @@ export const useForm = () => {
 
   const objAuthorsQueryResponse = useGetAuthorsQuery();
   const objBookQueryResponse = useGetBooksQuery();
+
   const [funcAddBookMutation, objAddBookMutationResponse] = useAddBookMutation({
-    refetchQueries: [{ query: GetBooksDocument }],
+    update: (cache, objAddBookMutationResponse) => {
+      const objNewBook = objAddBookMutationResponse.data?.addBook;
+      const { books }: any = cache.readQuery({ query: GetBooksDocument });
+
+      cache.writeQuery({
+        query: GetBooksDocument,
+        data: { books: [...books, objNewBook] },
+      });
+    },
+    refetchQueries: nstrSelectedBookId
+      ? [
+          {
+            query: GetBookDetailsDocument,
+            variables: { id: nstrSelectedBookId },
+          },
+        ]
+      : [],
   });
 
   /**

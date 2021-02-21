@@ -15,12 +15,13 @@ import {
 
 type Props = {
   funcHideForm: () => void;
+  nstrSelectedBookId: null | string;
 };
 /**
  * @description add new book form
  * @returns {JSX} component markup
  */
-const AddBook: React.FC<Props> = ({ funcHideForm }) => {
+const AddBook: React.FC<Props> = ({ funcHideForm, nstrSelectedBookId }) => {
   const {
     objFormValidaton,
     objAddBookMutationResponse,
@@ -28,7 +29,7 @@ const AddBook: React.FC<Props> = ({ funcHideForm }) => {
     objBook,
     handleSubmit,
     handleChange,
-  } = useForm();
+  } = useForm(nstrSelectedBookId);
 
   const {
     error: objMutationError,
@@ -41,9 +42,11 @@ const AddBook: React.FC<Props> = ({ funcHideForm }) => {
    */
   const displayAuthors = () => {
     const { data, loading, error } = objAuthorsQueryResponse;
+
     if (loading) return <option>loading authors...</option>;
     if (error) return <option>no authors.</option>;
     if (!data) return <option>no authors.</option>;
+
     if (data!.authors) {
       return data!.authors.map((objAuthor: AuthorType | null) => (
         <option value={objAuthor!.id} key={objAuthor!.id}>

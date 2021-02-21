@@ -8,7 +8,7 @@ import AddButton from "../../components/AddButton";
 import { BookListPageStyled, Heading } from "./BookListPage.styled";
 
 /**
- * @description boos list page
+ * @description books list page
  * @returns {JSX} component markup
  */
 const BookListPage: React.FC = () => {
@@ -45,9 +45,16 @@ const BookListPage: React.FC = () => {
       <BookList onBookSelect={onBookSelect} />
       <BookDetails nstrBookId={nstrSelectedBookId} />
       {bDisplayForm ? (
-        <AddBook funcHideForm={handleDismissForm} />
+        <AddBook
+          funcHideForm={handleDismissForm}
+          nstrSelectedBookId={nstrSelectedBookId}
+        />
       ) : (
-        <AddButton handleClick={handleShowForm} title="Add New Book" />
+        <AddButton
+          handleClick={handleShowForm}
+          title="Add New Book"
+          className="addButton"
+        />
       )}
     </BookListPageStyled>
   );

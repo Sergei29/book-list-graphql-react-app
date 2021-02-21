@@ -5,6 +5,9 @@ export const BookListPageStyled = styled.div`
   box-sizing: border-box;
   width: 60%;
   height: 100%;
+  & button.addButton {
+    position: fixed;
+  }
 `;
 
 export const Heading = styled.h1`
