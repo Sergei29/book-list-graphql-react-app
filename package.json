@@ -28,6 +28,7 @@
     "graphql": "^15.5.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.13",
+    "mquery": ">=3.2.3",
     "nodemon": "^2.0.3",
     "notarealdb": "^0.2.2"
   },
