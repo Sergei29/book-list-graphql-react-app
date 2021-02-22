@@ -51,6 +51,10 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
+app.get("/test", (req, res) => {
+  res.send("Test: Server is running");
+});
+
 // authentication service (currently - REST instead the GraphQL):
 app.post("/login", loginRouter);
 
