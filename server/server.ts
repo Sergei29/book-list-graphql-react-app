@@ -7,6 +7,7 @@ import dotenv from "dotenv";
 import { arrMiddleware } from "./middleware/middleware";
 import resolvers from "./resolvers/resolvers";
 import { loginRouter } from "./routes/login/login";
+
 if (process.env.NODE_ENV !== "production") {
   dotenv.config();
 }
