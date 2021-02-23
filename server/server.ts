@@ -13,10 +13,16 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 const app = express();
-// allow CORS cross-origin requests:
 app.use(arrMiddleware);
-const port = process.env.PORT || 4000; // when we deploy on heroku - it sets PORT env variable for us.
 
+/**
+ * @description when we deploy on heroku - it sets PORT env variable for us.
+ */
+const port = process.env.PORT || 4000;
+
+/**
+ * @description initialise MongoDB connection
+ */
 mongoose
   .connect(process.env.MONGO_URI!, {
     useNewUrlParser: true,
@@ -31,21 +37,26 @@ mongoose.connection.once("open", () => {
   console.log("connected to database.");
 });
 
-// GraphQL server:
 const typeDefs = gql(
   fs.readFileSync("./server/schema/schema.graphql", { encoding: "utf8" })
 );
 
+/**
+ * @description initialise GraphQL server and apply express middleware:
+ */
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
 });
 apolloServer.applyMiddleware({ app, path: "/graphql" });
 
-// run react-app from server in production mode:
+/**
+ * @description serve react app client in production mode
+ * indicate the path to static files and,
+ * for every/all incoming get requests: serve react app index.html
+ */
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "..", "..", "client/build")));
-  //for every/all incoming get requests: serve react app index.html
   app.get("*", (req, res) => {
     res.sendFile(
       path.join(__dirname, "..", "..", "client/build", "index.html")
@@ -53,15 +64,21 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-// authentication service (currently - REST instead the GraphQL):
+/**
+ * @description authentication service (currently - REST instead the GraphQL)
+ */
 app.post("/login", loginRouter);
 
-// error handling:
+/**
+ * @description error handling
+ */
 app.use((error: Error, req: Request, res: Response) => {
   res.status(500).json({ message: error.message });
 });
 
-// server run:
+/**
+ * @description server listen, for dev mode log the message.
+ */
 app.listen(port, () => {
   console.log(
     `server running on http://localhost:${port}, GraphQL server at http://localhost:${port}/graphql`
