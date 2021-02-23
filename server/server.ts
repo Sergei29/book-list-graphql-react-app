@@ -49,11 +49,11 @@ if (process.env.NODE_ENV === "production") {
   app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "client/build", "index.html"));
   });
-}
 
-app.get("/test", (req, res) => {
-  res.send("Test: Server is running");
-});
+  app.get("/test", (req, res) => {
+    res.send("test response from server");
+  });
+}
 
 // authentication service (currently - REST instead the GraphQL):
 app.post("/login", loginRouter);
