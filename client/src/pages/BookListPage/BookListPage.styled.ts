@@ -11,6 +11,6 @@ export const BookListPageStyled = styled.div`
 `;
 
 export const Heading = styled.h1`
-  color: #444;
+  color: ${(props) => props.theme.font.main};
   text-align: center;
 `;

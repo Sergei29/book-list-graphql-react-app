@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const AddBookForm = styled.form`
-  background-color: #fff;
+  background-color: ${(props) => props.theme.palette.white};
   padding: 20px;
   position: fixed;
   left: 0;
@@ -40,13 +40,13 @@ export const SelectInput = styled.select`
 `;
 
 export const ErrorMessage = styled.span`
-  color: #ad1457;
+  color: ${(props) => props.theme.font.bordeau};
 `;
 
 export const SubmitButton = styled.button`
-  color: #fff;
+  color: ${(props) => props.theme.font.light};
   font-size: 1em;
-  background: #ad1457;
+  background: ${(props) => props.theme.palette.rasberry};
   border: 0;
   padding: 8px 16px;
   border-radius: 4px;

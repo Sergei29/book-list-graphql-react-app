@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const AdminContainer = styled.div`
-  color: #444;
+  color: ${(props) => props.theme.font.main};
 `;
 
 export const AuthorsContainer = styled.div`
@@ -19,7 +19,7 @@ export const Author = styled.div`
     margin: 16px;
     &:hover,
     &:focus {
-      color: #ad1457;
+      color: ${(props) => props.theme.palette.rasberry};
     }
   }
 `;
@@ -32,14 +32,14 @@ export const AuthorBooks = styled.div`
     padding: 4px 6px;
     border-radius: 4px;
     &:hover {
-      background-color: #444;
-      color: #fff;
+      background-color: ${(props) => props.theme.palette.darkGrey};
+      color: ${(props) => props.theme.font.light};
     }
     & > svg {
       margin: 0 16px;
       &:hover,
       &:focus {
-        color: #ad1457;
+        color: ${(props) => props.theme.palette.rasberry};
       }
     }
   }
