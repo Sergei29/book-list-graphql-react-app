@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
 export const AddButtonStyled = styled.button`
-  color: #fff;
+  color: ${(props) => props.theme.palette.white};
   font-size: 2em;
-  background: #ad1457;
+  background: ${(props) => props.theme.palette.rasberry};
   border: 0;
   padding: 16px;
   width: 50px;

@@ -9,7 +9,7 @@ export const NavbarStyled = styled.nav`
       display: inline-block;
       margin: 0 5px;
       & > a {
-        color: #444;
+        color: ${(props) => props.theme.font.main};
         text-decoration: none;
         &.active {
           text-decoration: underline;
