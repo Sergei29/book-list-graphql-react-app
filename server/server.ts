@@ -46,9 +46,9 @@ apolloServer.applyMiddleware({ app, path: "/graphql" });
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "client/build")));
   //for every/all incoming get requests: serve react app index.html
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "client/build", "index.html"));
-  });
+  // app.get("*", (req, res) => {
+  //   res.sendFile(path.join(__dirname, "client/build", "index.html"));
+  // });
 
   app.get("/test", (req, res) => {
     res.send("test response from server");
