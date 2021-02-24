@@ -4,10 +4,6 @@ let database: Mongoose.Connection;
 
 /**
  * @description initialise MongoDB connection
- */
-
-/**
- * @description initialise MongoDB connection
  * @returns {undefined} sets connection
  */
 export const connectMongoDB = () => {
