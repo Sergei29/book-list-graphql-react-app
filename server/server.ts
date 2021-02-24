@@ -1,9 +1,9 @@
 import express, { Request, Response } from "express";
-import mongoose from "mongoose";
 import { ApolloServer, gql } from "apollo-server-express";
 import path from "path";
 import fs from "fs";
 import dotenv from "dotenv";
+import { connectMongoDB } from "./mongoDB/mongoDB";
 import { arrMiddleware } from "./middleware/middleware";
 import resolvers from "./resolvers/resolvers";
 import { loginRouter } from "./routes/login/login";
@@ -20,22 +20,7 @@ app.use(arrMiddleware);
  */
 const port = process.env.PORT || 4000;
 
-/**
- * @description initialise MongoDB connection
- */
-mongoose
-  .connect(process.env.MONGO_URI!, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-  })
-  .catch((error) => {
-    console.log("Error connecting to DB: ", error.message);
-  });
-
-mongoose.connection.once("open", () => {
-  console.log("connected to database.");
-});
+connectMongoDB();
 
 const typeDefs = gql(
   fs.readFileSync("./server/schema/schema.graphql", { encoding: "utf8" })
