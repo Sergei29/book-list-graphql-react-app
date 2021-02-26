@@ -7,14 +7,14 @@
 
 ## About this app:
 
-1. This is a full stack application that allows to add a reading list, books and authors.
+1. This application allows to add a reading list, books and authors.
 
-- the application is a full stack and currently under development as more features are added in.
+- Is a full stack and currently under development as more features are added in.
 
 2. Technical stack:
 
-- Backend: nodeJS, express, apollo-server, mongoDB
-- Frontend: React.JS(CRA boiler plate), apollo-client
+- Backend: TypeScript, NodeJS, Express, GraphQL Apollo-server, MongoDB
+- Frontend: Typescript, React.JS(CRA boiler plate), GraphQL Apollo-client
 
 3. Deployment
 
