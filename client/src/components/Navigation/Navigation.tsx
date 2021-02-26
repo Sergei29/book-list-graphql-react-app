@@ -1,5 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+// components:
+import GitHubButton from "../GitHubButton";
 // styles:
 import { NavbarStyled } from "./Navigation.styled";
 
@@ -18,6 +20,11 @@ const Navigation: React.FC = () => {
         </li>
         <li>
           <NavLink to="/admin">Admin</NavLink>
+        </li>
+        <li>
+          <span>
+            <GitHubButton />
+          </span>
         </li>
       </ul>
     </NavbarStyled>
