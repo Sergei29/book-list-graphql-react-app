@@ -19,8 +19,13 @@ export const AddButtonStyled = styled.button`
     cursor: not-allowed;
     opacity: 0.9;
   }
+  &:hover {
+    background: ${(props) => props.theme.palette.bordeau};
+  }
   &:active,
   &:focus {
     outline: none;
+    transform: scale(1.01);
   }
+  transition: all 200ms ease-in-out;
 `;

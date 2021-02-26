@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { darken } from "polished";
 
 export const AddBookForm = styled.form`
   background-color: ${(props) => props.theme.palette.white};
@@ -13,6 +14,9 @@ export const AddBookForm = styled.form`
     top: -6px;
     right: -12px;
     cursor: pointer;
+    &:hover {
+      color: ${(props) => darken(1.1, props.theme.palette.white)};
+    }
   }
 `;
 
@@ -60,4 +64,10 @@ export const SubmitButton = styled.button`
     cursor: not-allowed;
     opacity: 0.9;
   }
+  &:focus,
+  &:active {
+    color: ${(props) => props.theme.font.main};
+    transform: scale(1.01);
+  }
+  transition: all 200ms ease-in-out;
 `;
