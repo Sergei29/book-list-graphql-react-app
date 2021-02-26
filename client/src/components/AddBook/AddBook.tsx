@@ -65,6 +65,7 @@ const AddBook: React.FC<Props> = ({ funcHideForm, nstrSelectedBookId }) => {
         <ErrorMessage>{objMutationError.message}</ErrorMessage>
       )}
       <TimesCircle
+        className="closeButton"
         onClick={funcHideForm}
         size="25"
         title="close the form"
