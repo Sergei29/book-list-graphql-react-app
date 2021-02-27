@@ -1,7 +1,7 @@
 import React from "react";
 import { useGetBooksQuery } from "../../generated/graphql";
 //styles:
-import { ListItemStyled } from "./BookList.styled";
+import { BookListStyled, ListItemStyled } from "./BookList.styled";
 
 type Props = {
   onBookSelect: (strId: string) => () => void;
@@ -20,13 +20,13 @@ const BookList: React.FC<Props> = ({ onBookSelect }) => {
   if (data?.books?.length === 0) return <p>No books.</p>;
 
   return (
-    <ul>
+    <BookListStyled>
       {data?.books?.map((objBook) => (
         <ListItemStyled key={objBook!.id} onClick={onBookSelect!(objBook!.id)}>
           {objBook!.name}
         </ListItemStyled>
       ))}
-    </ul>
+    </BookListStyled>
   );
 };
 

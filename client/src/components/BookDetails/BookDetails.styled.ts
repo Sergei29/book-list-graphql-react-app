@@ -12,4 +12,5 @@ export const BookDetailsContainerStyled = styled.div`
   box-shadow: -2px -3px 5px rgba(0, 0, 0, 0.3);
   box-sizing: border-box;
   color: ${(props) => props.theme.font.light};
+  z-index: 2;
 `;

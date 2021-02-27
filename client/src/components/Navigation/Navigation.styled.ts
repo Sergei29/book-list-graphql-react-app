@@ -1,6 +1,8 @@
 import styled from "styled-components";
 
 export const NavbarStyled = styled.nav`
+  position: relative;
+  z-index: 2;
   & > ul {
     margin: 0;
     padding: 0;
