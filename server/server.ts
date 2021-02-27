@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import { ApolloServer, gql } from "apollo-server-express";
 import path from "path";
 import fs from "fs";
@@ -6,7 +6,6 @@ import dotenv from "dotenv";
 import { connectMongoDB } from "./mongoDB/mongoDB";
 import { arrMiddleware } from "./middleware/middleware";
 import resolvers from "./resolvers/resolvers";
-import { loginRouter } from "./routes/login/login";
 
 if (process.env.NODE_ENV !== "production") {
   dotenv.config();
@@ -48,18 +47,6 @@ if (process.env.NODE_ENV === "production") {
     );
   });
 }
-
-/**
- * @description authentication service (currently - REST instead the GraphQL)
- */
-app.post("/login", loginRouter);
-
-/**
- * @description error handling
- */
-app.use((error: Error, req: Request, res: Response) => {
-  res.status(500).json({ message: error.message });
-});
 
 /**
  * @description server listen, for dev mode log the message.
