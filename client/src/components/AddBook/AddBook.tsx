@@ -2,6 +2,7 @@ import React from "react";
 import { AuthorType } from "../../types/types";
 import { useForm } from "./hooks/useForm";
 import { TimesCircle } from "@styled-icons/fa-regular";
+import { themeLight } from "../../Theme/Theme";
 // styles:
 import {
   AddBookForm,
@@ -69,7 +70,6 @@ const AddBook: React.FC<Props> = ({ funcHideForm, nstrSelectedBookId }) => {
         onClick={funcHideForm}
         size="25"
         title="close the form"
-        color="#444"
       />
       <FormControl className="field">
         <InputLabel>Book name:</InputLabel>

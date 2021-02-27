@@ -10,6 +10,7 @@ export const AddButtonStyled = styled.button`
   height: 49px;
   border-radius: 50%;
   position: absolute;
+  z-index: 2;
   bottom: 10px;
   left: 10px;
   display: flex;

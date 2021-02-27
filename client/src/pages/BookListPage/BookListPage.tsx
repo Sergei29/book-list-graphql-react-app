@@ -4,6 +4,7 @@ import BookList from "../../components/BookList";
 import BookDetails from "../../components/BookDetails";
 import AddBook from "../../components/AddBook";
 import AddButton from "../../components/AddButton";
+import Background from "../../components/Background";
 //styles:
 import { BookListPageStyled, Heading } from "./BookListPage.styled";
 
@@ -56,6 +57,8 @@ const BookListPage: React.FC = () => {
           className="addButton"
         />
       )}
+
+      <Background />
     </BookListPageStyled>
   );
 };

@@ -1,5 +1,10 @@
 import styled from "styled-components";
 
+export const BookListStyled = styled.ul`
+  position: relative;
+  z-index: 2;
+`;
+
 export const ListItemStyled = styled.li`
   display: inline-block;
   margin: 12px;
@@ -19,7 +24,6 @@ export const ListItemStyled = styled.li`
     color: ${(props) => props.theme.font.main};
     animation: shake 0.5s;
   }
-  transition: all 200ms ease-in-out;
   @keyframes shake {
     0% {
       transform: translate(1px, 1px) rotate(0deg);
@@ -55,4 +59,5 @@ export const ListItemStyled = styled.li`
       transform: translate(1px, -2px) rotate(-1deg);
     }
   }
+  transition: all 200ms ease-in-out;
 `;
