@@ -3,6 +3,8 @@ type Query {
   author(id: ID!): Author
   books: [Book]
   authors: [Author]
+  me: User
+  users: [User]
 }
 
 type Book {
@@ -19,6 +21,13 @@ type Author {
   books: [Book]
 }
 
+type User {
+  id: ID!
+  username: String!
+  password: String!
+  token: String
+}
+
 type Mutation {
   addAuthor(name: String!, age: Int!): Author!
   editAuthor(id: ID!, name: String!, age: Int!): Author!
@@ -26,4 +35,8 @@ type Mutation {
   editBook(id: ID!, name: String!, genre: String!, authorId: ID!): Book!
   removeAuthor(id: ID!): Author!
   removeBook(id: ID!): Book!
+  register(username: String!, password: String): User
+  login(username: String!, password: String!): User
+  removeUser(username: String!): User
+  editUser(id: ID!, username: String!, password: String!): User
 }
