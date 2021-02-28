@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import { BookType } from "../types/types";
 
 const bookSchema = new Schema({
   name: String,
@@ -6,6 +7,6 @@ const bookSchema = new Schema({
   authorId: String,
 });
 
-const Book = mongoose.model("Book", bookSchema);
+const Book = mongoose.model<BookType>("Book", bookSchema);
 
 export default Book;
