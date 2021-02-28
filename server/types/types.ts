@@ -1,10 +1,8 @@
 import { Document } from "mongoose";
 
-export type User = {
-  id: string;
-  email: string;
+export type UserType = {
+  username: string;
   password: string;
-  companyId: string;
-};
+} & Document;
 
 export type DatabaseDocType = Document;

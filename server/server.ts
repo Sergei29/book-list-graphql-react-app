@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import { connectMongoDB } from "./mongoDB/mongoDB";
 import { arrMiddleware } from "./middleware/middleware";
 import resolvers from "./resolvers/resolvers";
+import { getPayload } from "./config/authUtils";
 
 if (process.env.NODE_ENV !== "production") {
   dotenv.config();
@@ -13,13 +14,13 @@ if (process.env.NODE_ENV !== "production") {
 
 const app = express();
 app.use(arrMiddleware);
+//connect to database
+connectMongoDB();
 
 /**
  * @description when we deploy on heroku - it sets PORT env variable for us.
  */
 const port = process.env.PORT || 4000;
-
-connectMongoDB();
 
 const typeDefs = gql(
   fs.readFileSync("./server/schema/schema.graphql", { encoding: "utf8" })
@@ -31,6 +32,17 @@ const typeDefs = gql(
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
+  context: ({ req }) => {
+    // IMPORTANT: the headers.authorization value must be set on client with the value of received auth token.
+
+    // get the user token from the headers
+    const strToken = req.headers.authorization || "";
+    // try to retrieve the user based on token received:
+    const { payload: user, loggedIn } = getPayload(strToken);
+
+    // add the user to the context:
+    return { user, loggedIn };
+  },
 });
 apolloServer.applyMiddleware({ app, path: "/graphql" });
 

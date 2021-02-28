@@ -21,6 +21,7 @@
   "dependencies": {
     "apollo-server": "^2.21.0",
     "apollo-server-express": "^2.21.0",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
@@ -31,10 +32,10 @@
     "mongoose": "^5.9.13",
     "mquery": ">=3.2.3",
     "nodemon": "^2.0.3",
-    "notarealdb": "^0.2.2",
     "typescript": "^4.1.5"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
     "@types/body-parser": "^1.19.0",
     "@types/concurrently": "^5.2.1",
     "@types/cors": "^2.8.9",
