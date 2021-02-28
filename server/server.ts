@@ -14,7 +14,6 @@ if (process.env.NODE_ENV !== "production") {
 
 const app = express();
 app.use(arrMiddleware);
-//connect to database
 connectMongoDB();
 
 /**
