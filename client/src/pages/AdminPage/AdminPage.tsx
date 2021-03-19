@@ -3,18 +3,14 @@ import { TrashAlt } from "@styled-icons/fa-regular";
 import { MaybeArrBooks } from "../../types/types";
 import useAdminPage from "./hooks/useAdminPage";
 // styles:
-import {
-  AdminContainer,
-  Author,
-  AuthorBooks,
-  AuthorsContainer,
-} from "./AdminPage.styled";
+import { useStyles } from "./style";
 
 /**
  * @description functional component
  * @returns {JSX} admin page markup
  */
 const AdminPage: React.FC = () => {
+  const classes = useStyles();
   const { arrAuthors, handleDeleteAuthor, handleDeleteBook } = useAdminPage();
 
   /**
@@ -24,46 +20,48 @@ const AdminPage: React.FC = () => {
    */
   const renderBooks = (arrBooks: MaybeArrBooks) => {
     if (!arrBooks || arrBooks.length === 0) {
-      return <li>no books</li>;
+      return <li className={classes.authorBookList__item}>no books</li>;
     }
 
     return arrBooks.map((objBook) => (
-      <li key={objBook?.id}>
+      <li key={objBook?.id} className={classes.authorBookList__item}>
         {objBook?.name}
         <TrashAlt
           onClick={handleDeleteBook(objBook?.id!, objBook?.name!)}
           size="14"
           title={`delete book: ${objBook?.name}`}
+          className={classes.authorBookList__item__icon}
         />
       </li>
     ));
   };
 
   return (
-    <AdminContainer>
+    <div className={classes.adminContainer}>
       <h2>Admin page</h2>
-      <AuthorsContainer>
+      <div className={classes.authorsContainer}>
         {arrAuthors?.map((objAuthor) => {
           if (!objAuthor) return <p>No author</p>;
 
           return (
             <div key={objAuthor.id}>
-              <Author>
+              <div className={classes.author}>
                 <h4>{objAuthor.name}</h4>
                 <TrashAlt
                   onClick={handleDeleteAuthor(objAuthor.id, objAuthor.name!)}
                   size="16"
                   title={`delete author: ${objAuthor.name}`}
+                  className={classes.author__icon}
                 />
-              </Author>
-              <AuthorBooks>
+              </div>
+              <div>
                 <ul>{renderBooks(objAuthor.books)}</ul>
-              </AuthorBooks>
+              </div>
             </div>
           );
         })}
-      </AuthorsContainer>
-    </AdminContainer>
+      </div>
+    </div>
   );
 };
 

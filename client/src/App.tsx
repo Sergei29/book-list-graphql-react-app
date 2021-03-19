@@ -1,22 +1,19 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import ApolloProvider from "./ApolloProvider/ApolloProvider";
-import { ThemeProvider } from "styled-components";
-import { themeLight } from "./Theme/Theme";
+import { ThemeProvider } from "@material-ui/core/styles";
+import muiTheme from "./Theme/muiTheme";
 
 //components:
 import BookListPage from "./pages/BookListPage";
 import AdminPage from "./pages/AdminPage";
 import Navigation from "./components/Navigation";
-//styles:
-import GlobalStyle from "./GlobalStyle/GlobalStyle";
 
 const App: React.FC = () => {
   return (
     <ApolloProvider>
       <BrowserRouter>
-        <ThemeProvider theme={themeLight}>
-          <GlobalStyle />
+        <ThemeProvider theme={muiTheme}>
           <Navigation />
           <Switch>
             <Route path="/" exact component={BookListPage} />

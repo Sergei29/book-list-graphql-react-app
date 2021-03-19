@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from "react";
+import { Typography } from "@material-ui/core";
 //components:
 import BookList from "../../components/BookList";
 import BookDetails from "../../components/BookDetails";
@@ -6,13 +7,14 @@ import AddBook from "../../components/AddBook";
 import AddButton from "../../components/AddButton";
 import Background from "../../components/Background";
 //styles:
-import { BookListPageStyled, Heading } from "./BookListPage.styled";
+import { useStyles } from "./style";
 
 /**
  * @description books list page
  * @returns {JSX} component markup
  */
 const BookListPage: React.FC = () => {
+  const classes = useStyles();
   const [nstrSelectedBookId, setNStrSelectedBookId] = useState<null | string>(
     null
   );
@@ -41,8 +43,10 @@ const BookListPage: React.FC = () => {
   const handleDismissForm = useCallback(() => setBdisplayForm(false), []);
 
   return (
-    <BookListPageStyled>
-      <Heading>My Reading List</Heading>
+    <div className={classes.bookListPage}>
+      <Typography className={classes.bookListPage__heading}>
+        My Reading List
+      </Typography>
       <BookList onBookSelect={onBookSelect} />
       <BookDetails nstrBookId={nstrSelectedBookId} />
       {bDisplayForm ? (
@@ -54,12 +58,12 @@ const BookListPage: React.FC = () => {
         <AddButton
           handleClick={handleShowForm}
           title="Add New Book"
-          className="addButton"
+          className={classes.bookListPage__addButton}
         />
       )}
 
       <Background />
-    </BookListPageStyled>
+    </div>
   );
 };
 
