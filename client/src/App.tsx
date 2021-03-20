@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import ApolloProvider from "./ApolloProvider/ApolloProvider";
 import { ThemeProvider } from "@material-ui/core/styles";
+import CssBaseline from "@material-ui/core/CssBaseline";
 import muiTheme from "./Theme/muiTheme";
 
 //components:
@@ -14,6 +15,7 @@ const App: React.FC = () => {
     <ApolloProvider>
       <BrowserRouter>
         <ThemeProvider theme={muiTheme}>
+          <CssBaseline />
           <Navigation />
           <Switch>
             <Route path="/" exact component={BookListPage} />

@@ -2,17 +2,8 @@ import React from "react";
 import { AuthorType } from "../../types/types";
 import { useForm } from "./hooks/useForm";
 import { TimesCircle } from "@styled-icons/fa-regular";
-import { themeLight } from "../../Theme/Theme";
 // styles:
-import {
-  AddBookForm,
-  FormControl,
-  InputLabel,
-  TextInput,
-  SelectInput,
-  SubmitButton,
-  ErrorMessage,
-} from "./AddBook.styled";
+import { useStyles } from "./style";
 
 type Props = {
   funcHideForm: () => void;
@@ -23,6 +14,7 @@ type Props = {
  * @returns {JSX} component markup
  */
 const AddBook: React.FC<Props> = ({ funcHideForm, nstrSelectedBookId }) => {
+  const classes = useStyles();
   const {
     objFormValidaton,
     objAddBookMutationResponse,
@@ -58,58 +50,72 @@ const AddBook: React.FC<Props> = ({ funcHideForm, nstrSelectedBookId }) => {
   };
 
   return (
-    <AddBookForm id="add-book" onSubmit={handleSubmit}>
+    <form id="add-book" onSubmit={handleSubmit} className={classes.addBookForm}>
       {objFormValidaton.nstrErrorMessage && (
-        <ErrorMessage>{objFormValidaton.nstrErrorMessage}</ErrorMessage>
+        <span className={classes.addBookForm__errorMessage}>
+          {objFormValidaton.nstrErrorMessage}
+        </span>
       )}
       {objMutationError && (
-        <ErrorMessage>{objMutationError.message}</ErrorMessage>
+        <span className={classes.addBookForm__errorMessage}>
+          {objMutationError.message}
+        </span>
       )}
       <TimesCircle
-        className="closeButton"
         onClick={funcHideForm}
         size="25"
         title="close the form"
+        className={classes.addBookForm__closeButton}
       />
-      <FormControl className="field">
-        <InputLabel>Book name:</InputLabel>
-        <TextInput
+      <div className={classes.addBookForm__formControl}>
+        <label className={classes.addBookForm__formControl__label}>
+          Book name:
+        </label>
+        <input
           type="text"
           name="name"
           value={objBook.name}
           onChange={handleChange}
+          className={classes.addBookForm__formControl__inputText}
         />
-      </FormControl>
+      </div>
 
-      <FormControl className="field">
-        <InputLabel>Genre:</InputLabel>
-        <TextInput
+      <div className={classes.addBookForm__formControl}>
+        <label className={classes.addBookForm__formControl__label}>
+          Genre:
+        </label>
+        <input
           type="text"
           name="genre"
           value={objBook.genre}
           onChange={handleChange}
+          className={classes.addBookForm__formControl__inputText}
         />
-      </FormControl>
+      </div>
 
-      <FormControl className="field">
-        <InputLabel>Author:</InputLabel>
-        <SelectInput
+      <div className={classes.addBookForm__formControl}>
+        <label className={classes.addBookForm__formControl__label}>
+          Author:
+        </label>
+        <select
           name="authorId"
           onChange={handleChange}
           value={objBook.authorId}
+          className={classes.addBookForm__formControl__inputSelect}
         >
           <option value="">Select author</option>
           {displayAuthors()}
-        </SelectInput>
-      </FormControl>
+        </select>
+      </div>
 
-      <SubmitButton
+      <button
+        className={classes.addBookForm__submitButton}
         type="submit"
         disabled={!objFormValidaton.bIsValid || bMutationLoading}
       >
         Add Book
-      </SubmitButton>
-    </AddBookForm>
+      </button>
+    </form>
   );
 };
 

@@ -8,9 +8,6 @@ export const useStyles = makeStyles((theme: Theme) =>
       width: "60%",
       height: "100%",
     },
-    bookListPage__addButton: {
-      position: "fixed",
-    },
     bookListPage__heading: {
       position: "relative",
       zIndex: 2,

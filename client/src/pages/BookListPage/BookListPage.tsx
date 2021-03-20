@@ -44,7 +44,11 @@ const BookListPage: React.FC = () => {
 
   return (
     <div className={classes.bookListPage}>
-      <Typography className={classes.bookListPage__heading}>
+      <Typography
+        className={classes.bookListPage__heading}
+        variant="h4"
+        component="h1"
+      >
         My Reading List
       </Typography>
       <BookList onBookSelect={onBookSelect} />
@@ -55,11 +59,7 @@ const BookListPage: React.FC = () => {
           nstrSelectedBookId={nstrSelectedBookId}
         />
       ) : (
-        <AddButton
-          handleClick={handleShowForm}
-          title="Add New Book"
-          className={classes.bookListPage__addButton}
-        />
+        <AddButton handleClick={handleShowForm} title="Add New Book" />
       )}
 
       <Background />
