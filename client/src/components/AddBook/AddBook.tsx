@@ -1,7 +1,21 @@
 import React from "react";
 import { AuthorType } from "../../types/types";
 import { useForm } from "./hooks/useForm";
-import { TimesCircle } from "@styled-icons/fa-regular";
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+
+import InputAdornment from "@material-ui/core/InputAdornment";
+import MenuBookIcon from "@material-ui/icons/MenuBook";
+import AccountBoxIcon from "@material-ui/icons/AccountBox";
+import CollectionsBookmarkIcon from "@material-ui/icons/CollectionsBookmark";
+import {
+  IconButton,
+  FormControl,
+  MenuItem,
+  Input,
+  FormLabel,
+  Button,
+  TextField,
+} from "@material-ui/core";
 // styles:
 import { useStyles } from "./style";
 
@@ -36,21 +50,21 @@ const AddBook: React.FC<Props> = ({ funcHideForm, nstrSelectedBookId }) => {
   const displayAuthors = () => {
     const { data, loading, error } = objAuthorsQueryResponse;
 
-    if (loading) return <option>loading authors...</option>;
-    if (error) return <option>no authors.</option>;
-    if (!data) return <option>no authors.</option>;
+    if (loading) return <MenuItem>loading authors...</MenuItem>;
+    if (error) return <MenuItem>no authors.</MenuItem>;
+    if (!data) return <MenuItem>no authors.</MenuItem>;
 
     if (data!.authors) {
       return data!.authors.map((objAuthor: AuthorType | null) => (
-        <option value={objAuthor!.id} key={objAuthor!.id}>
+        <MenuItem value={objAuthor!.id} key={objAuthor!.id}>
           {objAuthor!.name}
-        </option>
+        </MenuItem>
       ));
     }
   };
 
   return (
-    <form id="add-book" onSubmit={handleSubmit} className={classes.addBookForm}>
+    <form onSubmit={handleSubmit} className={classes.addBookForm}>
       {objFormValidaton.nstrErrorMessage && (
         <span className={classes.addBookForm__errorMessage}>
           {objFormValidaton.nstrErrorMessage}
@@ -61,60 +75,94 @@ const AddBook: React.FC<Props> = ({ funcHideForm, nstrSelectedBookId }) => {
           {objMutationError.message}
         </span>
       )}
-      <TimesCircle
-        onClick={funcHideForm}
-        size="25"
+      <IconButton
         title="close the form"
+        onClick={funcHideForm}
         className={classes.addBookForm__closeButton}
-      />
-      <div className={classes.addBookForm__formControl}>
-        <label className={classes.addBookForm__formControl__label}>
+        aria-label="close"
+      >
+        <HighlightOffIcon fontSize="large" />
+      </IconButton>
+      <FormControl className={classes.addBookForm__formControl}>
+        <FormLabel
+          className={classes.addBookForm__formControl__label}
+          classes={{ focused: classes.formLabelFocused }}
+        >
           Book name:
-        </label>
-        <input
+        </FormLabel>
+        <Input
           type="text"
           name="name"
           value={objBook.name}
           onChange={handleChange}
           className={classes.addBookForm__formControl__inputText}
+          disableUnderline
+          endAdornment={
+            <InputAdornment position="end">
+              <MenuBookIcon />
+            </InputAdornment>
+          }
         />
-      </div>
+      </FormControl>
 
-      <div className={classes.addBookForm__formControl}>
-        <label className={classes.addBookForm__formControl__label}>
+      <FormControl className={classes.addBookForm__formControl}>
+        <FormLabel
+          className={classes.addBookForm__formControl__label}
+          classes={{ focused: classes.formLabelFocused }}
+        >
           Genre:
-        </label>
-        <input
+        </FormLabel>
+        <Input
           type="text"
           name="genre"
           value={objBook.genre}
           onChange={handleChange}
           className={classes.addBookForm__formControl__inputText}
+          disableUnderline
+          endAdornment={
+            <InputAdornment position="end">
+              <CollectionsBookmarkIcon />
+            </InputAdornment>
+          }
         />
-      </div>
+      </FormControl>
 
-      <div className={classes.addBookForm__formControl}>
-        <label className={classes.addBookForm__formControl__label}>
+      <FormControl
+        className={classes.addBookForm__formControl}
+        variant="outlined"
+      >
+        <FormLabel
+          className={classes.addBookForm__formControl__label}
+          classes={{ focused: classes.formLabelFocused }}
+        >
           Author:
-        </label>
-        <select
+        </FormLabel>
+        <TextField
+          select
           name="authorId"
           onChange={handleChange}
           value={objBook.authorId}
           className={classes.addBookForm__formControl__inputSelect}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <AccountBoxIcon />
+              </InputAdornment>
+            ),
+            disableUnderline: true,
+          }}
         >
-          <option value="">Select author</option>
           {displayAuthors()}
-        </select>
-      </div>
+        </TextField>
+      </FormControl>
 
-      <button
+      <Button
         className={classes.addBookForm__submitButton}
         type="submit"
         disabled={!objFormValidaton.bIsValid || bMutationLoading}
       >
         Add Book
-      </button>
+      </Button>
     </form>
   );
 };

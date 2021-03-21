@@ -1,5 +1,7 @@
 import React from "react";
-import { TrashAlt } from "@styled-icons/fa-regular";
+import DeleteIcon from "@material-ui/icons/Delete";
+import IconButton from "@material-ui/core/IconButton";
+
 import { MaybeArrBooks } from "../../types/types";
 import useAdminPage from "./hooks/useAdminPage";
 // styles:
@@ -26,12 +28,13 @@ const AdminPage: React.FC = () => {
     return arrBooks.map((objBook) => (
       <li key={objBook?.id} className={classes.authorBookList__item}>
         {objBook?.name}
-        <TrashAlt
+        <IconButton
           onClick={handleDeleteBook(objBook?.id!, objBook?.name!)}
-          size="14"
           title={`delete book: ${objBook?.name}`}
           className={classes.authorBookList__item__icon}
-        />
+        >
+          <DeleteIcon fontSize="small" />
+        </IconButton>
       </li>
     ));
   };
@@ -47,12 +50,13 @@ const AdminPage: React.FC = () => {
             <div key={objAuthor.id}>
               <div className={classes.author}>
                 <h4>{objAuthor.name}</h4>
-                <TrashAlt
+                <IconButton
                   onClick={handleDeleteAuthor(objAuthor.id, objAuthor.name!)}
-                  size="16"
                   title={`delete author: ${objAuthor.name}`}
-                  className={classes.author__icon}
-                />
+                  className={classes.author__deleteButton}
+                >
+                  <DeleteIcon fontSize="small" />
+                </IconButton>
               </div>
               <div>
                 <ul>{renderBooks(objAuthor.books)}</ul>

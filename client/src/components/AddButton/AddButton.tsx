@@ -1,4 +1,6 @@
 import React from "react";
+import Fab from "@material-ui/core/Fab";
+import AddIcon from "@material-ui/icons/Add";
 //styles:
 import { useStyles } from "./style";
 
@@ -17,9 +19,14 @@ type Props = {
 const AddButton: React.FC<Props> = ({ handleClick, ...rest }) => {
   const classes = useStyles();
   return (
-    <button className={classes.addButton} onClick={handleClick} {...rest}>
-      <span>+</span>
-    </button>
+    <Fab
+      className={classes.addButton}
+      onClick={handleClick}
+      {...rest}
+      aria-label="add"
+    >
+      <AddIcon />
+    </Fab>
   );
 };
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Github } from "@styled-icons/fa-brands";
+import GitHubIcon from "@material-ui/icons/GitHub";
 //styles:
 import { useStyles } from "./style";
 
@@ -11,7 +11,7 @@ const GitHubButton: React.FC = () => {
       target="_blank"
       className={classes.linkToGithub}
     >
-      <Github size="16" />
+      <GitHubIcon fontSize="small" />
       <span>view source code</span>
     </a>
   );

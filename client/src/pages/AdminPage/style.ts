@@ -19,8 +19,9 @@ export const useStyles = makeStyles((theme: Theme) =>
       marginBottom: theme.spacing(2),
     },
 
-    author__icon: {
+    author__deleteButton: {
       margin: theme.spacing(2),
+      padding: 0,
       "&:hover": {
         color: theme.palette.secondary.main,
       },
@@ -32,6 +33,7 @@ export const useStyles = makeStyles((theme: Theme) =>
     authorBookList__item: {
       display: "flex",
       justifyContent: "space-between",
+      alignItems: "center",
       marginBottom: theme.spacing(0.5),
       padding: `${theme.spacing(0.5)}px ${theme.spacing(0.75)}px`,
       borderRadius: 4,

@@ -8,6 +8,18 @@ const muiTheme = createMuiTheme({
         html: {
           WebkitFontSmoothing: "auto",
         },
+        ul: {
+          padding: 0,
+          margin: 0,
+        },
+      },
+    },
+    MuiInputBase: {
+      input: {
+        "&:-webkit-autofill": {
+          transitionDelay: "9999s",
+          transitionProperty: "background-color, color",
+        },
       },
     },
   },

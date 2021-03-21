@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import ApolloProvider from "./ApolloProvider/ApolloProvider";
+import Container from "@material-ui/core/Container";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import muiTheme from "./Theme/muiTheme";
@@ -16,12 +17,14 @@ const App: React.FC = () => {
       <BrowserRouter>
         <ThemeProvider theme={muiTheme}>
           <CssBaseline />
-          <Navigation />
-          <Switch>
-            <Route path="/" exact component={BookListPage} />
-            <Route path="/admin" component={AdminPage} />
-            <Route render={() => <h4>Page not found.</h4>} />
-          </Switch>
+          <Container>
+            <Navigation />
+            <Switch>
+              <Route path="/" exact component={BookListPage} />
+              <Route path="/admin" component={AdminPage} />
+              <Route render={() => <h4>Page not found.</h4>} />
+            </Switch>
+          </Container>
         </ThemeProvider>
       </BrowserRouter>
     </ApolloProvider>

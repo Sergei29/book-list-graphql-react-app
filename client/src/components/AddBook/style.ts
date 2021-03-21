@@ -8,14 +8,12 @@ import {
 
 export const useStyles = makeStyles((theme: Theme) => {
   const objBackgroundCss: CSSProperties = {
-    backgroundColor: `${theme.palette.info.main} !important`,
-    border: `1px solid ${theme.palette.secondary.dark}`,
+    backgroundColor: theme.palette.info.main,
     color: theme.palette.secondary.dark,
     outline: "none",
   };
   const objInputCss: CSSProperties = {
-    margin: theme.spacing(0.5),
-    padding: theme.spacing(0.75),
+    paddingRight: theme.spacing(0.5),
     boxSizing: "border-box",
     borderRadius: 4,
     backgroundColor: theme.palette.info.main,
@@ -34,9 +32,10 @@ export const useStyles = makeStyles((theme: Theme) => {
       zIndex: 2,
     },
     addBookForm__closeButton: {
+      padding: 0,
       position: "absolute",
       top: -6,
-      right: -12,
+      right: -8,
       cursor: "pointer",
       color: theme.palette.secondary.dark,
       "&:hover": {
@@ -52,9 +51,16 @@ export const useStyles = makeStyles((theme: Theme) => {
       textAlign: "right",
       padding: theme.spacing(0.75),
       color: theme.palette.info.main,
+      marginTop: theme.spacing(2),
+    },
+    formLabelFocused: {
+      "&.Mui-focused": {
+        color: theme.palette.info.main,
+      },
     },
     addBookForm__formControl__inputText: {
       ...objInputCss,
+
       "&:active": {
         ...objBackgroundCss,
       },
@@ -64,12 +70,16 @@ export const useStyles = makeStyles((theme: Theme) => {
       "&::selection": {
         ...objBackgroundCss,
       },
-      "&:-webkit-autofill": {
-        ...objBackgroundCss,
-      },
     },
     addBookForm__formControl__inputSelect: {
       ...objInputCss,
+      marginTop: theme.spacing(2),
+      "& > div": {
+        color: theme.palette.secondary.dark,
+      },
+      "&:hover": {
+        outline: "none",
+      },
       "&:active": {
         outline: "none",
       },
@@ -82,20 +92,23 @@ export const useStyles = makeStyles((theme: Theme) => {
     },
     addBookForm__submitButton: {
       color: theme.palette.secondary.dark,
+      textTransform: "capitalize",
       fontSize: "1em",
       background: theme.palette.info.main,
       border: `1px solid ${theme.palette.secondary.dark}`,
       padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
       borderRadius: 4,
       position: "absolute",
-      bottom: 25,
+      bottom: 19,
       left: 10,
       display: "flex",
       alignItems: "center",
       cursor: "pointer",
       transition: `all 200ms ${theme.transitions.easing.easeInOut}`,
       "&:disabled": {
+        pointerEvents: "auto",
         cursor: "not-allowed",
+        color: theme.palette.secondary.light,
         opacity: 0.9,
       },
       "&:focus": {
