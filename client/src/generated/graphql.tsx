@@ -22,6 +22,9 @@ export type Query = {
   author?: Maybe<Author>;
   books?: Maybe<Array<Maybe<Book>>>;
   authors?: Maybe<Array<Maybe<Author>>>;
+  me?: Maybe<User>;
+  user?: Maybe<User>;
+  users?: Maybe<Array<Maybe<User>>>;
 };
 
 
@@ -31,6 +34,11 @@ export type QueryBookArgs = {
 
 
 export type QueryAuthorArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryUserArgs = {
   id: Scalars['ID'];
 };
 
@@ -50,6 +58,14 @@ export type Author = {
   books?: Maybe<Array<Maybe<Book>>>;
 };
 
+export type User = {
+  __typename?: 'User';
+  id: Scalars['ID'];
+  username: Scalars['String'];
+  password: Scalars['String'];
+  token?: Maybe<Scalars['String']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addAuthor: Author;
@@ -58,6 +74,10 @@ export type Mutation = {
   editBook: Book;
   removeAuthor: Author;
   removeBook: Book;
+  register: User;
+  login: User;
+  removeUser?: Maybe<User>;
+  editUser?: Maybe<User>;
 };
 
 
@@ -96,6 +116,30 @@ export type MutationRemoveAuthorArgs = {
 
 export type MutationRemoveBookArgs = {
   id: Scalars['ID'];
+};
+
+
+export type MutationRegisterArgs = {
+  username: Scalars['String'];
+  password: Scalars['String'];
+};
+
+
+export type MutationLoginArgs = {
+  username: Scalars['String'];
+  password: Scalars['String'];
+};
+
+
+export type MutationRemoveUserArgs = {
+  username: Scalars['String'];
+};
+
+
+export type MutationEditUserArgs = {
+  id: Scalars['ID'];
+  username: Scalars['String'];
+  password: Scalars['String'];
 };
 
 export enum CacheControlScope {
@@ -201,6 +245,62 @@ export type RemoveAuthorMutation = (
     { __typename?: 'Author' }
     & Pick<Author, 'name' | 'id'>
   ) }
+);
+
+export type SingUpMutationVariables = Exact<{
+  username: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+
+export type SingUpMutation = (
+  { __typename?: 'Mutation' }
+  & { register: (
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'username' | 'password' | 'token'>
+  ) }
+);
+
+export type SignInMutationVariables = Exact<{
+  username: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+
+export type SignInMutation = (
+  { __typename?: 'Mutation' }
+  & { login: (
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'username' | 'password' | 'token'>
+  ) }
+);
+
+export type RemoveUserMutationVariables = Exact<{
+  username: Scalars['String'];
+}>;
+
+
+export type RemoveUserMutation = (
+  { __typename?: 'Mutation' }
+  & { removeUser?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'username' | 'id'>
+  )> }
+);
+
+export type EditUserMutationVariables = Exact<{
+  id: Scalars['ID'];
+  username: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+
+export type EditUserMutation = (
+  { __typename?: 'Mutation' }
+  & { editUser?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'username' | 'password' | 'token'>
+  )> }
 );
 
 
@@ -452,3 +552,145 @@ export function useRemoveAuthorMutation(baseOptions?: Apollo.MutationHookOptions
 export type RemoveAuthorMutationHookResult = ReturnType<typeof useRemoveAuthorMutation>;
 export type RemoveAuthorMutationResult = Apollo.MutationResult<RemoveAuthorMutation>;
 export type RemoveAuthorMutationOptions = Apollo.BaseMutationOptions<RemoveAuthorMutation, RemoveAuthorMutationVariables>;
+export const SingUpDocument = gql`
+    mutation singUp($username: String!, $password: String!) {
+  register(username: $username, password: $password) {
+    id
+    username
+    password
+    token
+  }
+}
+    `;
+export type SingUpMutationFn = Apollo.MutationFunction<SingUpMutation, SingUpMutationVariables>;
+
+/**
+ * __useSingUpMutation__
+ *
+ * To run a mutation, you first call `useSingUpMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSingUpMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [singUpMutation, { data, loading, error }] = useSingUpMutation({
+ *   variables: {
+ *      username: // value for 'username'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useSingUpMutation(baseOptions?: Apollo.MutationHookOptions<SingUpMutation, SingUpMutationVariables>) {
+        return Apollo.useMutation<SingUpMutation, SingUpMutationVariables>(SingUpDocument, baseOptions);
+      }
+export type SingUpMutationHookResult = ReturnType<typeof useSingUpMutation>;
+export type SingUpMutationResult = Apollo.MutationResult<SingUpMutation>;
+export type SingUpMutationOptions = Apollo.BaseMutationOptions<SingUpMutation, SingUpMutationVariables>;
+export const SignInDocument = gql`
+    mutation signIn($username: String!, $password: String!) {
+  login(username: $username, password: $password) {
+    id
+    username
+    password
+    token
+  }
+}
+    `;
+export type SignInMutationFn = Apollo.MutationFunction<SignInMutation, SignInMutationVariables>;
+
+/**
+ * __useSignInMutation__
+ *
+ * To run a mutation, you first call `useSignInMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSignInMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [signInMutation, { data, loading, error }] = useSignInMutation({
+ *   variables: {
+ *      username: // value for 'username'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useSignInMutation(baseOptions?: Apollo.MutationHookOptions<SignInMutation, SignInMutationVariables>) {
+        return Apollo.useMutation<SignInMutation, SignInMutationVariables>(SignInDocument, baseOptions);
+      }
+export type SignInMutationHookResult = ReturnType<typeof useSignInMutation>;
+export type SignInMutationResult = Apollo.MutationResult<SignInMutation>;
+export type SignInMutationOptions = Apollo.BaseMutationOptions<SignInMutation, SignInMutationVariables>;
+export const RemoveUserDocument = gql`
+    mutation removeUser($username: String!) {
+  removeUser(username: $username) {
+    username
+    id
+  }
+}
+    `;
+export type RemoveUserMutationFn = Apollo.MutationFunction<RemoveUserMutation, RemoveUserMutationVariables>;
+
+/**
+ * __useRemoveUserMutation__
+ *
+ * To run a mutation, you first call `useRemoveUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeUserMutation, { data, loading, error }] = useRemoveUserMutation({
+ *   variables: {
+ *      username: // value for 'username'
+ *   },
+ * });
+ */
+export function useRemoveUserMutation(baseOptions?: Apollo.MutationHookOptions<RemoveUserMutation, RemoveUserMutationVariables>) {
+        return Apollo.useMutation<RemoveUserMutation, RemoveUserMutationVariables>(RemoveUserDocument, baseOptions);
+      }
+export type RemoveUserMutationHookResult = ReturnType<typeof useRemoveUserMutation>;
+export type RemoveUserMutationResult = Apollo.MutationResult<RemoveUserMutation>;
+export type RemoveUserMutationOptions = Apollo.BaseMutationOptions<RemoveUserMutation, RemoveUserMutationVariables>;
+export const EditUserDocument = gql`
+    mutation editUser($id: ID!, $username: String!, $password: String!) {
+  editUser(id: $id, username: $username, password: $password) {
+    id
+    username
+    password
+    token
+  }
+}
+    `;
+export type EditUserMutationFn = Apollo.MutationFunction<EditUserMutation, EditUserMutationVariables>;
+
+/**
+ * __useEditUserMutation__
+ *
+ * To run a mutation, you first call `useEditUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editUserMutation, { data, loading, error }] = useEditUserMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      username: // value for 'username'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useEditUserMutation(baseOptions?: Apollo.MutationHookOptions<EditUserMutation, EditUserMutationVariables>) {
+        return Apollo.useMutation<EditUserMutation, EditUserMutationVariables>(EditUserDocument, baseOptions);
+      }
+export type EditUserMutationHookResult = ReturnType<typeof useEditUserMutation>;
+export type EditUserMutationResult = Apollo.MutationResult<EditUserMutation>;
+export type EditUserMutationOptions = Apollo.BaseMutationOptions<EditUserMutation, EditUserMutationVariables>;

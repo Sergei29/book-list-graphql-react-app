@@ -60,3 +60,37 @@ mutation removeAuthor($id: ID!) {
     id
   }
 }
+
+mutation singUp($username: String!, $password: String!) {
+  register(username: $username, password: $password) {
+    id
+    username
+    password
+    token
+  }
+}
+
+mutation signIn($username: String!, $password: String!) {
+  login(username: $username, password: $password) {
+    id
+    username
+    password
+    token
+  }
+}
+
+mutation removeUser($username: String!) {
+  removeUser(username: $username) {
+    username
+    id
+  }
+}
+
+mutation editUser($id: ID!, $username: String!, $password: String!) {
+  editUser(id: $id, username: $username, password: $password) {
+    id
+    username
+    password
+    token
+  }
+}
