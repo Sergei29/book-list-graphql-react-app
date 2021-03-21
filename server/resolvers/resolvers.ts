@@ -11,6 +11,7 @@ import {
   encryptPassword,
   comparePassword,
 } from "../config/authUtils";
+import funcFormatUser from "./helpers/funcFormatUser";
 import { ErrorMessage } from "../types/types";
 
 type ObjType = Record<string, any>;
@@ -30,6 +31,8 @@ const resolvers: IResolvers = {
         throw new AuthenticationError(ErrorMessage.LOGIN_REQUIRED);
       }
     },
+    user: async (parent: ObjType, args: ObjType) =>
+      await UsersDB.findById(args.id),
     users: async () => await UsersDB.find(),
   },
 
@@ -125,23 +128,33 @@ const resolvers: IResolvers = {
 
       try {
         const objRegisteredUser = await objNewUser.save();
-        const strToken = getToken(objRegisteredUser.toObject());
-        return { ...objRegisteredUser.toObject(), token: strToken };
+        const objFormatted = funcFormatUser(objRegisteredUser);
+        const strToken = getToken(objFormatted);
+        return { ...objFormatted, token: strToken };
       } catch (objError) {
         throw objError;
       }
     },
 
-    login: async (parent: ObjType, args: ObjType) => {
+    login: async (
+      parent: ObjType,
+      args: { username: string; password: string }
+    ) => {
       const objUser = await UsersDB.findOne({ username: args.username });
+      if (!objUser) throw new AuthenticationError(ErrorMessage.USER_NOT_FOUND);
+
       const bIsMatching = await comparePassword(
         args.password,
-        objUser!.password
+        objUser.password
       );
 
       if (bIsMatching) {
-        const strToken = getToken(objUser!.toObject());
-        const objFoundUser = { ...objUser?.toObject(), token: strToken };
+        const objFormatted = funcFormatUser(objUser);
+        const strToken = getToken(objFormatted);
+        const objFoundUser = {
+          ...objFormatted,
+          token: strToken,
+        };
         return objFoundUser;
       } else {
         throw new AuthenticationError(ErrorMessage.WRONG_PASSWORD);
@@ -154,7 +167,7 @@ const resolvers: IResolvers = {
 
       try {
         const objDeletedUser = await objUser.deleteOne();
-        return objDeletedUser.toObject();
+        return funcFormatUser(objDeletedUser);
       } catch (objError) {
         throw objError;
       }
@@ -172,7 +185,8 @@ const resolvers: IResolvers = {
           password: strNewPassword as string,
         });
 
-        return await UsersDB.findById(id);
+        const objUpdatedUser = await UsersDB.findById(id);
+        return funcFormatUser(objUpdatedUser!);
       } catch (objError) {
         throw objError;
       }

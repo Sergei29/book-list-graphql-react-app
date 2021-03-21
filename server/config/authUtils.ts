@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { AuthenticationError } from "apollo-server-express";
 const strSecret = process.env.SECRET || "adasdfefdgfgfdgdfgdf3453fdfg";
 enum Expiry {
   IN_1_HOUR = 60 * 60 * 1000,

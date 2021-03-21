@@ -4,6 +4,7 @@ type Query {
   books: [Book]
   authors: [Author]
   me: User
+  user(id: ID!): User
   users: [User]
 }
 
@@ -35,8 +36,8 @@ type Mutation {
   editBook(id: ID!, name: String!, genre: String!, authorId: ID!): Book!
   removeAuthor(id: ID!): Author!
   removeBook(id: ID!): Book!
-  register(username: String!, password: String): User
-  login(username: String!, password: String!): User
+  register(username: String!, password: String!): User!
+  login(username: String!, password: String!): User!
   removeUser(username: String!): User
   editUser(id: ID!, username: String!, password: String!): User
 }
