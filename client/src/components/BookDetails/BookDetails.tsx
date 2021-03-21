@@ -1,4 +1,5 @@
 import React from "react";
+import { Typography } from "@material-ui/core";
 import {
   useGetBookDetailsQuery,
   GetBookDetailsQuery,
@@ -18,9 +19,9 @@ const BookDetails: React.FC<Props> = ({ strBookId }) => {
     variables: { id: strBookId },
   });
 
-  if (loading) return <p>Loading book details...</p>;
-  if (error) return <p>Error: {error.message}</p>;
-  if (!data?.book) return <p>No book selected.</p>;
+  if (loading) return <Typography>Loading book details...</Typography>;
+  if (error) return <Typography>Error: {error.message}</Typography>;
+  if (!data?.book) return <Typography>No book selected.</Typography>;
 
   /**
    * @param {Object} data query response data object
@@ -31,10 +32,12 @@ const BookDetails: React.FC<Props> = ({ strBookId }) => {
       const { name, genre, author } = data!.book;
       return (
         <div>
-          <h2>{name}</h2>
-          <p>{genre}</p>
-          <p>{author!.name}</p>
-          <p>All books by this author:</p>
+          <Typography variant="h4" component="h2">
+            {name}
+          </Typography>
+          <Typography>{genre}</Typography>
+          <Typography>{author!.name}</Typography>
+          <Typography>All books by this author:</Typography>
           <ul>
             {author!.books!.map((objBook) => (
               <li key={objBook!.id}>{objBook!.name}</li>
@@ -43,7 +46,7 @@ const BookDetails: React.FC<Props> = ({ strBookId }) => {
         </div>
       );
     } else {
-      return <p>No book selected.</p>;
+      return <Typography>No book selected.</Typography>;
     }
   };
 

@@ -3,31 +3,34 @@ import { NavLink } from "react-router-dom";
 // components:
 import GitHubButton from "../GitHubButton";
 // styles:
-import { NavbarStyled } from "./Navigation.styled";
+import { useStyles } from "./style";
 
 /**
  * @description navigation component
  * @returns {JSX} component markup
  */
 const Navigation: React.FC = () => {
+  const classes = useStyles();
   return (
-    <NavbarStyled>
-      <ul>
-        <li>
-          <NavLink exact to="/">
+    <nav className={classes.navigation}>
+      <ul className={classes.navigation__list}>
+        <li className={classes.navigation__list__item}>
+          <NavLink exact to="/" className={classes.navLink}>
             Home
           </NavLink>
         </li>
-        <li>
-          <NavLink to="/admin">Admin</NavLink>
+        <li className={classes.navigation__list__item}>
+          <NavLink to="/admin" className={classes.navLink}>
+            Admin
+          </NavLink>
         </li>
-        <li>
+        <li className={classes.navigation__list__item}>
           <span>
             <GitHubButton />
           </span>
         </li>
       </ul>
-    </NavbarStyled>
+    </nav>
   );
 };
 
