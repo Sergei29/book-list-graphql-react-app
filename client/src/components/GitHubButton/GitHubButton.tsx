@@ -1,18 +1,19 @@
 import React from "react";
-import { Github } from "@styled-icons/fa-brands";
+import GitHubIcon from "@material-ui/icons/GitHub";
 //styles:
-import { ButtonStyled } from "./GitHubButton.styled";
+import { useStyles } from "./style";
 
 const GitHubButton: React.FC = () => {
+  const classes = useStyles();
   return (
-    <ButtonStyled
+    <a
       href="https://github.com/Sergei29/book-list-graphql-react-app"
       target="_blank"
-      className="gitHubButton"
+      className={classes.linkToGithub}
     >
-      <Github size="16" />
+      <GitHubIcon fontSize="small" />
       <span>view source code</span>
-    </ButtonStyled>
+    </a>
   );
 };
 

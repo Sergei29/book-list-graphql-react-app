@@ -59,12 +59,17 @@ export const useForm = (nstrSelectedBookId: null | string) => {
    * @returns {undefined} sets state
    */
   const handleChange = (
-    objEvent: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    objEvent: React.ChangeEvent<
+      | HTMLInputElement
+      | HTMLTextAreaElement
+      | HTMLSelectElement
+      | Record<string, any>
+    >
   ) => {
     const { name, value } = objEvent.target;
     setObjBook((objPrevBook) => ({
       ...objPrevBook,
-      [name]: value,
+      [name!]: value,
     }));
   };
 

@@ -1,8 +1,9 @@
 import React from "react";
+import { Typography } from "@material-ui/core";
 // components:
 import BookDetails from "./BookDetails";
 // styles:
-import { BookDetailsContainerStyled } from "./BookDetails.styled";
+import { useStyles } from "./style";
 
 type Props = {
   nstrBookId: null | string;
@@ -14,14 +15,15 @@ type Props = {
  * @returns {JSX} markup conditional render
  */
 const BookDetailsContainer: React.FC<Props> = ({ nstrBookId }) => {
+  const classes = useStyles();
   return (
-    <BookDetailsContainerStyled>
+    <div className={classes.bookDetailsContainer}>
       {nstrBookId ? (
         <BookDetails strBookId={nstrBookId} />
       ) : (
-        <p>No book selected.</p>
+        <Typography>No book selected.</Typography>
       )}
-    </BookDetailsContainerStyled>
+    </div>
   );
 };
 

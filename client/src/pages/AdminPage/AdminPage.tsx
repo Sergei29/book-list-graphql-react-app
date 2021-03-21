@@ -1,20 +1,18 @@
 import React from "react";
-import { TrashAlt } from "@styled-icons/fa-regular";
+import DeleteIcon from "@material-ui/icons/Delete";
+import IconButton from "@material-ui/core/IconButton";
+
 import { MaybeArrBooks } from "../../types/types";
 import useAdminPage from "./hooks/useAdminPage";
 // styles:
-import {
-  AdminContainer,
-  Author,
-  AuthorBooks,
-  AuthorsContainer,
-} from "./AdminPage.styled";
+import { useStyles } from "./style";
 
 /**
  * @description functional component
  * @returns {JSX} admin page markup
  */
 const AdminPage: React.FC = () => {
+  const classes = useStyles();
   const { arrAuthors, handleDeleteAuthor, handleDeleteBook } = useAdminPage();
 
   /**
@@ -24,46 +22,50 @@ const AdminPage: React.FC = () => {
    */
   const renderBooks = (arrBooks: MaybeArrBooks) => {
     if (!arrBooks || arrBooks.length === 0) {
-      return <li>no books</li>;
+      return <li className={classes.authorBookList__item}>no books</li>;
     }
 
     return arrBooks.map((objBook) => (
-      <li key={objBook?.id}>
+      <li key={objBook?.id} className={classes.authorBookList__item}>
         {objBook?.name}
-        <TrashAlt
+        <IconButton
           onClick={handleDeleteBook(objBook?.id!, objBook?.name!)}
-          size="14"
           title={`delete book: ${objBook?.name}`}
-        />
+          className={classes.authorBookList__item__icon}
+        >
+          <DeleteIcon fontSize="small" />
+        </IconButton>
       </li>
     ));
   };
 
   return (
-    <AdminContainer>
+    <div className={classes.adminContainer}>
       <h2>Admin page</h2>
-      <AuthorsContainer>
+      <div className={classes.authorsContainer}>
         {arrAuthors?.map((objAuthor) => {
           if (!objAuthor) return <p>No author</p>;
 
           return (
             <div key={objAuthor.id}>
-              <Author>
+              <div className={classes.author}>
                 <h4>{objAuthor.name}</h4>
-                <TrashAlt
+                <IconButton
                   onClick={handleDeleteAuthor(objAuthor.id, objAuthor.name!)}
-                  size="16"
                   title={`delete author: ${objAuthor.name}`}
-                />
-              </Author>
-              <AuthorBooks>
+                  className={classes.author__deleteButton}
+                >
+                  <DeleteIcon fontSize="small" />
+                </IconButton>
+              </div>
+              <div>
                 <ul>{renderBooks(objAuthor.books)}</ul>
-              </AuthorBooks>
+              </div>
             </div>
           );
         })}
-      </AuthorsContainer>
-    </AdminContainer>
+      </div>
+    </div>
   );
 };
 
