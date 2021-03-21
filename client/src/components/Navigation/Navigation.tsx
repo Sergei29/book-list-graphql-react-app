@@ -2,6 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 // components:
 import GitHubButton from "../GitHubButton";
+import Authentication from "../Authentication";
 // styles:
 import { useStyles } from "./style";
 
@@ -23,6 +24,9 @@ const Navigation: React.FC = () => {
           <NavLink to="/admin" className={classes.navLink}>
             Admin
           </NavLink>
+        </li>
+        <li className={classes.navigation__list__item}>
+          <Authentication />
         </li>
         <li className={classes.navigation__list__item}>
           <span>

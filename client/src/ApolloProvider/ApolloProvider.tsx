@@ -50,6 +50,11 @@ type Props = {
   children: React.ReactNode;
 };
 
+/**
+ * @description Apollo instance provider for the application
+ * @param {Node} {children nested children components}
+ * @returns {JSX} application components with provided client instance
+ */
 const ApolloProvider: React.FC<Props> = ({ children }) => {
   const { strAuthToken } = useAuthToken();
   const client = getClient(strAuthToken);
