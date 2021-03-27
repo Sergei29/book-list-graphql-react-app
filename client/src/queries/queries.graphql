@@ -40,6 +40,13 @@ query getBookDetails($id: ID!) {
   }
 }
 
+query getCurrentUser {
+  me {
+    id
+    username
+  }
+}
+
 mutation addBook($name: String!, $genre: String!, $authorId: ID!) {
   addBook(name: $name, genre: $genre, authorId: $authorId) {
     name
@@ -58,5 +65,38 @@ mutation removeAuthor($id: ID!) {
   removeAuthor(id: $id) {
     name
     id
+  }
+}
+
+mutation singUp($username: String!, $password: String!) {
+  register(username: $username, password: $password) {
+    id
+    username
+    password
+    token
+  }
+}
+
+mutation signIn($username: String!, $password: String!) {
+  login(username: $username, password: $password) {
+    id
+    username
+    token
+  }
+}
+
+mutation removeUser($username: String!) {
+  removeUser(username: $username) {
+    username
+    id
+  }
+}
+
+mutation editUser($id: ID!, $username: String!, $password: String!) {
+  editUser(id: $id, username: $username, password: $password) {
+    id
+    username
+    password
+    token
   }
 }
