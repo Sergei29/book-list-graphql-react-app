@@ -12,5 +12,8 @@ export const useStyles = makeStyles((theme: Theme) =>
       fontSize: ".75rem",
       marginBottom: theme.spacing(1),
     },
+    authButton: {
+      color: theme.palette.secondary.main,
+    },
   })
 );

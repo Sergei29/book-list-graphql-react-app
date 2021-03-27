@@ -34,6 +34,9 @@ export const useStyles = makeStyles((theme: Theme) => {
     },
     authForm__buttons__submit: {},
     authForm__buttons__reset: {},
+    authForm__error: {
+      color: theme.palette.error.main,
+    },
     authForm__input: {
       ...objInputCss,
       "& > div > fieldset": {

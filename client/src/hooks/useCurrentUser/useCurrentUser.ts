@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import useAuthToken from "../useAuthToken";
+import useAuthToken from "../useAuthToken/useAuthToken";
 import { useGetCurrentUserQuery } from "../../generated/graphql";
 
 /**
@@ -9,22 +9,22 @@ import { useGetCurrentUserQuery } from "../../generated/graphql";
 const useCurrentUser = () => {
   const [bLoggedIn, setbLoggedIn] = useState<boolean>(false);
 
-  const { data: objLoginData, error, client } = useGetCurrentUserQuery();
+  const { data: objLoginData, error, client } = useGetCurrentUserQuery({
+    onCompleted: () => {
+      setbLoggedIn(() => (objLoginData?.me ? true : false));
+    },
+  });
   const { funcRemoveAuthToken } = useAuthToken();
 
   /**
    * @description user logout handler
    * @returns {undefined} reset store, remove auth cookie
    */
-  const handleLogout = () => {
+  const handleLogout = async () => {
     funcRemoveAuthToken();
-    client.resetStore();
+    await client.resetStore();
     setbLoggedIn(false);
   };
-
-  useEffect(() => {
-    setbLoggedIn(() => (objLoginData?.me ? true : false));
-  }, [objLoginData]);
 
   return {
     bLoggedIn,

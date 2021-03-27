@@ -1,5 +1,7 @@
 import React, { useState, useCallback } from "react";
-import { Button, Typography } from "@material-ui/core";
+import { IconButton, Typography, Tooltip } from "@material-ui/core";
+import LockOpenIcon from "@material-ui/icons/LockOpen";
+import LockIcon from "@material-ui/icons/Lock";
 //components:
 import AuthModal from "../AuthModal";
 import AuthForm from "../AuthForm";
@@ -34,9 +36,25 @@ const Authentication: React.FC<Props> = ({ bLoggedIn, handleLogout }) => {
   return (
     <div>
       {bLoggedIn ? (
-        <Button onClick={handleLogout}>logout</Button>
+        <IconButton
+          onClick={handleLogout}
+          className={classes.authButton}
+          disableFocusRipple
+        >
+          <Tooltip title="logout">
+            <LockOpenIcon />
+          </Tooltip>{" "}
+        </IconButton>
       ) : (
-        <Button onClick={funcnModalOpen}>logIn</Button>
+        <IconButton
+          onClick={funcnModalOpen}
+          className={classes.authButton}
+          disableFocusRipple
+        >
+          <Tooltip title="login">
+            <LockIcon />
+          </Tooltip>
+        </IconButton>
       )}
       <AuthModal bOpen={bOpenModal} handleClose={funcModalClose}>
         <Typography variant="h5" component="h3" className={classes.authHeading}>
