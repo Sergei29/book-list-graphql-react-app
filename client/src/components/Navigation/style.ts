@@ -7,6 +7,8 @@ export const useStyles = makeStyles((theme: Theme) =>
       zIndex: 2,
     },
     navigation__list: {
+      display: "flex",
+      alignItems: "center",
       margin: 0,
       padding: 0,
       listStyleType: "none",

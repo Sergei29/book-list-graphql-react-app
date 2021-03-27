@@ -42,8 +42,8 @@ const Authentication: React.FC<Props> = ({ bLoggedIn, handleLogout }) => {
           disableFocusRipple
         >
           <Tooltip title="logout">
-            <LockOpenIcon />
-          </Tooltip>{" "}
+            <LockOpenIcon fontSize="large" />
+          </Tooltip>
         </IconButton>
       ) : (
         <IconButton
@@ -52,7 +52,7 @@ const Authentication: React.FC<Props> = ({ bLoggedIn, handleLogout }) => {
           disableFocusRipple
         >
           <Tooltip title="login">
-            <LockIcon />
+            <LockIcon fontSize="large" />
           </Tooltip>
         </IconButton>
       )}
