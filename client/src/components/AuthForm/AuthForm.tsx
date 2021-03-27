@@ -32,7 +32,6 @@ const AuthForm: React.FC<Props> = ({ funcCloseModal }) => {
   const [funcSignInMutation, objSignInResponse] = useSignInMutation({
     update: (cache, objSignInResponse) => {
       const { data } = objSignInResponse;
-      console.log("data :>> ", data);
       const { token } = data?.login || {};
       if (token) {
         funcSetAuthToken(token);

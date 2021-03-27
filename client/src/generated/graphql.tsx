@@ -206,6 +206,17 @@ export type GetBookDetailsQuery = (
   )> }
 );
 
+export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCurrentUserQuery = (
+  { __typename?: 'Query' }
+  & { me?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'username'>
+  )> }
+);
+
 export type AddBookMutationVariables = Exact<{
   name: Scalars['String'];
   genre: Scalars['String'];
@@ -451,6 +462,39 @@ export function useGetBookDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetBookDetailsQueryHookResult = ReturnType<typeof useGetBookDetailsQuery>;
 export type GetBookDetailsLazyQueryHookResult = ReturnType<typeof useGetBookDetailsLazyQuery>;
 export type GetBookDetailsQueryResult = Apollo.QueryResult<GetBookDetailsQuery, GetBookDetailsQueryVariables>;
+export const GetCurrentUserDocument = gql`
+    query getCurrentUser {
+  me {
+    id
+    username
+  }
+}
+    `;
+
+/**
+ * __useGetCurrentUserQuery__
+ *
+ * To run a query within a React component, call `useGetCurrentUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCurrentUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCurrentUserQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetCurrentUserQuery(baseOptions?: Apollo.QueryHookOptions<GetCurrentUserQuery, GetCurrentUserQueryVariables>) {
+        return Apollo.useQuery<GetCurrentUserQuery, GetCurrentUserQueryVariables>(GetCurrentUserDocument, baseOptions);
+      }
+export function useGetCurrentUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCurrentUserQuery, GetCurrentUserQueryVariables>) {
+          return Apollo.useLazyQuery<GetCurrentUserQuery, GetCurrentUserQueryVariables>(GetCurrentUserDocument, baseOptions);
+        }
+export type GetCurrentUserQueryHookResult = ReturnType<typeof useGetCurrentUserQuery>;
+export type GetCurrentUserLazyQueryHookResult = ReturnType<typeof useGetCurrentUserLazyQuery>;
+export type GetCurrentUserQueryResult = Apollo.QueryResult<GetCurrentUserQuery, GetCurrentUserQueryVariables>;
 export const AddBookDocument = gql`
     mutation addBook($name: String!, $genre: String!, $authorId: ID!) {
   addBook(name: $name, genre: $genre, authorId: $authorId) {

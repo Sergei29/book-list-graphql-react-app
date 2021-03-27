@@ -7,5 +7,10 @@ export const useStyles = makeStyles((theme: Theme) =>
       marginBottom: theme.spacing(2),
       color: theme.palette.info.main,
     },
+    authHelperText: {
+      color: theme.palette.info.main,
+      fontSize: ".75rem",
+      marginBottom: theme.spacing(1),
+    },
   })
 );

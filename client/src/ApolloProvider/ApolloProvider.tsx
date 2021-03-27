@@ -19,8 +19,8 @@ const httpLink = new HttpLink({
  * @description looks for auth token in cookies, if exists sets it in graphql request headers
  * @returns {Array} updated ApolloLink
  */
-const authMiddleware = (strAuthToken: string) => {
-  return new ApolloLink((operation, forward) => {
+const authMiddleware = (strAuthToken: string) =>
+  new ApolloLink((operation, forward) => {
     // add the authorization to the headers
     if (strAuthToken) {
       operation.setContext({
@@ -31,7 +31,6 @@ const authMiddleware = (strAuthToken: string) => {
     }
     return forward(operation);
   });
-};
 
 const cache = new InMemoryCache({});
 

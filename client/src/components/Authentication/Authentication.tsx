@@ -6,11 +6,16 @@ import AuthForm from "../AuthForm";
 // styles:
 import { useStyles } from "./style";
 
+type Props = {
+  bLoggedIn: boolean;
+  handleLogout: () => void;
+};
+
 /**
  * @description functional component, authentication link and modal
  * @returns {JSX} authentication markup
  */
-const Authentication: React.FC = () => {
+const Authentication: React.FC<Props> = ({ bLoggedIn, handleLogout }) => {
   const classes = useStyles();
   const [bOpenModal, setbOpenModal] = useState<boolean>(false);
 
@@ -28,10 +33,17 @@ const Authentication: React.FC = () => {
 
   return (
     <div>
-      <Button onClick={funcnModalOpen}>logIn</Button>
+      {bLoggedIn ? (
+        <Button onClick={handleLogout}>logout</Button>
+      ) : (
+        <Button onClick={funcnModalOpen}>logIn</Button>
+      )}
       <AuthModal bOpen={bOpenModal} handleClose={funcModalClose}>
         <Typography variant="h5" component="h3" className={classes.authHeading}>
           Authentication
+        </Typography>
+        <Typography className={classes.authHelperText}>
+          username: serge | password: secret123
         </Typography>
         <AuthForm funcCloseModal={funcModalClose} />
       </AuthModal>
