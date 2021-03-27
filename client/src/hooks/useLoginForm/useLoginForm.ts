@@ -1,9 +1,7 @@
 import React, { useState } from "react";
+import { Base64 } from "js-base64";
 import useAuthToken from "../useAuthToken";
-import {
-  useSignInMutation,
-  GetCurrentUserDocument,
-} from "../../generated/graphql";
+import { useSignInMutation } from "../../generated/graphql";
 
 type FormStateType = {
   username: string;
@@ -66,8 +64,11 @@ const useLoginForm = (onLoginSuccess: () => void) => {
     objEvent.preventDefault();
     const { username, password } = objFormData;
     if (!username.length || !password.length) return;
+    const strEncodedPassword = Base64.encode(password);
     try {
-      await funcSignInMutation({ variables: { username, password } });
+      await funcSignInMutation({
+        variables: { username, password: strEncodedPassword },
+      });
       setnstrSignInError(null);
     } catch (error) {
       setnstrSignInError(error.message);

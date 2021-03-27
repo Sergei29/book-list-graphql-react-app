@@ -3,6 +3,7 @@ import {
   AuthenticationError,
   UserInputError,
 } from "apollo-server-express";
+import { Base64 } from "js-base64";
 import BooksDB from "../models/book";
 import AuthorsDB from "../models/author";
 import UsersDB from "../models/user";
@@ -118,9 +119,10 @@ const resolvers: IResolvers = {
     },
 
     register: async (parent: ObjType, args: ObjType) => {
+      const strDecodedPassword = Base64.decode(args.password);
       const objNewUser = new UsersDB({
         username: args.username,
-        password: await encryptPassword(args.password),
+        password: await encryptPassword(strDecodedPassword),
       });
 
       const objUser = await UsersDB.findOne({ username: args.username });
@@ -140,11 +142,12 @@ const resolvers: IResolvers = {
       parent: ObjType,
       args: { username: string; password: string }
     ) => {
+      const strDecodedPassword = Base64.decode(args.password);
       const objUser = await UsersDB.findOne({ username: args.username });
       if (!objUser) throw new AuthenticationError(ErrorMessage.USER_NOT_FOUND);
 
       const bIsMatching = await comparePassword(
-        args.password,
+        strDecodedPassword,
         objUser.password
       );
 
