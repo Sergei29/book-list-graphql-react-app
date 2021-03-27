@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import useAuthToken from "../useAuthToken/useAuthToken";
 import { useGetCurrentUserQuery } from "../../generated/graphql";
 
@@ -7,6 +8,7 @@ import { useGetCurrentUserQuery } from "../../generated/graphql";
  * @returns {any}
  */
 const useCurrentUser = () => {
+  const { push } = useHistory();
   const [bLoggedIn, setbLoggedIn] = useState<boolean>(false);
 
   const { data: objLoginData, error, client } = useGetCurrentUserQuery({
@@ -24,6 +26,7 @@ const useCurrentUser = () => {
     funcRemoveAuthToken();
     await client.resetStore();
     setbLoggedIn(false);
+    push("/");
   };
 
   return {
