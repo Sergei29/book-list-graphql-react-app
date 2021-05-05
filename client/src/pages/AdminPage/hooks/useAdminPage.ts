@@ -1,44 +1,20 @@
 import { useCallback } from "react";
-import {
-  useGetAdminAuthorsQuery,
-  GetAdminAuthorsDocument,
-  GetBooksDocument,
-  useRemoveAuthorMutation,
-  useRemoveBookMutation,
-} from "../../../generated/graphql";
+import { useQuery, useMutation } from "@apollo/client";
+import { GET_ADMIN_AUTHORS, GET_BOOKS } from "../../../graphql/queries";
+import { REMOVE_AUTHOR, REMOVE_BOOK } from "../../../graphql/mutations";
 
 /**
  * @description custom hook for admin page logic
  * @returns {Object} admin page data and handler functions
  */
 const useAdminPage = () => {
-  const { data: maybeAuthorsData } = useGetAdminAuthorsQuery();
+  const { data: maybeAuthorsData } = useQuery(GET_ADMIN_AUTHORS);
 
-  const [
-    funcRemoveAuthorMutation,
-    objRemoveAuthorResponse,
-  ] = useRemoveAuthorMutation({
-    refetchQueries: [{ query: GetAdminAuthorsDocument }],
-  });
+  const [funcRemoveAuthorMutation, objRemoveAuthorResponse] = useMutation(
+    REMOVE_AUTHOR
+  );
 
-  const [funcRemoveBook, objRemoveBookResponse] = useRemoveBookMutation({
-    refetchQueries: [{ query: GetAdminAuthorsDocument }],
-    update: (cache, objRemoveBookResponse) => {
-      const objRemovedBook = objRemoveBookResponse.data?.removeBook;
-      const objBooksCache = cache.readQuery({ query: GetBooksDocument });
-      if (!objBooksCache) return;
-
-      const { books } = objBooksCache as Record<"books", any>;
-      cache.writeQuery({
-        query: GetBooksDocument,
-        data: {
-          books: books.filter(
-            (objBook: Record<string, any>) => objBook.id !== objRemovedBook?.id
-          ),
-        },
-      });
-    },
-  });
+  const [funcRemoveBook, objRemoveBookResponse] = useMutation(REMOVE_BOOK);
 
   const arrAuthors = maybeAuthorsData ? maybeAuthorsData.authors : [];
 
@@ -54,7 +30,10 @@ const useAdminPage = () => {
         `Are you sure to delete author: ${strAuthorName} ?`
       );
       if (!bConfirmDelete) return;
-      funcRemoveAuthorMutation({ variables: { id: strAuthorId } });
+      funcRemoveAuthorMutation({
+        variables: { id: strAuthorId },
+        refetchQueries: [{ query: GET_ADMIN_AUTHORS }],
+      });
     },
     []
   );
@@ -71,7 +50,10 @@ const useAdminPage = () => {
         `Are you sure to delete book: "${strBookName}" ?`
       );
       if (!bConfirmDelete) return;
-      funcRemoveBook({ variables: { id: strBookId } });
+      funcRemoveBook({
+        variables: { id: strBookId },
+        refetchQueries: [{ query: GET_ADMIN_AUTHORS }, { query: GET_BOOKS }],
+      });
     },
     []
   );

@@ -43,7 +43,7 @@ const AdminPage: React.FC = () => {
     <div className={classes.adminContainer}>
       <h2>Admin page</h2>
       <div className={classes.authorsContainer}>
-        {arrAuthors?.map((objAuthor) => {
+        {arrAuthors?.map((objAuthor: Record<string, any>) => {
           if (!objAuthor) return <p>No author</p>;
 
           return (

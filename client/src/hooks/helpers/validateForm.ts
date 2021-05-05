@@ -2,7 +2,7 @@ import {
   AddBookFormStateType,
   BookType,
   ValidationType,
-} from "../../../types/types";
+} from "../../types/types";
 
 /**
  * @description validate form data helper function

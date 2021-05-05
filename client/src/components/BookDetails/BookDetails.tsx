@@ -1,9 +1,7 @@
 import React from "react";
+import { useQuery } from "@apollo/client";
 import { Typography } from "@material-ui/core";
-import {
-  useGetBookDetailsQuery,
-  GetBookDetailsQuery,
-} from "../../generated/graphql";
+import { GET_BOOK_DETAILS } from "../../graphql/queries";
 
 type Props = {
   strBookId: string;
@@ -15,7 +13,7 @@ type Props = {
  * @returns {JSX} component markup
  */
 const BookDetails: React.FC<Props> = ({ strBookId }) => {
-  const { data, loading, error } = useGetBookDetailsQuery({
+  const { data, loading, error } = useQuery(GET_BOOK_DETAILS, {
     variables: { id: strBookId },
   });
 
@@ -27,7 +25,7 @@ const BookDetails: React.FC<Props> = ({ strBookId }) => {
    * @param {Object} data query response data object
    * @returns {JSX} book details conditional render
    */
-  const renderBook = (data: GetBookDetailsQuery) => {
+  const renderBook = (data: Record<string, any>) => {
     if (data!.book) {
       const { name, genre, author } = data!.book;
       return (
@@ -39,7 +37,7 @@ const BookDetails: React.FC<Props> = ({ strBookId }) => {
           <Typography>{author!.name}</Typography>
           <Typography>All books by this author:</Typography>
           <ul>
-            {author!.books!.map((objBook) => (
+            {author!.books!.map((objBook: Record<string, any>) => (
               <li key={objBook!.id}>{objBook!.name}</li>
             ))}
           </ul>

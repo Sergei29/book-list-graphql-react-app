@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
+import { useQuery, useMutation } from "@apollo/client";
 import {
-  useGetAuthorsQuery,
-  useGetBooksQuery,
-  GetBooksDocument,
-  GetBookDetailsDocument,
-  useAddBookMutation,
-} from "../../../generated/graphql";
+  GET_BOOKS,
+  GET_BOOK_DETAILS,
+  GET_AUTHORS,
+} from "../../graphql/queries";
+import { ADD_BOOK } from "../../graphql/mutations";
 import { validateForm } from "../helpers/validateForm";
-import { ValidationType, AddBookFormStateType } from "../../../types/types";
+import {
+  ValidationType,
+  AddBookFormStateType,
+  InputChangeEvent,
+} from "../../types/types";
 
 const INITIAL_BOOK: Readonly<AddBookFormStateType> = {
   name: "",
@@ -20,52 +24,29 @@ const INITIAL_BOOK: Readonly<AddBookFormStateType> = {
  * @param {null|String} nstrSelectedBookId currently selected book id , if any
  * @returns {Object} form status and handler functions
  */
-export const useForm = (nstrSelectedBookId: null | string) => {
+const useAddBookForm = (nstrSelectedBookId: null | string) => {
   const [objBook, setObjBook] = useState<AddBookFormStateType>(INITIAL_BOOK);
   const [objFormValidaton, setObjFormValidaton] = useState<ValidationType>({
     bIsValid: false,
     nstrErrorMessage: null,
   });
 
-  const objAuthorsQueryResponse = useGetAuthorsQuery();
-  const objBookQueryResponse = useGetBooksQuery();
+  const objAuthorsQueryResponse = useQuery(GET_AUTHORS);
+  const objBookQueryResponse = useQuery(GET_BOOKS);
 
   /**
    * @description add book mutation, updates cache when created, and refetches a query for book details if any book is currently selected
    */
-  const [funcAddBookMutation, objAddBookMutationResponse] = useAddBookMutation({
-    update: (cache, objAddBookMutationResponse) => {
-      const objNewBook = objAddBookMutationResponse.data?.addBook;
-      const { books }: any = cache.readQuery({ query: GetBooksDocument });
-
-      cache.writeQuery({
-        query: GetBooksDocument,
-        data: { books: [...books, objNewBook] },
-      });
-    },
-    refetchQueries: nstrSelectedBookId
-      ? [
-          {
-            query: GetBookDetailsDocument,
-            variables: { id: nstrSelectedBookId },
-          },
-        ]
-      : [],
-  });
+  const [funcAddBookMutation, objAddBookMutationResponse] = useMutation(
+    ADD_BOOK
+  );
 
   /**
    * @description callback on input change
    * @param {Object} objEvent input change event
    * @returns {undefined} sets state
    */
-  const handleChange = (
-    objEvent: React.ChangeEvent<
-      | HTMLInputElement
-      | HTMLTextAreaElement
-      | HTMLSelectElement
-      | Record<string, any>
-    >
-  ) => {
+  const handleChange = (objEvent: InputChangeEvent) => {
     const { name, value } = objEvent.target;
     setObjBook((objPrevBook) => ({
       ...objPrevBook,
@@ -92,7 +73,42 @@ export const useForm = (nstrSelectedBookId: null | string) => {
     if (!objFormValidaton.bIsValid) return;
 
     // if ok, submit:
-    funcAddBookMutation({ variables: objBook });
+    funcAddBookMutation({
+      variables: objBook,
+      update: (cache, { data: { addBook } }) => {
+        const { books } = cache.readQuery({ query: GET_BOOKS }) || {};
+        const { book: objBookDetails } =
+          cache.readQuery({
+            query: GET_BOOK_DETAILS,
+            variables: { id: nstrSelectedBookId },
+          }) || {};
+
+        let arrNewAuthorBooks = [...objBookDetails.author.books];
+        if (objBookDetails.author.id === objBook.authorId) {
+          arrNewAuthorBooks = [...objBookDetails.author.books, addBook];
+        }
+
+        cache.writeQuery({
+          query: GET_BOOKS,
+          data: {
+            books: [...books, addBook],
+          },
+        });
+
+        cache.writeQuery({
+          query: GET_BOOK_DETAILS,
+          data: {
+            book: {
+              ...objBookDetails,
+              author: {
+                ...objBookDetails.author,
+                books: arrNewAuthorBooks,
+              },
+            },
+          },
+        });
+      },
+    });
 
     // clear form
     clearForm();
@@ -110,10 +126,12 @@ export const useForm = (nstrSelectedBookId: null | string) => {
 
   return {
     objFormValidaton,
-    objAddBookMutationResponse,
     objAuthorsQueryResponse,
+    objAddBookMutationResponse,
     objBook,
     handleSubmit,
     handleChange,
   };
 };
+
+export default useAddBookForm;

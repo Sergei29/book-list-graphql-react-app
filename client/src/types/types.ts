@@ -1,4 +1,7 @@
-import { Book, Author } from "../generated/graphql";
+import React from "react";
+
+type Book = Record<string, any>;
+type Author = Record<string, any>;
 
 export type BookType = Book;
 
@@ -18,3 +21,10 @@ export type AddBookFormStateType = {
   genre: string;
   authorId: string;
 };
+
+export type InputChangeEvent = React.ChangeEvent<
+  | HTMLInputElement
+  | HTMLTextAreaElement
+  | HTMLSelectElement
+  | Record<string, any>
+>;
