@@ -5,6 +5,7 @@ import {
   ApolloProvider as ApolloProviderHOC,
   HttpLink,
   ApolloLink,
+  makeVar,
 } from "@apollo/client";
 import useAuthToken from "../hooks/useAuthToken/useAuthToken";
 
@@ -14,6 +15,8 @@ const httpLink = new HttpLink({
       ? "http://localhost:4000/graphql"
       : "/graphql",
 });
+
+export const authStatusVar = makeVar({ bLoggedIn: false });
 
 /**
  * @description looks for auth token in cookies, if exists sets it in graphql request headers

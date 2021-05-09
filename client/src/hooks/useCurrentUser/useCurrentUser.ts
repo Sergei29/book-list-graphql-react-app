@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { useQuery } from "@apollo/client";
+import { useQuery, useReactiveVar } from "@apollo/client";
 import { useHistory } from "react-router-dom";
 import useAuthToken from "../useAuthToken/useAuthToken";
 import { GET_CURRENT_USER } from "../../graphql/queries";
+import { authStatusVar } from "../../ApolloProvider/ApolloProvider";
+import { UserType } from "../../types/types";
 
 /**
  * @description custom hook for current user
@@ -10,11 +12,13 @@ import { GET_CURRENT_USER } from "../../graphql/queries";
  */
 const useCurrentUser = () => {
   const { push } = useHistory();
-  const [bLoggedIn, setbLoggedIn] = useState<boolean>(false);
+  // const [bLoggedIn, setbLoggedIn] = useState<boolean>(false);
+  const { bLoggedIn } = useReactiveVar(authStatusVar);
 
-  const { data: objLoginData, error, client } = useQuery(GET_CURRENT_USER, {
+  const { data, error, client } = useQuery<{ me: UserType }>(GET_CURRENT_USER, {
     onCompleted: () => {
-      setbLoggedIn(() => (objLoginData?.me ? true : false));
+      // setbLoggedIn(() => (data?.me ? true : false));
+      authStatusVar({ bLoggedIn: data?.me ? true : false });
     },
   });
   const { funcRemoveAuthToken } = useAuthToken();
@@ -26,14 +30,14 @@ const useCurrentUser = () => {
   const handleLogout = async () => {
     funcRemoveAuthToken();
     await client.resetStore();
-    setbLoggedIn(false);
+    authStatusVar({ bLoggedIn: false });
     push("/");
   };
 
   return {
     bLoggedIn,
     handleLogout,
-    strUsername: objLoginData?.me?.username,
+    strUsername: data?.me?.username,
   };
 };
 
