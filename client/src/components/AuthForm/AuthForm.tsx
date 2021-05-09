@@ -6,26 +6,31 @@ import {
   Box,
   Typography,
 } from "@material-ui/core";
+import ShowPasswordButton from "./components/ShowPasswordButton";
 import useLoginForm from "../../hooks/useLoginForm";
 // styles:
 import { useStyles } from "./style";
-
-type FormStateType = {
-  username: string;
-  password: string;
-};
 
 type Props = {
   funcCloseModal: () => void;
 };
 
+/**
+ * @description login form
+ * @param {Object} props component props
+ * @returns {JSX} markup, form with input fields and buttons
+ */
 const AuthForm: React.FC<Props> = ({ funcCloseModal }) => {
   const classes = useStyles();
+
   const {
+    bShowPassword,
+    handleToggleShowPassword,
     nstrSignInError,
     handleChange,
     handleReset,
     handleSubmit,
+    objFormData,
   } = useLoginForm(funcCloseModal);
 
   return (
@@ -43,16 +48,27 @@ const AuthForm: React.FC<Props> = ({ funcCloseModal }) => {
           variant="outlined"
           onChange={handleChange}
           className={classes.authForm__input}
+          value={objFormData.username}
         />
       </FormControl>
       <FormControl>
         <TextField
-          type="password"
+          type={bShowPassword ? "text" : "password"}
           name="password"
           label="Password"
           variant="outlined"
           onChange={handleChange}
           className={classes.authForm__input}
+          InputProps={{
+            endAdornment: (
+              <ShowPasswordButton
+                bShowPassword={bShowPassword}
+                handleClick={handleToggleShowPassword}
+                bDisabled={objFormData.password.length === 0}
+              />
+            ),
+          }}
+          value={objFormData.password}
         />
       </FormControl>
       <FormControl className={classes.authForm__buttons}>

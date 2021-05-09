@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { useMutation } from "@apollo/client";
 import useAuthToken from "../useAuthToken";
 import { SIGN_IN } from "../../graphql/mutations";
-import { GET_CURRENT_USER } from "../../graphql/queries";
 
 type FormStateType = {
   username: string;
@@ -20,6 +19,7 @@ const useLoginForm = (onLoginSuccess: () => void) => {
     password: "",
   });
   const [nstrSignInError, setnstrSignInError] = useState<null | string>(null);
+  const [bShowPassword, setbShowPassword] = useState<boolean>(false);
 
   const { funcSetAuthToken } = useAuthToken();
 
@@ -73,7 +73,23 @@ const useLoginForm = (onLoginSuccess: () => void) => {
     }
   };
 
-  return { nstrSignInError, handleChange, handleReset, handleSubmit };
+  /**
+   * @description show/hide pw value
+   * @returns {any}
+   */
+  const handleToggleShowPassword = useCallback(() => {
+    setbShowPassword((bPrevShow) => !bPrevShow);
+  }, []);
+
+  return {
+    bShowPassword,
+    handleToggleShowPassword,
+    nstrSignInError,
+    handleChange,
+    handleReset,
+    handleSubmit,
+    objFormData,
+  };
 };
 
 export default useLoginForm;

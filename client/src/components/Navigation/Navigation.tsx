@@ -1,22 +1,21 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import useCurrentUser from "../../hooks/useCurrentUser/useCurrentUser";
 // components:
 import GitHubButton from "../GitHubButton";
 import Authentication from "../Authentication";
 // styles:
 import { useStyles } from "./style";
 
-type Props = {
-  bLoggedIn: boolean;
-  handleLogout: () => void;
-};
+type Props = {};
 
 /**
  * @description navigation component
  * @returns {JSX} component markup
  */
-const Navigation: React.FC<Props> = ({ bLoggedIn, handleLogout }) => {
+const Navigation: React.FC<Props> = () => {
   const classes = useStyles();
+  const { bLoggedIn, handleLogout } = useCurrentUser();
 
   return (
     <nav className={classes.navigation}>
