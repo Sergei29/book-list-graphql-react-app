@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useQuery, useReactiveVar } from "@apollo/client";
 import { useHistory } from "react-router-dom";
 import useAuthToken from "../useAuthToken/useAuthToken";
@@ -12,12 +11,10 @@ import { UserType } from "../../types/types";
  */
 const useCurrentUser = () => {
   const { push } = useHistory();
-  // const [bLoggedIn, setbLoggedIn] = useState<boolean>(false);
   const { bLoggedIn } = useReactiveVar(authStatusVar);
 
   const { data, error, client } = useQuery<{ me: UserType }>(GET_CURRENT_USER, {
     onCompleted: () => {
-      // setbLoggedIn(() => (data?.me ? true : false));
       authStatusVar({ bLoggedIn: data?.me ? true : false });
     },
   });

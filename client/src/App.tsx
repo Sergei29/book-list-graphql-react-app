@@ -13,13 +13,13 @@ import Navigation from "./components/Navigation";
  * @returns {JSX} application markup
  */
 const App: React.FC = () => {
-  const { bLoggedIn, handleLogout } = useCurrentUser();
+  const { bLoggedIn } = useCurrentUser();
 
   return (
     <>
       <CssBaseline />
       <Container>
-        <Navigation bLoggedIn={bLoggedIn} handleLogout={handleLogout} />
+        <Navigation />
         <Switch>
           <Route path="/" exact component={BookListPage} />
           {bLoggedIn && <Route path="/admin" component={AdminPage} />}
