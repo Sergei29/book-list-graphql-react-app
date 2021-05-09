@@ -1,9 +1,8 @@
 import React, { useState } from "react";
+import { useMutation } from "@apollo/client";
 import useAuthToken from "../useAuthToken";
-import {
-  useSignInMutation,
-  GetCurrentUserDocument,
-} from "../../generated/graphql";
+import { SIGN_IN } from "../../graphql/mutations";
+import { GET_CURRENT_USER } from "../../graphql/queries";
 
 type FormStateType = {
   username: string;
@@ -24,17 +23,7 @@ const useLoginForm = (onLoginSuccess: () => void) => {
 
   const { funcSetAuthToken } = useAuthToken();
 
-  const [funcSignInMutation, objSignInResponse] = useSignInMutation({
-    update: (cache, objSignInResponse) => {
-      const { data } = objSignInResponse;
-      const { token } = data?.login || {};
-      if (token) {
-        funcSetAuthToken(token);
-        onLoginSuccess();
-      }
-    },
-    // refetchQueries: [{ query: GetCurrentUserDocument }],
-  });
+  const [funcSignInMutation, objSignInResponse] = useMutation(SIGN_IN);
 
   /**
    * @description on input change callback
@@ -67,7 +56,17 @@ const useLoginForm = (onLoginSuccess: () => void) => {
     const { username, password } = objFormData;
     if (!username.length || !password.length) return;
     try {
-      await funcSignInMutation({ variables: { username, password } });
+      await funcSignInMutation({
+        variables: { username, password },
+        update: (cache, { data: { login } }) => {
+          const { token } = login || {};
+          if (token) {
+            funcSetAuthToken(token);
+            onLoginSuccess();
+          }
+        },
+        // refetchQueries: [{ query: GET_CURRENT_USER }],
+      });
       setnstrSignInError(null);
     } catch (error) {
       setnstrSignInError(error.message);

@@ -1,8 +1,5 @@
 import React from "react";
-import { AuthorType } from "../../types/types";
-import { useForm } from "./hooks/useForm";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
-
 import InputAdornment from "@material-ui/core/InputAdornment";
 import MenuBookIcon from "@material-ui/icons/MenuBook";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
@@ -16,6 +13,8 @@ import {
   Button,
   TextField,
 } from "@material-ui/core";
+import { AuthorType } from "../../types/types";
+import useAddBookForm from "../../hooks/useAddBookForm";
 // styles:
 import { useStyles } from "./style";
 
@@ -23,6 +22,7 @@ type Props = {
   funcHideForm: () => void;
   nstrSelectedBookId: null | string;
 };
+
 /**
  * @description add new book form
  * @returns {JSX} component markup
@@ -36,7 +36,7 @@ const AddBook: React.FC<Props> = ({ funcHideForm, nstrSelectedBookId }) => {
     objBook,
     handleSubmit,
     handleChange,
-  } = useForm(nstrSelectedBookId);
+  } = useAddBookForm(nstrSelectedBookId);
 
   const {
     error: objMutationError,

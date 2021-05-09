@@ -1,7 +1,8 @@
-import React, { useState, useCallback, useEffect } from "react";
+import { useState } from "react";
+import { useQuery } from "@apollo/client";
 import { useHistory } from "react-router-dom";
 import useAuthToken from "../useAuthToken/useAuthToken";
-import { useGetCurrentUserQuery } from "../../generated/graphql";
+import { GET_CURRENT_USER } from "../../graphql/queries";
 
 /**
  * @description custom hook for current user
@@ -11,7 +12,7 @@ const useCurrentUser = () => {
   const { push } = useHistory();
   const [bLoggedIn, setbLoggedIn] = useState<boolean>(false);
 
-  const { data: objLoginData, error, client } = useGetCurrentUserQuery({
+  const { data: objLoginData, error, client } = useQuery(GET_CURRENT_USER, {
     onCompleted: () => {
       setbLoggedIn(() => (objLoginData?.me ? true : false));
     },
