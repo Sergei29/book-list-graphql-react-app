@@ -1,6 +1,7 @@
 import React from "react";
 import { useQuery } from "@apollo/client";
 import { GET_BOOKS } from "../../graphql/queries";
+import { BookType } from "../../types/types";
 //styles:
 import { useStyles } from "./style";
 
@@ -15,7 +16,7 @@ type Props = {
  */
 const BookList: React.FC<Props> = ({ onBookSelect }) => {
   const classes = useStyles();
-  const { data, loading, error } = useQuery(GET_BOOKS);
+  const { data, loading, error } = useQuery<{ books: BookType[] }>(GET_BOOKS);
 
   if (loading) return <p>Loading books...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -23,7 +24,7 @@ const BookList: React.FC<Props> = ({ onBookSelect }) => {
 
   return (
     <ul className={classes.bookList}>
-      {data?.books?.map((objBook: Record<string, any>) => (
+      {data!.books.map((objBook) => (
         <li
           key={objBook!.id}
           onClick={onBookSelect!(objBook!.id)}

@@ -1,7 +1,6 @@
 import React from "react";
-
-type Book = Record<string, any>;
-type Author = Record<string, any>;
+import { Author } from "./authorType";
+import { Book } from "./bookType";
 
 export type BookType = Book;
 
