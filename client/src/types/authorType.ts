@@ -1,7 +1,8 @@
-import { BookType } from "./bookType";
+import { Book } from "./bookType";
 
-export type AuthorType = {
+export type Author = {
   id: string;
+  name?: string;
   age?: number;
-  books?: BookType[];
+  books?: Book[];
 };

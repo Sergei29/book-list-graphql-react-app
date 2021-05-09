@@ -7,7 +7,6 @@ import {
   Typography,
 } from "@material-ui/core";
 import useLoginForm from "../../hooks/useLoginForm";
-import useCurrentUser from "../../hooks/useCurrentUser";
 // styles:
 import { useStyles } from "./style";
 

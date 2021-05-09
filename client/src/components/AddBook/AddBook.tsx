@@ -57,7 +57,7 @@ const AddBook: React.FC<Props> = ({ funcHideForm, nstrSelectedBookId }) => {
     if (data!.authors) {
       return data!.authors.map((objAuthor: AuthorType | null) => (
         <MenuItem value={objAuthor!.id} key={objAuthor!.id}>
-          {objAuthor!.name}
+          {objAuthor!.name!}
         </MenuItem>
       ));
     }

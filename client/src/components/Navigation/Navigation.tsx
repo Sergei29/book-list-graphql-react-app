@@ -1,6 +1,5 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import useCurrentUser from "../../hooks/useCurrentUser/useCurrentUser";
 // components:
 import GitHubButton from "../GitHubButton";
 import Authentication from "../Authentication";

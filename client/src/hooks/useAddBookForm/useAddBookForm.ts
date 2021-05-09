@@ -11,6 +11,8 @@ import {
   ValidationType,
   AddBookFormStateType,
   InputChangeEvent,
+  AuthorType,
+  BookType,
 } from "../../types/types";
 
 const INITIAL_BOOK: Readonly<AddBookFormStateType> = {
@@ -31,8 +33,10 @@ const useAddBookForm = (nstrSelectedBookId: null | string) => {
     nstrErrorMessage: null,
   });
 
-  const objAuthorsQueryResponse = useQuery(GET_AUTHORS);
-  const objBookQueryResponse = useQuery(GET_BOOKS);
+  const objAuthorsQueryResponse = useQuery<{ authors: AuthorType[] }>(
+    GET_AUTHORS
+  );
+  const objBookQueryResponse = useQuery<{ books: BookType[] }>(GET_BOOKS);
 
   /**
    * @description add book mutation, updates cache when created, and refetches a query for book details if any book is currently selected
@@ -76,18 +80,23 @@ const useAddBookForm = (nstrSelectedBookId: null | string) => {
     funcAddBookMutation({
       variables: objBook,
       update: (cache, { data: { addBook } }) => {
-        const { books } = cache.readQuery({ query: GET_BOOKS }) || {};
+        const { books = [] } =
+          cache.readQuery<{ books: BookType[] }>({ query: GET_BOOKS }) || {};
+
         const { book: objSelectedBook } =
-          cache.readQuery({
+          cache.readQuery<{ book: BookType }>({
             query: GET_BOOK_DETAILS,
             variables: { id: nstrSelectedBookId },
           }) || {};
 
         if (
           !!objSelectedBook &&
-          objSelectedBook.author.id === objBook.authorId
+          objSelectedBook.author!.id === objBook.authorId
         ) {
-          const arrNewAuthorBooks = [...objSelectedBook.author.books, addBook];
+          const arrNewAuthorBooks = [
+            ...objSelectedBook.author!.books!,
+            addBook,
+          ];
           cache.writeQuery({
             query: GET_BOOK_DETAILS,
             data: {
