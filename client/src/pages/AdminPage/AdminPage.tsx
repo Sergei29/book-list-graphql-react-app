@@ -3,7 +3,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 
 import { MaybeArrBooks } from "../../types/types";
-import useAdminPage from "./hooks/useAdminPage";
+import useAdminPage from "../../hooks/useAdminPage/useAdminPage";
 // styles:
 import { useStyles } from "./style";
 
@@ -18,9 +18,10 @@ const AdminPage: React.FC = () => {
   /**
    * @description render author's book list
    * @param {Array} arrBooks books list
+   * @param {Array} strAuthorId author id
    * @returns {JSX} markup
    */
-  const renderBooks = (arrBooks: MaybeArrBooks) => {
+  const renderBooks = (arrBooks: MaybeArrBooks, strAuthorId: string) => {
     if (!arrBooks || arrBooks.length === 0) {
       return <li className={classes.authorBookList__item}>no books</li>;
     }
@@ -29,7 +30,7 @@ const AdminPage: React.FC = () => {
       <li key={objBook?.id} className={classes.authorBookList__item}>
         {objBook?.name}
         <IconButton
-          onClick={handleDeleteBook(objBook?.id!, objBook?.name!)}
+          onClick={handleDeleteBook(objBook?.id!, objBook?.name!, strAuthorId)}
           title={`delete book: ${objBook?.name}`}
           className={classes.authorBookList__item__icon}
         >
@@ -59,7 +60,7 @@ const AdminPage: React.FC = () => {
                 </IconButton>
               </div>
               <div>
-                <ul>{renderBooks(objAuthor.books)}</ul>
+                <ul>{renderBooks(objAuthor.books, objAuthor.id)}</ul>
               </div>
             </div>
           );

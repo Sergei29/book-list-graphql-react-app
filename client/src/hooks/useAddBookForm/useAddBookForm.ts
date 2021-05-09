@@ -77,34 +77,36 @@ const useAddBookForm = (nstrSelectedBookId: null | string) => {
       variables: objBook,
       update: (cache, { data: { addBook } }) => {
         const { books } = cache.readQuery({ query: GET_BOOKS }) || {};
-        const { book: objBookDetails } =
+        const { book: objSelectedBook } =
           cache.readQuery({
             query: GET_BOOK_DETAILS,
             variables: { id: nstrSelectedBookId },
           }) || {};
 
-        let arrNewAuthorBooks = [...objBookDetails.author.books];
-        if (objBookDetails.author.id === objBook.authorId) {
-          arrNewAuthorBooks = [...objBookDetails.author.books, addBook];
+        if (
+          !!objSelectedBook &&
+          objSelectedBook.author.id === objBook.authorId
+        ) {
+          const arrNewAuthorBooks = [...objSelectedBook.author.books, addBook];
+          cache.writeQuery({
+            query: GET_BOOK_DETAILS,
+            data: {
+              book: {
+                ...objSelectedBook,
+                author: {
+                  ...objSelectedBook.author,
+                  books: arrNewAuthorBooks,
+                },
+              },
+            },
+          });
+          //TODO: find a way to read all GET_BOOK_DETAILS cached queries, and if authorId is matching - update booklist
         }
 
         cache.writeQuery({
           query: GET_BOOKS,
           data: {
             books: [...books, addBook],
-          },
-        });
-
-        cache.writeQuery({
-          query: GET_BOOK_DETAILS,
-          data: {
-            book: {
-              ...objBookDetails,
-              author: {
-                ...objBookDetails.author,
-                books: arrNewAuthorBooks,
-              },
-            },
           },
         });
       },
