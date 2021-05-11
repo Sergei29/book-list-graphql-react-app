@@ -17,6 +17,9 @@ const httpLink = new HttpLink({
 });
 
 export const authStatusVar = makeVar({ bLoggedIn: false });
+export const favoriteVar = makeVar<{ arrChecked: string[] }>({
+  arrChecked: [],
+});
 
 /**
  * @description looks for auth token in cookies, if exists sets it in graphql request headers
@@ -35,7 +38,21 @@ const authMiddleware = (strAuthToken: string) =>
     return forward(operation);
   });
 
-const cache = new InMemoryCache({});
+const cache = new InMemoryCache({
+  typePolicies: {
+    Book: {
+      fields: {
+        bFavorite: {
+          read: (_, { readField }) => {
+            const strBookId: string = readField("id") || "";
+            const { arrChecked } = favoriteVar();
+            return arrChecked.includes(strBookId);
+          },
+        },
+      },
+    },
+  },
+});
 
 /**
  * @description Apollo client setup based on auth token

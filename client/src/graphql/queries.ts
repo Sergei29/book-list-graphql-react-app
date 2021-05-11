@@ -49,6 +49,7 @@ export const GET_BOOK_DETAILS = gql`
           id
         }
       }
+      bFavorite @client
     }
   }
 `;
