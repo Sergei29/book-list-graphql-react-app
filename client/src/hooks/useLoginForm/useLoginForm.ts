@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { useMutation } from "@apollo/client";
-import { authStatusVar } from "../../ApolloProvider/ApolloProvider";
+import { authStatusVar } from "../../ApolloProvider/reactiveVars";
 import useAuthToken from "../useAuthToken";
 import { SIGN_IN } from "../../graphql/mutations";
 

@@ -4,7 +4,6 @@ import {
   ApolloProvider as ApolloProviderHOC,
   HttpLink,
   ApolloLink,
-  makeVar,
 } from "@apollo/client";
 import { cache } from "./cache";
 import useAuthToken from "../hooks/useAuthToken/useAuthToken";
@@ -14,11 +13,6 @@ const httpLink = new HttpLink({
     process.env.NODE_ENV === "development"
       ? "http://localhost:4000/graphql"
       : "/graphql",
-});
-
-export const authStatusVar = makeVar({ bLoggedIn: false });
-export const favoriteVar = makeVar<{ arrChecked: string[] }>({
-  arrChecked: [],
 });
 
 /**
@@ -47,7 +41,7 @@ const getClient = (strAuthToken: string) =>
   new ApolloClient({
     link: authMiddleware(strAuthToken).concat(httpLink),
     cache,
-    connectToDevTools: process.env.NODE_ENV !== "production",
+    connectToDevTools: process.env.NODE_ENV === "development",
   });
 
 type Props = {
