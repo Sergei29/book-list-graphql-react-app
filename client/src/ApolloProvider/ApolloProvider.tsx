@@ -1,12 +1,11 @@
 import React from "react";
 import {
   ApolloClient,
-  InMemoryCache,
   ApolloProvider as ApolloProviderHOC,
   HttpLink,
   ApolloLink,
-  makeVar,
 } from "@apollo/client";
+import { cache } from "./cache";
 import useAuthToken from "../hooks/useAuthToken/useAuthToken";
 
 const httpLink = new HttpLink({
@@ -15,8 +14,6 @@ const httpLink = new HttpLink({
       ? "http://localhost:4000/graphql"
       : "/graphql",
 });
-
-export const authStatusVar = makeVar({ bLoggedIn: false });
 
 /**
  * @description looks for auth token in cookies, if exists sets it in graphql request headers
@@ -35,8 +32,6 @@ const authMiddleware = (strAuthToken: string) =>
     return forward(operation);
   });
 
-const cache = new InMemoryCache({});
-
 /**
  * @description Apollo client setup based on auth token
  * @param {String} strAuthToken auth token
@@ -46,6 +41,7 @@ const getClient = (strAuthToken: string) =>
   new ApolloClient({
     link: authMiddleware(strAuthToken).concat(httpLink),
     cache,
+    connectToDevTools: process.env.NODE_ENV === "development",
   });
 
 type Props = {

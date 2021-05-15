@@ -61,3 +61,9 @@ export const GET_CURRENT_USER = gql`
     }
   }
 `;
+
+export const GET_FAVORITES = gql`
+  query GetFavorites {
+    arrFavoriteBookIds @client
+  }
+`;

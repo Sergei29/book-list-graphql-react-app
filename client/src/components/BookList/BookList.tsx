@@ -21,7 +21,6 @@ const BookList: React.FC<Props> = ({ onBookSelect }) => {
   if (loading) return <p>Loading books...</p>;
   if (error) return <p>Error: {error.message}</p>;
   if (data?.books?.length === 0) return <p>No books.</p>;
-
   return (
     <ul className={classes.bookList}>
       {data!.books.map((objBook) => (

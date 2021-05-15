@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { useMutation } from "@apollo/client";
+import { authStatusVar } from "../../ApolloProvider/reactiveVars";
 import useAuthToken from "../useAuthToken";
 import { SIGN_IN } from "../../graphql/mutations";
 
@@ -23,7 +24,7 @@ const useLoginForm = (onLoginSuccess: () => void) => {
 
   const { funcSetAuthToken } = useAuthToken();
 
-  const [funcSignInMutation, objSignInResponse] = useMutation(SIGN_IN);
+  const [funcSignInMutation] = useMutation(SIGN_IN);
 
   /**
    * @description on input change callback
@@ -62,6 +63,7 @@ const useLoginForm = (onLoginSuccess: () => void) => {
           const { token } = login || {};
           if (token) {
             funcSetAuthToken(token);
+            authStatusVar({ bLoggedIn: true });
             onLoginSuccess();
           }
         },
