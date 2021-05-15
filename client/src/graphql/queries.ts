@@ -67,3 +67,9 @@ export const GET_FAVORITES = gql`
     arrFavoriteBookIds @client
   }
 `;
+
+export const GET_CURRENT_THEME = gql`
+  query GetCurrentTheme {
+    strCurrentTheme @client
+  }
+`;

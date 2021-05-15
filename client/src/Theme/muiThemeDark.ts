@@ -1,7 +1,7 @@
 import { createMuiTheme } from "@material-ui/core/styles";
 import { pink, grey, orange } from "@material-ui/core/colors";
 
-const muiTheme = createMuiTheme({
+const muiThemeDark = createMuiTheme({
   overrides: {
     MuiCssBaseline: {
       "@global": {
@@ -42,4 +42,4 @@ const muiTheme = createMuiTheme({
   },
 });
 
-export default muiTheme;
+export default muiThemeDark;

@@ -2,6 +2,11 @@ import React from "react";
 import { Author } from "./authorType";
 import { Book } from "./bookType";
 
+export enum MuiSelectedTheme {
+  LIGHT = "light",
+  DARK = "dark",
+}
+
 export type BookType = Book;
 
 export type AuthorType = Author;
