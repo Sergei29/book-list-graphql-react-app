@@ -52,6 +52,8 @@
   },
   "devDependencies": {
     "@types/classnames": "^2.2.11",
-    "@types/react-router-dom": "^5.1.7"
+    "@types/react-router-dom": "^5.1.7",
+    "hosted-git-info": ">=2.8.9",
+    "lodash": ">=4.17.21"
   }
 }
