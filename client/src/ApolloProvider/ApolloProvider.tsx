@@ -47,7 +47,7 @@ const getClient = (strAuthToken: string) =>
   new ApolloClient({
     link: authMiddleware(strAuthToken).concat(httpLink),
     cache,
-    connectToDevTools: true,
+    connectToDevTools: process.env.NODE_ENV !== "production",
   });
 
 type Props = {
