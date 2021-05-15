@@ -1,12 +1,12 @@
 import React from "react";
 import {
   ApolloClient,
-  InMemoryCache,
   ApolloProvider as ApolloProviderHOC,
   HttpLink,
   ApolloLink,
   makeVar,
 } from "@apollo/client";
+import { cache } from "./cache";
 import useAuthToken from "../hooks/useAuthToken/useAuthToken";
 
 const httpLink = new HttpLink({
@@ -38,22 +38,6 @@ const authMiddleware = (strAuthToken: string) =>
     return forward(operation);
   });
 
-const cache = new InMemoryCache({
-  typePolicies: {
-    Book: {
-      fields: {
-        bFavorite: {
-          read: (_, { readField }) => {
-            const strBookId: string = readField("id") || "";
-            const { arrChecked } = favoriteVar();
-            return arrChecked.includes(strBookId);
-          },
-        },
-      },
-    },
-  },
-});
-
 /**
  * @description Apollo client setup based on auth token
  * @param {String} strAuthToken auth token
@@ -63,6 +47,7 @@ const getClient = (strAuthToken: string) =>
   new ApolloClient({
     link: authMiddleware(strAuthToken).concat(httpLink),
     cache,
+    connectToDevTools: true,
   });
 
 type Props = {

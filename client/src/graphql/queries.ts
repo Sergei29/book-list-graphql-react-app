@@ -49,7 +49,6 @@ export const GET_BOOK_DETAILS = gql`
           id
         }
       }
-      bFavorite @client
     }
   }
 `;
@@ -60,5 +59,11 @@ export const GET_CURRENT_USER = gql`
       id
       username
     }
+  }
+`;
+
+export const GET_FAVORITES = gql`
+  query GetFavorites {
+    arrFavoriteBookIds @client
   }
 `;

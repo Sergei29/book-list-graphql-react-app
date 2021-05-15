@@ -5,5 +5,4 @@ export type Book = {
   name?: string;
   genre?: string;
   author?: Author;
-  bFavorite?: boolean;
 };
