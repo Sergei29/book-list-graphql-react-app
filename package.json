@@ -28,6 +28,7 @@
     "express": "^4.17.1",
     "express-jwt": "^6.0.0",
     "graphql": "^15.5.0",
+    "js-base64": "^3.6.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.13",
     "mquery": ">=3.2.3",
