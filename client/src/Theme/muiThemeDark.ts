@@ -39,12 +39,9 @@ const muiThemeDark = createMuiTheme({
       light: "#ffffe4",
       dark: "#cbae82",
     },
-    text: {
-      primary: grey[400],
-      secondary: grey[400],
-    },
   },
   components: {
+    bookButton: { color: grey[400] },
     bookDetails: {
       background: grey[800],
       color: grey[400],

@@ -47,7 +47,7 @@ const Navigation: React.FC<Props> = () => {
             <GitHubButton bLightTheme={bLightTheme} />
           </span>
         </li>
-        <li>
+        <li className={classes.navigation__list__item_last}>
           <Tooltip title={`switch theme to ${bLightTheme ? DARK : LIGHT}`}>
             <Switch checked={bLightTheme} onChange={funcToggleTheme} />
           </Tooltip>

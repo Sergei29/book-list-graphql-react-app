@@ -17,6 +17,10 @@ export const useStyles = makeStyles((theme: Theme) =>
       display: "inline-block",
       margin: `0 ${theme.spacing(0.75)}px`,
     },
+    navigation__list__item_last: {
+      marginLeft: "auto",
+      marginRight: "40%",
+    },
     navLink: {
       color: theme.palette.primary.main,
       textDecoration: "none",
