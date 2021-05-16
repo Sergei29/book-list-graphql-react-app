@@ -40,7 +40,7 @@ const BookDetailsContainer: React.FC<Props> = ({
   ) : (
     <Dialog open={!!nstrBookId} onClose={handleBookDeselect} fullWidth>
       <DialogContent className={classes.bookDetailsContainer}>
-        <BookDetails strBookId={nstrBookId!} />
+        {nstrBookId && <BookDetails strBookId={nstrBookId} />}
       </DialogContent>
     </Dialog>
   );
