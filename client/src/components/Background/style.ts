@@ -15,14 +15,12 @@ export const useStyles = makeStyles((theme: Theme) => {
       ...objBaseStyle,
       backgroundImage: `url(${imgUrl})`,
       backgroundSize: "cover",
-      opacity: (props: { bLightTheme: boolean }) =>
-        props.bLightTheme ? 0.3 : 1,
+      opacity: theme.components?.bookList?.backgroundImage.opacity,
     },
     backgroundOverlay: {
       ...objBaseStyle,
       zIndex: 1,
-      background: (props: { bLightTheme: boolean }) =>
-        props.bLightTheme ? `rgba(0,0,0, 0.1)` : `rgba(0,0,0, 0.9)`,
+      background: theme.components?.bookList?.overlay.background,
     },
   });
 });

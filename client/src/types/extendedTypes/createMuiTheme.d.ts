@@ -8,6 +8,10 @@ declare module "@material-ui/core/styles/createMuiTheme" {
     components?: {
       bookButton?: { color: string };
       bookDetails?: { background: string; color: string };
+      bookList?: {
+        backgroundImage: { opacity: number };
+        overlay: { background: string };
+      };
       page?: {
         background: string;
       };
@@ -17,6 +21,10 @@ declare module "@material-ui/core/styles/createMuiTheme" {
     components?: {
       bookButton?: { color: string };
       bookDetails?: { background: string; color: string };
+      bookList?: {
+        backgroundImage: { opacity: number };
+        overlay: { background: string };
+      };
       page?: {
         background: string;
       };

@@ -46,6 +46,10 @@ const muiThemeLight = createMuiTheme({
       background: pink[800],
       color: "#fff",
     },
+    bookList: {
+      backgroundImage: { opacity: 0.3 },
+      overlay: { background: "rgba(0,0,0, 0.1)" },
+    },
     page: {
       background: "#fafafa",
     },

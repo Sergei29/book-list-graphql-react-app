@@ -46,6 +46,10 @@ const muiThemeDark = createMuiTheme({
       background: grey[800],
       color: grey[400],
     },
+    bookList: {
+      backgroundImage: { opacity: 1 },
+      overlay: { background: "rgba(0,0,0, 0.9)" },
+    },
     page: {
       background: grey[800],
     },
