@@ -1,5 +1,5 @@
 import { InMemoryCache, InMemoryCacheConfig } from "@apollo/client";
-import { favoritesReactiveVar } from "./reactiveVars";
+import { favoritesReactiveVar, currentThemeVar } from "./reactiveVars";
 
 const objConfig: InMemoryCacheConfig = {
   typePolicies: {
@@ -7,6 +7,9 @@ const objConfig: InMemoryCacheConfig = {
       fields: {
         arrFavoriteBookIds: {
           read: () => favoritesReactiveVar(),
+        },
+        strCurrentTheme: {
+          read: () => currentThemeVar(),
         },
       },
     },

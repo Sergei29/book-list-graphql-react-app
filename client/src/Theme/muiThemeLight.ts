@@ -1,7 +1,7 @@
-import { createMuiTheme } from "@material-ui/core/styles";
+import { createMuiTheme, ThemeOptions } from "@material-ui/core/styles";
 import { pink, grey, orange } from "@material-ui/core/colors";
 
-const muiTheme = createMuiTheme({
+const muiThemeLight = createMuiTheme({
   overrides: {
     MuiCssBaseline: {
       "@global": {
@@ -40,6 +40,20 @@ const muiTheme = createMuiTheme({
       dark: "#cbae82",
     },
   },
+  components: {
+    bookButton: { color: "#fff" },
+    bookDetails: {
+      background: pink[800],
+      color: "#fff",
+    },
+    bookList: {
+      backgroundImage: { opacity: 0.3 },
+      overlay: { background: "rgba(0,0,0, 0.1)" },
+    },
+    page: {
+      background: "#fafafa",
+    },
+  },
 });
 
-export default muiTheme;
+export default muiThemeLight;

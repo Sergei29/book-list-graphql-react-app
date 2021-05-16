@@ -3,8 +3,12 @@ import GitHubIcon from "@material-ui/icons/GitHub";
 //styles:
 import { useStyles } from "./style";
 
-const GitHubButton: React.FC = () => {
-  const classes = useStyles();
+type Props = {
+  bLightTheme: boolean;
+};
+
+const GitHubButton: React.FC<Props> = ({ bLightTheme }) => {
+  const classes = useStyles({ bLightTheme });
   return (
     <a
       href="https://github.com/Sergei29/book-list-graphql-react-app"

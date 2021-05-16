@@ -1,11 +1,17 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import Tooltip from "@material-ui/core/Tooltip";
 import useCurrentUser from "../../hooks/useCurrentUser/useCurrentUser";
+import useCurrentTheme from "../../hooks/useCurrentTheme/useCurrentTheme";
+import { MuiSelectedTheme } from "../../types/types";
 // components:
 import GitHubButton from "../GitHubButton";
 import Authentication from "../Authentication";
+import Switch from "../Switch";
 // styles:
 import { useStyles } from "./style";
+
+const { LIGHT, DARK } = MuiSelectedTheme;
 
 type Props = {};
 
@@ -16,6 +22,7 @@ type Props = {};
 const Navigation: React.FC<Props> = () => {
   const classes = useStyles();
   const { bLoggedIn, handleLogout } = useCurrentUser();
+  const { bLightTheme, funcToggleTheme } = useCurrentTheme();
 
   return (
     <nav className={classes.navigation}>
@@ -37,8 +44,13 @@ const Navigation: React.FC<Props> = () => {
         </li>
         <li className={classes.navigation__list__item}>
           <span>
-            <GitHubButton />
+            <GitHubButton bLightTheme={bLightTheme} />
           </span>
+        </li>
+        <li className={classes.navigation__list__item_last}>
+          <Tooltip title={`switch theme to ${bLightTheme ? DARK : LIGHT}`}>
+            <Switch checked={bLightTheme} onChange={funcToggleTheme} />
+          </Tooltip>
         </li>
       </ul>
     </nav>

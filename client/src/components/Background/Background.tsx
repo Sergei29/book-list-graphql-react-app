@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, Fragment } from "react";
 //styles:
 import { useStyles } from "./style";
 
@@ -8,7 +8,12 @@ import { useStyles } from "./style";
  */
 const Background: React.FC = () => {
   const classes = useStyles();
-  return <div className={classes.backgroundBookList} />;
+  return (
+    <Fragment>
+      <div className={classes.backgroundOverlay} />
+      <div className={classes.backgroundBookList} />
+    </Fragment>
+  );
 };
 
 export default memo(Background);
