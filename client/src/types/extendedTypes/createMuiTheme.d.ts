@@ -8,12 +8,18 @@ declare module "@material-ui/core/styles/createMuiTheme" {
     components?: {
       bookButton?: { color: string };
       bookDetails?: { background: string; color: string };
+      page?: {
+        background: string;
+      };
     };
   }
   interface Theme {
     components?: {
       bookButton?: { color: string };
       bookDetails?: { background: string; color: string };
+      page?: {
+        background: string;
+      };
     };
   }
 }

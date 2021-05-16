@@ -46,6 +46,9 @@ const muiThemeLight = createMuiTheme({
       background: pink[800],
       color: "#fff",
     },
+    page: {
+      background: "#fafafa",
+    },
   },
 });
 

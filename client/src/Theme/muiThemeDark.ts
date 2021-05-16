@@ -46,6 +46,9 @@ const muiThemeDark = createMuiTheme({
       background: grey[800],
       color: grey[400],
     },
+    page: {
+      background: grey[800],
+    },
   },
 });
 
