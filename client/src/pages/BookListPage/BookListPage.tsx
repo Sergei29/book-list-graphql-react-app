@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Grid } from "@material-ui/core";
+import { Typography, useMediaQuery, useTheme } from "@material-ui/core";
 import useBookListPage from "../../hooks/useBookListPage/useBookListPage";
 //components:
 import BookList from "../../components/BookList";
@@ -16,13 +16,9 @@ import { useStyles } from "./style";
  */
 const BookListPage: React.FC = () => {
   const classes = useStyles();
-  const {
-    bDisplayForm,
-    nstrSelectedBookId,
-    handleBookSelect,
-    handleDismissForm,
-    handleShowForm,
-  } = useBookListPage();
+  const theme = useTheme();
+  const bIsMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
+  const { nstrSelectedBookId, handleBookSelect } = useBookListPage();
 
   return (
     <div className={classes.bookListPage}>
@@ -34,16 +30,8 @@ const BookListPage: React.FC = () => {
         My Reading List
       </Typography>
       <BookList onBookSelect={handleBookSelect} />
-      <BookDetails nstrBookId={nstrSelectedBookId} />
-      {true === bDisplayForm ? (
-        <AddBook
-          funcHideForm={handleDismissForm}
-          nstrSelectedBookId={nstrSelectedBookId}
-        />
-      ) : (
-        <AddButton handleClick={handleShowForm} title="Add New Book" />
-      )}
-
+      <AddBook nstrSelectedBookId={nstrSelectedBookId} />
+      {bIsMediumScreen && <BookDetails nstrBookId={nstrSelectedBookId} />}
       <Background />
     </div>
   );

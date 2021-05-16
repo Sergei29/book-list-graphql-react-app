@@ -2,10 +2,7 @@ import { useState, useCallback } from "react";
 
 type HookReturnType = {
   nstrSelectedBookId: null | string;
-  bDisplayForm: boolean;
   handleBookSelect: (strBookId: string) => () => void;
-  handleShowForm: () => void;
-  handleDismissForm: () => void;
 };
 
 /**
@@ -15,7 +12,6 @@ type HookReturnType = {
 const useBookListPage = (): HookReturnType => {
   const [nstrSelectedBookId, setNStrSelectedBookId] =
     useState<null | string>(null);
-  const [bDisplayForm, setBdisplayForm] = useState(false);
 
   /**
    * @description callback on book click
@@ -27,22 +23,8 @@ const useBookListPage = (): HookReturnType => {
     []
   );
 
-  /**
-   * @description callback on button click to display form
-   * @returns {undefined} sets local state
-   */
-  const handleShowForm = useCallback(() => setBdisplayForm(true), []);
-
-  /**
-   * @description callback to dismiss form
-   * @returns {undefined} sets local state
-   */
-  const handleDismissForm = useCallback(() => setBdisplayForm(false), []);
   return {
-    bDisplayForm,
     nstrSelectedBookId,
-    handleDismissForm,
-    handleShowForm,
     handleBookSelect,
   };
 };

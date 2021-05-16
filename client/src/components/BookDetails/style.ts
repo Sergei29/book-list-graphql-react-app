@@ -3,11 +3,13 @@ import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     bookDetailsContainer: {
-      position: "fixed",
-      top: 0,
-      right: 0,
-      width: "40%",
-      height: "100%",
+      [theme.breakpoints.up("md")]: {
+        position: "fixed",
+        top: 0,
+        right: 0,
+        width: "40%",
+        height: "100%",
+      },
       background: theme.components?.bookDetails?.background,
       padding: theme.spacing(3.75),
       overflow: "auto",
