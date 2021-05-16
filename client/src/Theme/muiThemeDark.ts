@@ -25,9 +25,9 @@ const muiThemeDark = createMuiTheme({
   },
   palette: {
     primary: {
-      main: grey[800], //darkGrey
-      light: grey[700],
-      dark: grey[900],
+      main: grey[400],
+      light: grey[300],
+      dark: grey[500],
     },
     secondary: {
       main: pink[800], //raspberry
@@ -38,6 +38,10 @@ const muiThemeDark = createMuiTheme({
       main: orange[100], //yellow
       light: "#ffffe4",
       dark: "#cbae82",
+    },
+    text: {
+      primary: grey[400],
+      secondary: grey[400],
     },
   },
 });

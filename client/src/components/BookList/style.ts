@@ -53,7 +53,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       fontWeight: 500,
       transition: `all 200ms ${theme.transitions.easing.easeInOut}`,
       "&:hover": {
-        color: theme.palette.common.white,
+        color: theme.palette.text.secondary,
         backgroundColor: theme.palette.secondary.main,
         transform: `scale(1.1)`,
       },

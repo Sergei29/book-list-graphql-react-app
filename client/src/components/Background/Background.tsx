@@ -1,4 +1,5 @@
-import React, { memo } from "react";
+import React, { memo, Fragment } from "react";
+import useCurrentTheme from "../../hooks/useCurrentTheme/useCurrentTheme";
 //styles:
 import { useStyles } from "./style";
 
@@ -7,8 +8,15 @@ import { useStyles } from "./style";
  * @returns {JSX} markup, background image
  */
 const Background: React.FC = () => {
-  const classes = useStyles();
-  return <div className={classes.backgroundBookList} />;
+  const { bLightTheme } = useCurrentTheme();
+  const classes = useStyles({ bLightTheme });
+  return (
+    <Fragment>
+      {" "}
+      <div className={classes.backgroundOverlay} />{" "}
+      <div className={classes.backgroundBookList} />
+    </Fragment>
+  );
 };
 
 export default memo(Background);

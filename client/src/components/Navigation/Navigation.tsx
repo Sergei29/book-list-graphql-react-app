@@ -44,7 +44,7 @@ const Navigation: React.FC<Props> = () => {
         </li>
         <li className={classes.navigation__list__item}>
           <span>
-            <GitHubButton />
+            <GitHubButton bLightTheme={bLightTheme} />
           </span>
         </li>
         <li>
