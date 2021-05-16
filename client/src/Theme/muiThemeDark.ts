@@ -44,6 +44,12 @@ const muiThemeDark = createMuiTheme({
       secondary: grey[400],
     },
   },
+  components: {
+    bookDetails: {
+      background: grey[800],
+      color: grey[400],
+    },
+  },
 });
 
 export default muiThemeDark;

@@ -44,6 +44,12 @@ const muiThemeLight = createMuiTheme({
       secondary: "#fff",
     },
   },
+  components: {
+    bookDetails: {
+      background: pink[800],
+      color: "#fff",
+    },
+  },
 });
 
 export default muiThemeLight;
