@@ -3,6 +3,7 @@ import { useState, useCallback } from "react";
 type HookReturnType = {
   nstrSelectedBookId: null | string;
   handleBookSelect: (strBookId: string) => () => void;
+  handleBookDeselect: () => void;
 };
 
 /**
@@ -23,9 +24,16 @@ const useBookListPage = (): HookReturnType => {
     []
   );
 
+  /**
+   * @description callback to deselect a book to none selected
+   * @returns {undefined} sets local state
+   */
+  const handleBookDeselect = useCallback(() => setNStrSelectedBookId(null), []);
+
   return {
     nstrSelectedBookId,
     handleBookSelect,
+    handleBookDeselect,
   };
 };
 
