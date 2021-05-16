@@ -1,8 +1,9 @@
 import React, { useState, useCallback } from "react";
+import { Base64 } from "js-base64";
 import { useMutation } from "@apollo/client";
 import { authStatusVar } from "../../ApolloProvider/reactiveVars";
-import useAuthToken from "../useAuthToken";
 import { SIGN_IN } from "../../graphql/mutations";
+import useAuthToken from "../useAuthToken";
 
 type FormStateType = {
   username: string;
@@ -56,9 +57,10 @@ const useLoginForm = (onLoginSuccess: () => void) => {
     objEvent.preventDefault();
     const { username, password } = objFormData;
     if (!username.length || !password.length) return;
+    const strEncodedPassword = Base64.encode(password);
     try {
       await funcSignInMutation({
-        variables: { username, password },
+        variables: { username, password: strEncodedPassword },
         update: (cache, { data: { login } }) => {
           const { token } = login || {};
           if (token) {
