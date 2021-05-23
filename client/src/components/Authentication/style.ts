@@ -24,5 +24,11 @@ export const useStyles = makeStyles((theme: Theme) =>
       color: theme.palette.secondary.main,
       transition: `all 200ms ${theme.transitions.easing.easeInOut}`,
     },
+    authButtonMobile__icon: {
+      paddingLeft: theme.spacing(2),
+    },
+    authButtonMobile__text: {
+      paddingLeft: theme.spacing(2),
+    },
   })
 );

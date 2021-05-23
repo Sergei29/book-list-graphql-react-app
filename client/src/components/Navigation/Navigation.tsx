@@ -1,6 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
+import { useTheme, useMediaQuery } from "@material-ui/core";
 import useCurrentUser from "../../hooks/useCurrentUser/useCurrentUser";
 import useCurrentTheme from "../../hooks/useCurrentTheme/useCurrentTheme";
 import { MuiSelectedTheme } from "../../types/types";
@@ -8,6 +9,7 @@ import { MuiSelectedTheme } from "../../types/types";
 import GitHubButton from "../GitHubButton";
 import Authentication from "../Authentication";
 import Switch from "../Switch";
+import MobileNavigation from "./MobileNavigation/MobileNavigation";
 // styles:
 import { useStyles } from "./style";
 
@@ -23,6 +25,19 @@ const Navigation: React.FC<Props> = () => {
   const classes = useStyles();
   const { bLoggedIn, handleLogout } = useCurrentUser();
   const { bLightTheme, funcToggleTheme } = useCurrentTheme();
+  const theme = useTheme();
+  const bIsMobileScreen = useMediaQuery(theme.breakpoints.down("xs"));
+
+  if (true === bIsMobileScreen) {
+    return (
+      <MobileNavigation
+        bLoggedIn={bLoggedIn}
+        bLightTheme={bLightTheme}
+        funcToggleTheme={funcToggleTheme}
+        handleLogout={handleLogout}
+      />
+    );
+  }
 
   return (
     <nav className={classes.navigation}>

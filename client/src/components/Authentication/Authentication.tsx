@@ -1,5 +1,14 @@
 import React, { useState, useCallback } from "react";
-import { IconButton, Typography, Tooltip } from "@material-ui/core";
+import {
+  IconButton,
+  Typography,
+  Tooltip,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  useTheme,
+  useMediaQuery,
+} from "@material-ui/core";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 import LockIcon from "@material-ui/icons/Lock";
 //components:
@@ -20,6 +29,8 @@ type Props = {
 const Authentication: React.FC<Props> = ({ bLoggedIn, handleLogout }) => {
   const classes = useStyles();
   const [bOpenModal, setbOpenModal] = useState<boolean>(false);
+  const theme = useTheme();
+  const bIsMobileScreen = useMediaQuery(theme.breakpoints.down("xs"));
 
   /**
    * @description operate modal to open
@@ -32,6 +43,19 @@ const Authentication: React.FC<Props> = ({ bLoggedIn, handleLogout }) => {
    * @returns {undefined} sets state
    */
   const funcModalClose = useCallback(() => setbOpenModal(false), []);
+
+  if (true === bIsMobileScreen) {
+    return (
+      <ListItem button onClick={bLoggedIn ? handleLogout : funcnModalOpen}>
+        <ListItemIcon className={classes.authButtonMobile__icon}>
+          {bLoggedIn ? <LockIcon /> : <LockOpenIcon />}
+        </ListItemIcon>
+        <ListItemText className={classes.authButtonMobile__text}>
+          {bLoggedIn ? "Logout" : "Login"}
+        </ListItemText>
+      </ListItem>
+    );
+  }
 
   return (
     <div>

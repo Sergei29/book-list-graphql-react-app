@@ -19,7 +19,9 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     navigation__list__item_last: {
       marginLeft: "auto",
-      marginRight: "40%",
+      [theme.breakpoints.up("md")]: {
+        marginRight: "40%",
+      },
     },
     navLink: {
       color: theme.palette.primary.main,
