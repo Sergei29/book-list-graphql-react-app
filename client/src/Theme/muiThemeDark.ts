@@ -50,6 +50,10 @@ const muiThemeDark = createMuiTheme({
       backgroundImage: { opacity: 1 },
       overlay: { background: "rgba(0,0,0, 0.9)" },
     },
+    mobileNavigation: {
+      background: pink[800],
+      color: "#fff",
+    },
     page: {
       background: grey[800],
     },

@@ -7,11 +7,15 @@ declare module "@material-ui/core/styles/createMuiTheme" {
   interface ThemeOptions {
     components?: {
       bookButton?: { color: string };
-      bookDetails?: { background: string; color: string };
+      bookDetails?: {
+        background: string;
+        color: string;
+      };
       bookList?: {
         backgroundImage: { opacity: number };
         overlay: { background: string };
       };
+      mobileNavigation?: { background: string; color: string };
       page?: {
         background: string;
       };
@@ -20,11 +24,15 @@ declare module "@material-ui/core/styles/createMuiTheme" {
   interface Theme {
     components?: {
       bookButton?: { color: string };
-      bookDetails?: { background: string; color: string };
+      bookDetails?: {
+        background: string;
+        color: string;
+      };
       bookList?: {
         backgroundImage: { opacity: number };
         overlay: { background: string };
       };
+      mobileNavigation?: { background: string; color: string };
       page?: {
         background: string;
       };

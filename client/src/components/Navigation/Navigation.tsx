@@ -1,17 +1,15 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
-import Tooltip from "@material-ui/core/Tooltip";
+import React, { Fragment } from "react";
+import { useTheme, useMediaQuery, Typography } from "@material-ui/core";
 import useCurrentUser from "../../hooks/useCurrentUser/useCurrentUser";
 import useCurrentTheme from "../../hooks/useCurrentTheme/useCurrentTheme";
-import { MuiSelectedTheme } from "../../types/types";
+import useModal from "../../hooks/useModal/useModal";
 // components:
-import GitHubButton from "../GitHubButton";
-import Authentication from "../Authentication";
-import Switch from "../Switch";
+import AuthModal from "../AuthModal";
+import AuthForm from "../AuthForm";
+import MobileNavigation from "./components/MobileNavigation";
+import DesktopNavigation from "./components/DesktopNavigation";
 // styles:
 import { useStyles } from "./style";
-
-const { LIGHT, DARK } = MuiSelectedTheme;
 
 type Props = {};
 
@@ -23,37 +21,39 @@ const Navigation: React.FC<Props> = () => {
   const classes = useStyles();
   const { bLoggedIn, handleLogout } = useCurrentUser();
   const { bLightTheme, funcToggleTheme } = useCurrentTheme();
+  const theme = useTheme();
+  const bIsMobileScreen = useMediaQuery(theme.breakpoints.down("xs"));
+  const { bOpenModal, funcModalClose, funcModalOpen } = useModal();
 
   return (
-    <nav className={classes.navigation}>
-      <ul className={classes.navigation__list}>
-        <li className={classes.navigation__list__item}>
-          <NavLink exact to="/" className={classes.navLink}>
-            Home
-          </NavLink>
-        </li>
-        {bLoggedIn && (
-          <li className={classes.navigation__list__item}>
-            <NavLink to="/admin" className={classes.navLink}>
-              Admin
-            </NavLink>
-          </li>
-        )}
-        <li className={classes.navigation__list__item}>
-          <Authentication bLoggedIn={bLoggedIn} handleLogout={handleLogout} />
-        </li>
-        <li className={classes.navigation__list__item}>
-          <span>
-            <GitHubButton bLightTheme={bLightTheme} />
-          </span>
-        </li>
-        <li className={classes.navigation__list__item_last}>
-          <Tooltip title={`switch theme to ${bLightTheme ? DARK : LIGHT}`}>
-            <Switch checked={bLightTheme} onChange={funcToggleTheme} />
-          </Tooltip>
-        </li>
-      </ul>
-    </nav>
+    <Fragment>
+      {true === bIsMobileScreen ? (
+        <MobileNavigation
+          bLoggedIn={bLoggedIn}
+          bLightTheme={bLightTheme}
+          funcToggleTheme={funcToggleTheme}
+          funcModalOpen={funcModalOpen}
+          handleLogout={handleLogout}
+        />
+      ) : (
+        <DesktopNavigation
+          bLoggedIn={bLoggedIn}
+          bLightTheme={bLightTheme}
+          funcModalOpen={funcModalOpen}
+          funcToggleTheme={funcToggleTheme}
+          handleLogout={handleLogout}
+        />
+      )}
+      <AuthModal bOpen={bOpenModal} handleClose={funcModalClose}>
+        <Typography variant="h5" component="h3" className={classes.authHeading}>
+          Authentication
+        </Typography>
+        <Typography className={classes.authHelperText}>
+          username: serge | password: secret123
+        </Typography>
+        <AuthForm funcCloseModal={funcModalClose} />
+      </AuthModal>
+    </Fragment>
   );
 };
 

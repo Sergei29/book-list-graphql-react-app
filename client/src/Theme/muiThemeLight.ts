@@ -50,6 +50,10 @@ const muiThemeLight = createMuiTheme({
       backgroundImage: { opacity: 0.3 },
       overlay: { background: "rgba(0,0,0, 0.1)" },
     },
+    mobileNavigation: {
+      background: orange[100],
+      color: pink[800],
+    },
     page: {
       background: "#fafafa",
     },

@@ -5,15 +5,6 @@ export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     "@keyframes shake": animationShake,
     authLink: {},
-    authHeading: {
-      marginBottom: theme.spacing(2),
-      color: theme.palette.info.main,
-    },
-    authHelperText: {
-      color: theme.palette.info.main,
-      fontSize: ".75rem",
-      marginBottom: theme.spacing(1),
-    },
     authButton: {
       "&:hover": {
         transform: `scale(1.1)`,
@@ -23,6 +14,13 @@ export const useStyles = makeStyles((theme: Theme) =>
       },
       color: theme.palette.secondary.main,
       transition: `all 200ms ${theme.transitions.easing.easeInOut}`,
+    },
+    authButtonMobile__icon: {
+      color: "inherit",
+      paddingLeft: theme.spacing(2),
+    },
+    authButtonMobile__text: {
+      paddingLeft: theme.spacing(2),
     },
   })
 );

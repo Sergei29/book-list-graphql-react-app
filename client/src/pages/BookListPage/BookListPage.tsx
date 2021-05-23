@@ -1,10 +1,10 @@
-import React, { useState, useCallback } from "react";
+import React from "react";
 import { Typography } from "@material-ui/core";
+import useBookListPage from "../../hooks/useBookListPage/useBookListPage";
 //components:
 import BookList from "../../components/BookList";
 import BookDetails from "../../components/BookDetails";
 import AddBook from "../../components/AddBook";
-import AddButton from "../../components/AddButton";
 import Background from "../../components/Background";
 //styles:
 import { useStyles } from "./style";
@@ -15,32 +15,8 @@ import { useStyles } from "./style";
  */
 const BookListPage: React.FC = () => {
   const classes = useStyles();
-  const [nstrSelectedBookId, setNStrSelectedBookId] = useState<null | string>(
-    null
-  );
-  const [bDisplayForm, setBdisplayForm] = useState(false);
-
-  /**
-   * @description callback on book click
-   * @param {String} strBookId book id
-   * @returns {undefined} sets local state
-   */
-  const onBookSelect = useCallback(
-    (strBookId: string) => () => setNStrSelectedBookId(strBookId),
-    []
-  );
-
-  /**
-   * @description callback on button click to display form
-   * @returns {undefined} sets local state
-   */
-  const handleShowForm = useCallback(() => setBdisplayForm(true), []);
-
-  /**
-   * @description callback to dismiss form
-   * @returns {undefined} sets local state
-   */
-  const handleDismissForm = useCallback(() => setBdisplayForm(false), []);
+  const { nstrSelectedBookId, handleBookSelect, handleBookDeselect } =
+    useBookListPage();
 
   return (
     <div className={classes.bookListPage}>
@@ -51,17 +27,12 @@ const BookListPage: React.FC = () => {
       >
         My Reading List
       </Typography>
-      <BookList onBookSelect={onBookSelect} />
-      <BookDetails nstrBookId={nstrSelectedBookId} />
-      {bDisplayForm ? (
-        <AddBook
-          funcHideForm={handleDismissForm}
-          nstrSelectedBookId={nstrSelectedBookId}
-        />
-      ) : (
-        <AddButton handleClick={handleShowForm} title="Add New Book" />
-      )}
-
+      <BookList onBookSelect={handleBookSelect} />
+      <AddBook nstrSelectedBookId={nstrSelectedBookId} />
+      <BookDetails
+        nstrBookId={nstrSelectedBookId}
+        handleBookDeselect={handleBookDeselect}
+      />
       <Background />
     </div>
   );

@@ -1,5 +1,11 @@
 import React from "react";
-import { Typography } from "@material-ui/core";
+import {
+  Typography,
+  useMediaQuery,
+  useTheme,
+  Dialog,
+  DialogContent,
+} from "@material-ui/core";
 // components:
 import BookDetails from "./BookDetails";
 // styles:
@@ -7,6 +13,7 @@ import { useStyles } from "./style";
 
 type Props = {
   nstrBookId: null | string;
+  handleBookDeselect: () => void;
 };
 
 /**
@@ -14,9 +21,15 @@ type Props = {
  * @param {null| String} {nstrBookId selected book ID}
  * @returns {JSX} markup conditional render
  */
-const BookDetailsContainer: React.FC<Props> = ({ nstrBookId }) => {
+const BookDetailsContainer: React.FC<Props> = ({
+  nstrBookId,
+  handleBookDeselect,
+}) => {
   const classes = useStyles();
-  return (
+  const theme = useTheme();
+  const bIsMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
+
+  return bIsMediumScreen ? (
     <div className={classes.bookDetailsContainer}>
       {nstrBookId ? (
         <BookDetails strBookId={nstrBookId} />
@@ -24,6 +37,12 @@ const BookDetailsContainer: React.FC<Props> = ({ nstrBookId }) => {
         <Typography>No book selected.</Typography>
       )}
     </div>
+  ) : (
+    <Dialog open={!!nstrBookId} onClose={handleBookDeselect} fullWidth>
+      <DialogContent className={classes.bookDetailsContainer}>
+        {nstrBookId && <BookDetails strBookId={nstrBookId} />}
+      </DialogContent>
+    </Dialog>
   );
 };
 

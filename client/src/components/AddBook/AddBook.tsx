@@ -15,11 +15,12 @@ import {
 } from "@material-ui/core";
 import { AuthorType } from "../../types/types";
 import useAddBookForm from "../../hooks/useAddBookForm";
+import useAddBook from "../../hooks/useAddBook/useAddBook";
+import AddButton from "../AddButton";
 // styles:
 import { useStyles } from "./style";
 
 type Props = {
-  funcHideForm: () => void;
   nstrSelectedBookId: null | string;
 };
 
@@ -27,8 +28,11 @@ type Props = {
  * @description add new book form
  * @returns {JSX} component markup
  */
-const AddBook: React.FC<Props> = ({ funcHideForm, nstrSelectedBookId }) => {
+const AddBook: React.FC<Props> = ({ nstrSelectedBookId }) => {
   const classes = useStyles();
+
+  const { bDisplayForm, handleDismissForm, handleShowForm } = useAddBook();
+
   const {
     objFormValidaton,
     objAddBookMutationResponse,
@@ -38,10 +42,8 @@ const AddBook: React.FC<Props> = ({ funcHideForm, nstrSelectedBookId }) => {
     handleChange,
   } = useAddBookForm(nstrSelectedBookId);
 
-  const {
-    error: objMutationError,
-    loading: bMutationLoading,
-  } = objAddBookMutationResponse;
+  const { error: objMutationError, loading: bMutationLoading } =
+    objAddBookMutationResponse;
 
   /**
    * @description display authors select options
@@ -63,6 +65,10 @@ const AddBook: React.FC<Props> = ({ funcHideForm, nstrSelectedBookId }) => {
     }
   };
 
+  if (false === bDisplayForm) {
+    return <AddButton handleClick={handleShowForm} title="Add New Book" />;
+  }
+
   return (
     <form onSubmit={handleSubmit} className={classes.addBookForm}>
       {objFormValidaton.nstrErrorMessage && (
@@ -77,7 +83,7 @@ const AddBook: React.FC<Props> = ({ funcHideForm, nstrSelectedBookId }) => {
       )}
       <IconButton
         title="close the form"
-        onClick={funcHideForm}
+        onClick={handleDismissForm}
         className={classes.addBookForm__closeButton}
         aria-label="close"
       >

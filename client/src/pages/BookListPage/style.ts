@@ -3,9 +3,11 @@ import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     bookListPage: {
+      [theme.breakpoints.up("md")]: {
+        width: "60%",
+      },
       padding: 0,
       boxSizing: "border-box",
-      width: "60%",
       height: "100%",
     },
     bookListPage__heading: {
