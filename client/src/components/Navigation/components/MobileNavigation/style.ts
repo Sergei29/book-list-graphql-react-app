@@ -2,6 +2,11 @@ import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    listItemRoot: {
+      [theme.breakpoints.down("sm")]: {
+        color: "inherit",
+      },
+    },
     mobileNavigation: {
       position: "relative",
       display: "flex",
@@ -14,16 +19,24 @@ export const useStyles = makeStyles((theme: Theme) =>
       },
       color: theme.palette.secondary.main,
     },
+    mobileNavigation__drawer: {
+      background: theme.components?.mobileNavigation?.background,
+      color: theme.components?.mobileNavigation?.color,
+    },
     mobileNavigation__navLink: {
-      color: theme.palette.primary.main,
+      color: "inherit",
       textDecoration: "none",
-      display: "block",
+      display: "flex",
+      alignItems: "center",
       padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
       width: "100%",
       "&.active": {
-        backgroundColor: theme.palette.primary.light,
-        color: theme.palette.common.white,
+        backgroundColor: theme.components?.bookDetails?.background,
+        color: theme.components?.bookDetails?.color,
       },
+    },
+    mobileNavigation__navLink__icon: {
+      color: "inherit",
     },
   })
 );

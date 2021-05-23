@@ -5,6 +5,7 @@ import {
   ListItemText,
   useTheme,
   useMediaQuery,
+  Link,
 } from "@material-ui/core";
 import GitHubIcon from "@material-ui/icons/GitHub";
 //styles:
@@ -24,8 +25,9 @@ const GitHubButton: React.FC<Props> = ({ bLightTheme }) => {
         component="a"
         href="https://github.com/Sergei29/book-list-graphql-react-app"
         target="_blank"
+        classes={{ root: classes.linkToGithub__text }}
       >
-        <ListItemIcon>
+        <ListItemIcon classes={{ root: classes.linkToGithub__text }}>
           <GitHubIcon fontSize="small" />
         </ListItemIcon>
         <ListItemText>Source code</ListItemText>
@@ -34,14 +36,14 @@ const GitHubButton: React.FC<Props> = ({ bLightTheme }) => {
   }
 
   return (
-    <a
+    <Link
       href="https://github.com/Sergei29/book-list-graphql-react-app"
       target="_blank"
       className={classes.linkToGithub}
     >
       <GitHubIcon fontSize="small" />
       <span>Source code</span>
-    </a>
+    </Link>
   );
 };
 

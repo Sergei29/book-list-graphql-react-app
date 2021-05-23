@@ -23,5 +23,8 @@ export const useStyles = makeStyles((theme: Theme) =>
       columnGap: `${theme.spacing(1)}px`,
       transition: `all 200ms ${theme.transitions.easing.easeInOut}`,
     },
+    linkToGithub__text: {
+      color: "inherit",
+    },
   })
 );

@@ -12,22 +12,34 @@ import {
 import MenuIcon from "@material-ui/icons/Menu";
 import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
 import HomeIcon from "@material-ui/icons/Home";
+import { MuiSelectedTheme } from "../../../../types/types";
 // components:
-import GitHubButton from "../../GitHubButton";
-import Authentication from "../../Authentication";
+import GitHubButton from "../../../GitHubButton";
+import Authentication from "../../../Authentication";
+import Switch from "../../../Switch";
 // styles:
 import { useStyles } from "./style";
+
+const { LIGHT, DARK } = MuiSelectedTheme;
 
 type Props = {
   bLightTheme: boolean;
   bLoggedIn: boolean;
   funcToggleTheme: () => void;
+  funcModalOpen: () => void;
   handleLogout: () => Promise<void>;
 };
+
+/**
+ * @description navigation for mobile screen
+ * @param {Object} props component props
+ * @returns {JSX} component markup
+ */
 const MobileNavigation: React.FC<Props> = ({
   bLoggedIn,
   bLightTheme,
   funcToggleTheme,
+  funcModalOpen,
   handleLogout,
 }) => {
   const classes = useStyles();
@@ -45,33 +57,52 @@ const MobileNavigation: React.FC<Props> = ({
       >
         <MenuIcon color="secondary" />
       </IconButton>
-      <Drawer open={bOpenMenu} onClose={handleMenuClose}>
+      <Drawer
+        open={bOpenMenu}
+        onClose={handleMenuClose}
+        classes={{ paper: classes.mobileNavigation__drawer }}
+      >
         <List>
-          <ListItem button>
+          <ListItem button classes={{ root: classes.listItemRoot }}>
             <NavLink exact to="/" className={classes.mobileNavigation__navLink}>
-              <ListItemIcon>
+              <ListItemIcon
+                classes={{ root: classes.mobileNavigation__navLink__icon }}
+              >
                 <HomeIcon />
               </ListItemIcon>
               <span>Home</span>
             </NavLink>
           </ListItem>
           {bLoggedIn && (
-            <ListItem button>
+            <ListItem button classes={{ root: classes.listItemRoot }}>
               <NavLink
                 exact
                 to="/admin"
                 className={classes.mobileNavigation__navLink}
               >
-                <ListItemIcon>
+                <ListItemIcon
+                  classes={{ root: classes.mobileNavigation__navLink__icon }}
+                >
                   <SupervisorAccountIcon />
                 </ListItemIcon>
                 <span>Admin</span>
               </NavLink>
             </ListItem>
           )}
-          <Authentication bLoggedIn={bLoggedIn} handleLogout={handleLogout} />
-          <ListItem>
+          <Authentication
+            bLoggedIn={bLoggedIn}
+            handleLogout={handleLogout}
+            funcModalOpen={funcModalOpen}
+          />
+          <ListItem classes={{ root: classes.listItemRoot }}>
             <GitHubButton bLightTheme={bLightTheme} />
+          </ListItem>
+          <Divider />
+          <ListItem>
+            <Switch checked={bLightTheme} onChange={funcToggleTheme} />
+            <ListItemText>{`switch to ${
+              bLightTheme ? DARK : LIGHT
+            }`}</ListItemText>
           </ListItem>
         </List>
       </Drawer>

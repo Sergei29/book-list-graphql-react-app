@@ -15,6 +15,7 @@ declare module "@material-ui/core/styles/createMuiTheme" {
         backgroundImage: { opacity: number };
         overlay: { background: string };
       };
+      mobileNavigation?: { background: string; color: string };
       page?: {
         background: string;
       };
@@ -31,6 +32,7 @@ declare module "@material-ui/core/styles/createMuiTheme" {
         backgroundImage: { opacity: number };
         overlay: { background: string };
       };
+      mobileNavigation?: { background: string; color: string };
       page?: {
         background: string;
       };
