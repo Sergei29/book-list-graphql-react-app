@@ -1,11 +1,11 @@
 import express from "express";
-import { ApolloServer, gql } from "apollo-server-express";
+import { ApolloServer } from "apollo-server-express";
 import path from "path";
-import fs from "fs";
 import dotenv from "dotenv";
 import { connectMongoDB } from "./mongoDB/mongoDB";
 import { arrMiddleware } from "./middleware/middleware";
 import resolvers from "./resolvers/resolvers";
+import { typeDefs } from "./schema/schema";
 import { getPayload } from "./config/authUtils";
 
 if (process.env.NODE_ENV !== "production") {
@@ -20,10 +20,6 @@ connectMongoDB();
  * @description when we deploy on heroku - it sets PORT env variable for us.
  */
 const port = process.env.PORT || 4000;
-
-const typeDefs = gql(
-  fs.readFileSync("./server/schema/schema.graphql", { encoding: "utf8" })
-);
 
 /**
  * @description initialise GraphQL server and apply express middleware:
