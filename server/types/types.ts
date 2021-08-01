@@ -1,5 +1,10 @@
 import { Document } from "mongoose";
 
+export type ConextType = {
+  user?: string | Record<string, any>;
+  loggedIn: boolean;
+};
+
 export type UserType = {
   username: string;
   password: string;

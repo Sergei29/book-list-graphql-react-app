@@ -13,7 +13,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 const app = express();
-app.use(arrMiddleware);
+app.use(...arrMiddleware);
 connectMongoDB();
 
 /**
@@ -39,7 +39,7 @@ const apolloServer = new ApolloServer({
     return { user, loggedIn };
   },
 });
-apolloServer.applyMiddleware({ app, path: "/graphql" });
+apolloServer.applyMiddleware({ app: app as any, path: "/graphql" });
 
 /**
  * @description serve react app client in production mode
