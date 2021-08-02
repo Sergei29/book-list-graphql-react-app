@@ -1,8 +1,10 @@
 import { Document } from "mongoose";
+import { DataSourcesType } from "../datasources";
 
-export type ConextType = {
+export type ContextType = {
   user?: string | Record<string, any>;
   loggedIn: boolean;
+  dataSources: DataSourcesType;
 };
 
 export type UserType = {

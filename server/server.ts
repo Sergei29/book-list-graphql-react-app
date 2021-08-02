@@ -7,6 +7,7 @@ import { arrMiddleware } from "./middleware/middleware";
 import resolvers from "./resolvers/resolvers";
 import { typeDefs } from "./schema/schema";
 import { getPayload } from "./config/authUtils";
+import { dataSources } from "./datasources";
 
 if (process.env.NODE_ENV !== "production") {
   dotenv.config();
@@ -27,6 +28,7 @@ const port = process.env.PORT || 4000;
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
+  dataSources,
   context: ({ req }) => {
     // IMPORTANT: the headers.authorization value must be set on client with the value of received auth token.
 

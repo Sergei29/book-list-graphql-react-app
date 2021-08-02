@@ -13,14 +13,14 @@ import {
   comparePassword,
 } from "../config/authUtils";
 import funcFormatUser from "./helpers/funcFormatUser";
-import { ErrorMessage } from "../types/types";
+import { ErrorMessage, ContextType } from "../types/types";
 
 type ObjType = Record<string, any>;
 
-const resolvers: IResolvers = {
+const resolvers: IResolvers<any, ContextType> = {
   Query: {
-    book: async (parent: ObjType, args: ObjType) =>
-      await BooksDB.findById(args.id),
+    book: async (parent: ObjType, args: ObjType, { dataSources }) =>
+      await dataSources.books.getBookById(args.id),
     author: async (parent: ObjType, args: ObjType) =>
       await AuthorsDB.findById(args.id),
     books: async () => await BooksDB.find(),

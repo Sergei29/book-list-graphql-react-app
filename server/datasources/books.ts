@@ -1,7 +1,7 @@
 import { MongoDataSource } from "apollo-datasource-mongodb";
-import { ConextType, BookType } from "../types/types";
+import { ContextType, BookType } from "../types/types";
 
-export class BooksDataSource extends MongoDataSource<BookType, ConextType> {
+export class BooksDataSource extends MongoDataSource<BookType, ContextType> {
   getAllBooks = async () => await this.model.find();
 
   getBookById = async (strBookId: string) => await this.findOneById(strBookId);

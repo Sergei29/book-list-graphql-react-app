@@ -1,7 +1,10 @@
 import { MongoDataSource } from "apollo-datasource-mongodb";
-import { ConextType, AuthorType } from "../types/types";
+import { ContextType, AuthorType } from "../types/types";
 
-export class AuthorsDataSource extends MongoDataSource<AuthorType, ConextType> {
+export class AuthorsDataSource extends MongoDataSource<
+  AuthorType,
+  ContextType
+> {
   getAllAuthors = async () => await this.model.find();
 
   getAuthorById = async (strAuthorId: string) =>
