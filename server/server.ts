@@ -4,9 +4,9 @@ import path from "path";
 import dotenv from "dotenv";
 import { connectMongoDB } from "./mongoDB/mongoDB";
 import { arrMiddleware } from "./middleware/middleware";
-import resolvers from "./resolvers/resolvers";
+import { resolvers } from "./resolvers";
 import { typeDefs } from "./schema/schema";
-import { getPayload } from "./config/authUtils";
+import { getPayload } from "./util/authUtils";
 import { dataSources } from "./datasources";
 
 if (process.env.NODE_ENV !== "production") {
