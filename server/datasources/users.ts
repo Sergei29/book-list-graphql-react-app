@@ -7,7 +7,7 @@ export class UsersDataSource extends MongoDataSource<UserType, ContextType> {
   getUserById = async (strUserId: string) => await this.findOneById(strUserId);
 
   getUserByUsername = async (strUsername: string) =>
-    await this.findByFields({ username: strUsername });
+    await this.model.findOne({ username: strUsername });
 
   saveAndGetDocFromDB = async (objNewUser: Record<string, any>) => {
     try {
@@ -24,8 +24,7 @@ export class UsersDataSource extends MongoDataSource<UserType, ContextType> {
     try {
       const { id, ...restUserData } = objNewUser;
       await this.model.findByIdAndUpdate(id, { ...restUserData });
-      const objUpdatedUser = await this.findOneById(id);
-      return objUpdatedUser;
+      return await this.model.findOne({ _id: id });
     } catch (error) {
       throw new Error(error);
     }

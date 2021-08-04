@@ -10,6 +10,9 @@ export class AuthorsDataSource extends MongoDataSource<
   getAuthorById = async (strAuthorId: string) =>
     await this.findOneById(strAuthorId);
 
+  getAuthorByName = async (strAuthorName: string) =>
+    await this.model.findOne({ name: strAuthorName });
+
   saveAndGetDocFromDB = async (objNewAuthor: Record<string, any>) => {
     try {
       return await this.model.create(objNewAuthor);
@@ -25,8 +28,7 @@ export class AuthorsDataSource extends MongoDataSource<
     try {
       const { id, ...restAuthorData } = objNewAuthor;
       await this.model.findByIdAndUpdate(id, { ...restAuthorData });
-      const objUpdatedAuthor = await this.findOneById(id);
-      return objUpdatedAuthor;
+      return await this.model.findOne({ _id: id });
     } catch (error) {
       throw new Error(error);
     }

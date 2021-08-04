@@ -1,7 +1,4 @@
 import { IFieldResolver, AuthenticationError } from "apollo-server-express";
-import BooksDB from "../models/book";
-import AuthorsDB from "../models/author";
-import UsersDB from "../models/user";
 import { ErrorMessage, ContextType } from "../types/types";
 
 type ParentType = Record<string, any>;
@@ -15,11 +12,14 @@ export const Query: QueryResolverType = {
   book: async (parent, args, { dataSources }) =>
     await dataSources.books.getBookById(args.id),
 
-  author: async (parent, args) => await AuthorsDB.findById(args.id),
+  author: async (parent, args, { dataSources }, info) =>
+    await dataSources.authors.getAuthorById(args.id),
 
-  books: async () => await BooksDB.find(),
+  books: async (parent, args, { dataSources }, info) =>
+    await dataSources.books.getAllBooks(),
 
-  authors: async () => await AuthorsDB.find(),
+  authors: async (parent, args, { dataSources }, info) =>
+    await dataSources.authors.getAllAuthors(),
 
   me: (parent, args, context, info) => {
     if (context.loggedIn) {
@@ -29,7 +29,9 @@ export const Query: QueryResolverType = {
     }
   },
 
-  user: async (parent, args) => await UsersDB.findById(args.id),
+  user: async (parent, args, { dataSources }, info) =>
+    await dataSources.users.getUserById(args.id),
 
-  users: async () => await UsersDB.find(),
+  users: async (parent, args, { dataSources }, info) =>
+    await dataSources.users.getAllUsers(),
 };

@@ -9,6 +9,9 @@ export class BooksDataSource extends MongoDataSource<BookType, ContextType> {
   getBookByAuthorId = async (strAuthorId: string) =>
     await this.findByFields({ authorId: strAuthorId });
 
+  getBookByName = async (strBookName: string) =>
+    await this.model.findOne({ name: strBookName });
+
   saveAndGetDocFromDB = async (objNewBook: Record<string, any>) => {
     try {
       return await this.model.create(objNewBook);
@@ -24,8 +27,7 @@ export class BooksDataSource extends MongoDataSource<BookType, ContextType> {
     try {
       const { name, genre, authorId, id } = objNewBook;
       await this.model.findByIdAndUpdate(id, { name, genre, authorId });
-      const objUpdatedBook = await this.findOneById(id);
-      return objUpdatedBook;
+      return await this.model.findOne({ _id: id });
     } catch (error) {
       throw new Error(error);
     }
@@ -35,6 +37,14 @@ export class BooksDataSource extends MongoDataSource<BookType, ContextType> {
     try {
       await this.deleteFromCacheById(strBookId);
       return await this.model.findByIdAndDelete(strBookId);
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+
+  deleteBooksByAuthor = async (strAuthorId: string) => {
+    try {
+      return await this.model.deleteMany({ authorId: strAuthorId });
     } catch (error) {
       throw new Error(error);
     }
