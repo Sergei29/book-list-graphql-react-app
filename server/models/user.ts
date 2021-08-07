@@ -6,6 +6,9 @@ const userSchema = new Schema({
   password: String,
 });
 
+/**
+ * @description MongoDB/mongoose data model for User entity
+ */
 const User = mongoose.model<UserType>("User", userSchema);
 
 export default User;

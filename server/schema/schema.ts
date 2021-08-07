@@ -1,5 +1,8 @@
 import { gql } from "apollo-server";
 
+/**
+ * @description a GraphQL schema
+ */
 export const typeDefs = gql`
   type Query {
     book(id: ID!): Book
