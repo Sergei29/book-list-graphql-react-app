@@ -24,3 +24,12 @@
 3. Deployment
 
 - On Heroku: https://reading-list-react-graphql.herokuapp.com/
+- On Heroku: set env variables for:
+
+`MONGO_URI=mongodb+srv:...`
+
+`SECRET=secret`
+
+`ADMIN_EMAIL=<your-admin-email-address>`
+
+`NODE_ENV=production`
