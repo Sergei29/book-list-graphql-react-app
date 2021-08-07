@@ -6,6 +6,9 @@ const authorSchema = new Schema({
   age: Number,
 });
 
+/**
+ * @description MongoDB/mongoose data model for Author entity
+ */
 const Author = mongoose.model<AuthorType>("Author", authorSchema);
 
 export default Author;

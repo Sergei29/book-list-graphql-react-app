@@ -70,7 +70,10 @@ export const getToken = (
  */
 export const getPayload = (strToken: string) => {
   try {
-    const mixedPayload = jwt.verify(strToken, strSecret);
+    const mixedPayload: string | Record<string, any> = jwt.verify(
+      strToken,
+      strSecret
+    );
     return { loggedIn: true, payload: mixedPayload };
   } catch (objError) {
     return { loggedIn: false };

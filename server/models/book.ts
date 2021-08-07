@@ -7,6 +7,9 @@ const bookSchema = new Schema({
   authorId: String,
 });
 
+/**
+ * @description MongoDB/mongoose data model for Book entity
+ */
 const Book = mongoose.model<BookType>("Book", bookSchema);
 
 export default Book;

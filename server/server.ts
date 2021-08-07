@@ -1,19 +1,20 @@
 import express from "express";
-import { ApolloServer, gql } from "apollo-server-express";
+import { ApolloServer } from "apollo-server-express";
 import path from "path";
-import fs from "fs";
 import dotenv from "dotenv";
 import { connectMongoDB } from "./mongoDB/mongoDB";
 import { arrMiddleware } from "./middleware/middleware";
-import resolvers from "./resolvers/resolvers";
-import { getPayload } from "./config/authUtils";
+import { resolvers } from "./resolvers";
+import { typeDefs } from "./schema/schema";
+import { getPayload } from "./util/authUtils";
+import { dataSources } from "./datasources";
 
 if (process.env.NODE_ENV !== "production") {
   dotenv.config();
 }
 
 const app = express();
-app.use(arrMiddleware);
+app.use(...arrMiddleware);
 connectMongoDB();
 
 /**
@@ -21,16 +22,13 @@ connectMongoDB();
  */
 const port = process.env.PORT || 4000;
 
-const typeDefs = gql(
-  fs.readFileSync("./server/schema/schema.graphql", { encoding: "utf8" })
-);
-
 /**
  * @description initialise GraphQL server and apply express middleware:
  */
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
+  dataSources,
   context: ({ req }) => {
     // IMPORTANT: the headers.authorization value must be set on client with the value of received auth token.
 
@@ -43,7 +41,7 @@ const apolloServer = new ApolloServer({
     return { user, loggedIn };
   },
 });
-apolloServer.applyMiddleware({ app, path: "/graphql" });
+apolloServer.applyMiddleware({ app: app as any, path: "/graphql" });
 
 /**
  * @description serve react app client in production mode
