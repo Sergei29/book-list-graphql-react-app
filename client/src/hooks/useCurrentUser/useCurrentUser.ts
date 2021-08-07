@@ -2,7 +2,7 @@ import { useQuery, useReactiveVar } from "@apollo/client";
 import { useHistory } from "react-router-dom";
 import useAuthToken from "../useAuthToken/useAuthToken";
 import { GET_CURRENT_USER } from "../../graphql/queries";
-import { authStatusVar } from "../../ApolloProvider/reactiveVars";
+import { authStatusVar } from "../../graphql/ApolloProvider/reactiveVars";
 import { UserType } from "../../types/types";
 
 /**

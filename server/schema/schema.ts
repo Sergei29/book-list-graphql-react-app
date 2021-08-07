@@ -59,6 +59,6 @@ export const typeDefs = gql`
     signIn(credentials: Credentials!): AuthPayload
     userInfo: AuthPayload
     signOut: AuthPayload
-    removeUser(username: String!): AuthPayload
+    removeUser(id: ID!): AuthPayload
   }
 `;

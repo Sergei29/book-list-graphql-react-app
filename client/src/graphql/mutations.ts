@@ -28,42 +28,37 @@ export const REMOVE_AUTHOR = gql`
 `;
 
 export const SIGN_UP = gql`
-  mutation Register($username: String!, $password: String!) {
-    register(username: $username, password: $password) {
-      id
-      username
-      password
-      token
+  mutation SignUp($email: String!, $password: String!) {
+    signUp(credentials: { email: $email, password: $password }) {
+      user {
+        id
+        email
+        role
+      }
     }
   }
 `;
 
 export const SIGN_IN = gql`
-  mutation Login($username: String!, $password: String!) {
-    login(username: $username, password: $password) {
-      id
-      username
-      token
+  mutation SignIn($email: String!, $password: String!) {
+    signIn(credentials: { email: $email, password: $password }) {
+      user {
+        id
+        email
+        role
+      }
     }
   }
 `;
 
 export const REMOVE_USER = gql`
-  mutation removeUser($username: String!) {
-    removeUser(username: $username) {
-      username
-      id
-    }
-  }
-`;
-
-export const EDIT_USER = gql`
-  mutation editUser($id: ID!, $username: String!, $password: String!) {
-    editUser(id: $id, username: $username, password: $password) {
-      id
-      username
-      password
-      token
+  mutation RemoveUser($id: ID!) {
+    removeUser(id: $id) {
+      user {
+        id
+        email
+        role
+      }
     }
   }
 `;

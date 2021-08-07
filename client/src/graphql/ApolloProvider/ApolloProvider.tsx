@@ -6,7 +6,7 @@ import {
   ApolloLink,
 } from "@apollo/client";
 import { cache } from "./cache";
-import useAuthToken from "../hooks/useAuthToken/useAuthToken";
+import useAuthToken from "../../hooks/useAuthToken/useAuthToken";
 
 const httpLink = new HttpLink({
   uri:
