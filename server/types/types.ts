@@ -1,15 +1,34 @@
 import { Document } from "mongoose";
+import express from "express";
 import { DataSourcesType } from "../datasources";
 
+export enum Role {
+  ADMIN = "ADMIN",
+  USER = "USER",
+}
+
+export enum Expiry {
+  IN_1_HOUR = 60 * 60 * 1000,
+  IN_24_HOURS = 60 * 60 * 24 * 1000,
+  IN_7_DAYS = 60 * 60 * 24 * 7 * 1000,
+}
+
+export type TokenPayloadType = {
+  email?: string;
+  role?: Role;
+} & Record<string, any>;
+
 export type ContextType = {
-  user?: string | Record<string, any>;
-  loggedIn: boolean;
+  user: null | TokenPayloadType;
+  res: express.Response<any, Record<string, any>>;
   dataSources: DataSourcesType;
 };
 
 export type UserType = {
-  username: string;
-  password: string;
+  id: string;
+  email: string;
+  hash?: string;
+  role?: Role;
 } & Document;
 
 export type BookType = {

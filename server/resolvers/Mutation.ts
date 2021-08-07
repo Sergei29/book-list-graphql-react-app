@@ -2,11 +2,23 @@ import {
   IFieldResolver,
   AuthenticationError,
   UserInputError,
+  ApolloError,
 } from "apollo-server-express";
-import { Base64 } from "js-base64";
-import { getToken, encryptPassword, comparePassword } from "../util/authUtils";
+import dotenv from "dotenv";
+import { ErrorMessage, ContextType, Role, Expiry } from "../types/types";
+import {
+  funcHashPassword,
+  funcCreateToken,
+  funcVerifyPassword,
+} from "../util/auth";
 import funcFormatUser from "../util/funcFormatUser";
-import { ErrorMessage, ContextType } from "../types/types";
+
+if (process.env.NODE_ENV !== "production") {
+  dotenv.config();
+}
+const strAdminEmail = process.env.ADMIN_EMAIL!;
+
+const { ADMIN, USER } = Role;
 
 type ParentType = Record<string, any>;
 type ArgsType = Record<string, any>;
@@ -14,24 +26,6 @@ type MutationResolverType = Record<
   string,
   IFieldResolver<ParentType, ContextType, ArgsType>
 >;
-
-/**
- * @description verify if incoming password is matching
- * @param {String} strGivenPassword incoming
- * @param {String} strStoredPasswor stored
- * @returns {Boolean} matching or not
- */
-const funcIsPasswordCorrect = async (
-  strGivenPassword: string,
-  strStoredPassword: string
-) => {
-  const strDecodedPassword = Base64.decode(strGivenPassword);
-  const bIsMatching = await comparePassword(
-    strDecodedPassword,
-    strStoredPassword
-  );
-  return !!bIsMatching;
-};
 
 export const Mutation: MutationResolverType = {
   addAuthor: async (parent, args, { dataSources }, info) => {
@@ -112,71 +106,96 @@ export const Mutation: MutationResolverType = {
     });
   },
 
-  register: async (parent, args, { dataSources }, info) => {
-    const objUser = await dataSources.users.getUserByUsername(args.username);
-    if (objUser) throw new AuthenticationError(ErrorMessage.USER_EXISTS);
-    const strDecodedPassword = Base64.decode(args.password);
+  signUp: async (parent, { credentials }, { dataSources, res }, info) => {
+    const { email, password } = credentials;
+    const objUserCredentials = { email: email.toLowerCase(), password };
+    const { users } = dataSources;
 
-    try {
-      const objRegisteredUser = await dataSources.users.addNewUser({
-        username: args.username,
-        password: await encryptPassword(strDecodedPassword),
-      });
-      const objFormatted = funcFormatUser(objRegisteredUser);
-      const strToken = getToken(objFormatted);
-      return { ...objFormatted, token: strToken };
-    } catch (objError) {
-      throw objError;
-    }
+    const nObjExistingUser = await users.getUserByEmail(
+      objUserCredentials.email
+    );
+    if (nObjExistingUser) throw new ApolloError(ErrorMessage.USER_EXISTS);
+
+    const role = objUserCredentials.email === strAdminEmail ? ADMIN : USER;
+
+    const hash = funcHashPassword(objUserCredentials.password);
+    const objNewUser = await users.addNewUser({
+      email: objUserCredentials.email,
+      hash,
+      role,
+    });
+
+    const token = funcCreateToken(objNewUser);
+    res.cookie("token", token, { httpOnly: true, maxAge: Expiry.IN_24_HOURS });
+
+    return {
+      user: {
+        id: objNewUser.id,
+        email: objNewUser.email,
+        role: objNewUser.role,
+      },
+    };
   },
 
-  login: async (parent, args, { dataSources }, info) => {
-    const objUser = await dataSources.users.getUserByUsername(args.username);
-    if (!objUser) throw new AuthenticationError(ErrorMessage.USER_NOT_FOUND);
+  signIn: async (parent, { credentials }, { dataSources, res }, info) => {
+    const { email, password } = credentials;
+    const objUserCredentials = { email: email.toLowerCase(), password };
 
-    const bIsMatching = await funcIsPasswordCorrect(
-      args.password,
-      objUser.password
+    const nObjExistingUser = await dataSources.users.getUserByEmail(
+      objUserCredentials.email
     );
-    if (!bIsMatching) {
-      throw new AuthenticationError(ErrorMessage.WRONG_PASSWORD);
+    if (!nObjExistingUser) throw new ApolloError(ErrorMessage.USER_NOT_FOUND);
+
+    const bValidPassword = funcVerifyPassword(
+      objUserCredentials.password,
+      nObjExistingUser.hash!
+    );
+
+    if (!bValidPassword) throw new ApolloError(ErrorMessage.WRONG_PASSWORD);
+
+    const token = funcCreateToken(nObjExistingUser);
+
+    /**
+     * @description setting set-cookie instruction into the response header
+     */
+    res.cookie("token", token, {
+      httpOnly: false,
+      maxAge: Expiry.IN_24_HOURS,
+    });
+
+    return {
+      user: {
+        id: nObjExistingUser.id,
+        email: nObjExistingUser.email,
+        role: nObjExistingUser.role,
+      },
+    };
+  },
+
+  userInfo: async (parent, args, { user }, info) => {
+    if (user) {
+      return {
+        user: { id: user.sub, email: user.email, role: user.role },
+      };
     }
 
-    const objFormatted = funcFormatUser(objUser);
-    const strToken = getToken(objFormatted);
-    const objFoundUser = {
-      ...objFormatted,
-      token: strToken,
-    };
-    return objFoundUser;
+    return { user: undefined };
   },
 
   removeUser: async (parent, args, { dataSources }, info) => {
-    const objUser = await dataSources.users.getUserByUsername(args.username);
+    const objUser = await dataSources.users.getUserById(args.id);
     if (!objUser) throw new AuthenticationError(ErrorMessage.USER_NOT_FOUND);
 
     try {
-      const objDeletedUser = await dataSources.users.deleteUserById(objUser.id);
-      return funcFormatUser(objDeletedUser!);
-    } catch (objError) {
-      throw objError;
-    }
-  },
+      const objDeletedUser = await dataSources.users.deleteUserById(args.id);
 
-  editUser: async (parent, args, { dataSources }, info) => {
-    const { id, username, password } = args;
-    const objUser = await dataSources.users.getUserByUsername(username);
-    if (!objUser) throw new AuthenticationError(ErrorMessage.USER_NOT_FOUND);
-
-    try {
-      const strNewPassword = await encryptPassword(password);
-      const objUpdatedUser = await dataSources.users.updateUserById({
-        id,
-        username,
-        password: strNewPassword as string,
-      });
-
-      return funcFormatUser(objUpdatedUser!);
+      return {
+        user: {
+          id: objDeletedUser!.id,
+          email: objDeletedUser!.email,
+          role: objDeletedUser!.role,
+        },
+      };
     } catch (objError) {
       throw objError;
     }

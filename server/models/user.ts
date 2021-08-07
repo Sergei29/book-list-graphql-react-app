@@ -2,8 +2,9 @@ import mongoose, { Schema } from "mongoose";
 import { UserType } from "../types/types";
 
 const userSchema = new Schema({
-  username: String,
-  password: String,
+  email: String,
+  hash: String,
+  role: String,
 });
 
 /**

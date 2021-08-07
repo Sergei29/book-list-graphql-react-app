@@ -4,13 +4,18 @@ import { gql } from "apollo-server";
  * @description a GraphQL schema
  */
 export const typeDefs = gql`
+  enum Role {
+    ADMIN
+    USER
+  }
+
   type Query {
     book(id: ID!): Book
     author(id: ID!): Author
     books: [Book]
     authors: [Author]
     me: User
-    user(id: ID!): User
+    userById(id: ID!): User
     users: [User]
   }
 
@@ -30,9 +35,17 @@ export const typeDefs = gql`
 
   type User {
     id: ID!
-    username: String!
+    email: String!
+    role: Role
+  }
+
+  input Credentials {
+    email: String!
     password: String!
-    token: String
+  }
+
+  type AuthPayload {
+    user: User
   }
 
   type Mutation {
@@ -42,9 +55,10 @@ export const typeDefs = gql`
     editBook(id: ID!, name: String!, genre: String!, authorId: ID!): Book!
     removeAuthor(id: ID!): Author!
     removeBook(id: ID!): Book!
-    register(username: String!, password: String!): User!
-    login(username: String!, password: String!): User!
-    removeUser(username: String!): User
-    editUser(id: ID!, username: String!, password: String!): User
+    signUp(credentials: Credentials!): AuthPayload
+    signIn(credentials: Credentials!): AuthPayload
+    userInfo: AuthPayload
+    signOut: AuthPayload
+    removeUser(username: String!): AuthPayload
   }
 `;

@@ -1,11 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-const strSecret = process.env.SECRET || "adasdfefdgfgfdgdfgdf3453fdfg";
-enum Expiry {
-  IN_1_HOUR = 60 * 60 * 1000,
-  IN_24_HOURS = 60 * 60 * 24 * 1000,
-  IN_7_DAYS = 60 * 60 * 24 * 7 * 1000,
-}
+import { Expiry } from "../types";
+const strSecret = process.env.SECRET!;
 
 /**
  * @description to encrypt the password

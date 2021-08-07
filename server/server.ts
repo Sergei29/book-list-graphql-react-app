@@ -6,8 +6,9 @@ import { connectMongoDB } from "./mongoDB/mongoDB";
 import { arrMiddleware } from "./middleware/middleware";
 import { resolvers } from "./resolvers";
 import { typeDefs } from "./schema/schema";
-import { getPayload } from "./util/authUtils";
+import { funcVerifyToken } from "./util/auth";
 import { dataSources } from "./datasources";
+import { TokenPayloadType } from "./types";
 
 if (process.env.NODE_ENV !== "production") {
   dotenv.config();
@@ -29,16 +30,21 @@ const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
   dataSources,
-  context: ({ req }) => {
-    // IMPORTANT: the headers.authorization value must be set on client with the value of received auth token.
+  context: ({ req, res, connection }) => {
+    let user: TokenPayloadType | null = null;
 
-    // get the user token from the headers
-    const strToken = req.headers.authorization || "";
-    // try to retrieve the user based on token received:
-    const { payload: user, loggedIn } = getPayload(strToken);
+    if (connection && connection?.context) {
+      user = connection.context.user || null;
+    }
 
-    // add the user to the context:
-    return { user, loggedIn };
+    /**
+     * @description decode request cookie token to get user data, set it into context
+     */
+    if (req && req.cookies.token) {
+      const userDecodedData = funcVerifyToken(req.cookies.token);
+      user = userDecodedData as TokenPayloadType;
+    }
+    return { user, res };
   },
 });
 apolloServer.applyMiddleware({ app: app as any, path: "/graphql" });
