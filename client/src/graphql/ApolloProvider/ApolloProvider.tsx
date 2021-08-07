@@ -13,6 +13,7 @@ const httpLink = new HttpLink({
     process.env.NODE_ENV === "development"
       ? "http://localhost:4000/graphql"
       : "/graphql",
+  credentials: "include",
 });
 
 /**
@@ -44,16 +45,12 @@ const getClient = (strAuthToken: string) =>
     connectToDevTools: process.env.NODE_ENV === "development",
   });
 
-type Props = {
-  children: React.ReactNode;
-};
-
 /**
  * @description Apollo instance provider for the application
  * @param {Node} {children nested children components}
  * @returns {JSX} application components with provided client instance
  */
-const ApolloProvider: React.FC<Props> = ({ children }) => {
+const ApolloProvider: React.FC = ({ children }) => {
   const { strAuthToken } = useAuthToken();
   const client = getClient(strAuthToken);
   return <ApolloProviderHOC client={client}>{children}</ApolloProviderHOC>;

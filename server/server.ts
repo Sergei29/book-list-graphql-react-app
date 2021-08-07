@@ -47,7 +47,20 @@ const apolloServer = new ApolloServer({
     return { user, res };
   },
 });
-apolloServer.applyMiddleware({ app: app as any, path: "/graphql" });
+
+const corsOptions = {
+  credentials: true,
+  origin:
+    process.env.NODE_ENV !== "production"
+      ? "http://localhost:3000"
+      : "https://reading-list-react-graphql.herokuapp.com",
+};
+
+apolloServer.applyMiddleware({
+  app: app as any,
+  path: "/graphql",
+  cors: corsOptions,
+});
 
 /**
  * @description serve react app client in production mode
