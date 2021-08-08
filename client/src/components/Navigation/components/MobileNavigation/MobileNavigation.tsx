@@ -15,7 +15,7 @@ import HomeIcon from "@material-ui/icons/Home";
 import { MuiSelectedTheme } from "../../../../types/types";
 // components:
 import GitHubButton from "../../../GitHubButton";
-import Authentication from "../../../Authentication";
+import AuthLink from "../../../AuthLink";
 import Switch from "../../../Switch";
 // styles:
 import { useStyles } from "./style";
@@ -23,6 +23,7 @@ import { useStyles } from "./style";
 const { LIGHT, DARK } = MuiSelectedTheme;
 
 type Props = {
+  bAdmin: boolean;
   bLightTheme: boolean;
   bLoggedIn: boolean;
   funcToggleTheme: () => void;
@@ -36,6 +37,7 @@ type Props = {
  * @returns {JSX} component markup
  */
 const MobileNavigation: React.FC<Props> = ({
+  bAdmin,
   bLoggedIn,
   bLightTheme,
   funcToggleTheme,
@@ -73,7 +75,7 @@ const MobileNavigation: React.FC<Props> = ({
               <span>Home</span>
             </NavLink>
           </ListItem>
-          {bLoggedIn && (
+          {bAdmin && (
             <ListItem button classes={{ root: classes.listItemRoot }}>
               <NavLink
                 exact
@@ -89,7 +91,7 @@ const MobileNavigation: React.FC<Props> = ({
               </NavLink>
             </ListItem>
           )}
-          <Authentication
+          <AuthLink
             bLoggedIn={bLoggedIn}
             handleLogout={handleLogout}
             funcModalOpen={funcModalOpen}

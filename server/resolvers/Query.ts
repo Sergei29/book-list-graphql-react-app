@@ -1,5 +1,5 @@
-import { IFieldResolver, AuthenticationError } from "apollo-server-express";
-import { ErrorMessage, ContextType } from "../types/types";
+import { IFieldResolver } from "apollo-server-express";
+import { ContextType } from "../types/types";
 
 type ParentType = Record<string, any>;
 type ArgsType = Record<string, any>;
@@ -21,15 +21,14 @@ export const Query: QueryResolverType = {
   authors: async (parent, args, { dataSources }, info) =>
     await dataSources.authors.getAllAuthors(),
 
-  me: (parent, args, context, info) => {
-    if (context.loggedIn) {
-      return context.user;
-    } else {
-      throw new AuthenticationError(ErrorMessage.LOGIN_REQUIRED);
+  me: async (parent, args, { dataSources, user }, info) => {
+    if (user && user.sub) {
+      return dataSources.users.getUserById(user?.sub);
     }
+    return undefined;
   },
 
-  user: async (parent, args, { dataSources }, info) =>
+  userById: async (parent, args, { dataSources }, info) =>
     await dataSources.users.getUserById(args.id),
 
   users: async (parent, args, { dataSources }, info) =>

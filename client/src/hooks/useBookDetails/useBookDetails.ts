@@ -1,6 +1,6 @@
 import { useQuery, ApolloError } from "@apollo/client";
 import { GET_FAVORITES, GET_BOOK_DETAILS } from "../../graphql/queries";
-import { favoritesReactiveVar } from "../../ApolloProvider/reactiveVars";
+import { favoritesReactiveVar } from "../../graphql/ApolloProvider/reactiveVars";
 import { BookType } from "../../types/types";
 
 type HookProps = {

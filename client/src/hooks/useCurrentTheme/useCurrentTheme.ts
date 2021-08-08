@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { currentThemeVar } from "../../ApolloProvider/reactiveVars";
+import { currentThemeVar } from "../../graphql/ApolloProvider/reactiveVars";
 import { GET_CURRENT_THEME } from "../../graphql/queries";
 import { MuiSelectedTheme } from "../../types/types";
 

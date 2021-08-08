@@ -2,6 +2,11 @@ import React from "react";
 import { Author } from "./authorType";
 import { Book } from "./bookType";
 
+export enum Role {
+  ADMIN = "ADMIN",
+  USER = "USER",
+}
+
 export enum MuiSelectedTheme {
   LIGHT = "light",
   DARK = "dark",
@@ -13,8 +18,8 @@ export type AuthorType = Author;
 
 export type UserType = {
   id: string;
-  username: string;
-  token?: string;
+  email?: string;
+  role?: Role;
 };
 
 export type MaybeArrBooks = (Book | null)[] | undefined | null;

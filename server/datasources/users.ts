@@ -20,12 +20,12 @@ export class UsersDataSource extends MongoDataSource<UserType, ContextType> {
   getUserById = async (strUserId: string) => await this.findOneById(strUserId);
 
   /**
-   * @description returns an user by a given username
-   * @param {String} strUsername user's username
+   * @description returns an user by a given email
+   * @param {String} strEmail user's email
    * @returns {Promise<Object>} promise resolving to user's object
    */
-  getUserByUsername = async (strUsername: string) =>
-    await this.model.findOne({ username: strUsername });
+  getUserByEmail = async (strEmail: string) =>
+    await this.model.findOne({ email: strEmail });
 
   /**
    * @description util to save user's data in DB
