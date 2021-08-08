@@ -1,12 +1,13 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useContext } from "react";
 import { Base64 } from "js-base64";
 import { useMutation } from "@apollo/client";
-import { authStatusVar } from "../../graphql/ApolloProvider/reactiveVars";
+import { objAuthContext } from "../../containers/AuthProvider";
 import { SIGN_IN } from "../../graphql/mutations";
-import useAuthToken from "../useAuthToken";
+import { UserType } from "../../types";
 
+type SignInPaloadType = { signIn: { user: UserType } };
 type FormStateType = {
-  username: string;
+  email: string;
   password: string;
 };
 
@@ -17,15 +18,15 @@ type FormStateType = {
  */
 const useLoginForm = (onLoginSuccess: () => void) => {
   const [objFormData, setObjFormData] = useState<FormStateType>({
-    username: "",
+    email: "",
     password: "",
   });
   const [nstrSignInError, setnstrSignInError] = useState<null | string>(null);
   const [bShowPassword, setbShowPassword] = useState<boolean>(false);
 
-  const { funcSetAuthToken } = useAuthToken();
+  const { setObjAuthInfo } = useContext(objAuthContext);
 
-  const [funcSignInMutation] = useMutation(SIGN_IN);
+  const [funcSignInMutation] = useMutation<SignInPaloadType>(SIGN_IN);
 
   /**
    * @description on input change callback
@@ -46,7 +47,7 @@ const useLoginForm = (onLoginSuccess: () => void) => {
    * @description reset all fields
    * @returns {undefined} sets state
    */
-  const handleReset = () => setObjFormData({ username: "", password: "" });
+  const handleReset = () => setObjFormData({ email: "", password: "" });
 
   /**
    * @description on form submit callback
@@ -55,21 +56,20 @@ const useLoginForm = (onLoginSuccess: () => void) => {
    */
   const handleSubmit = async (objEvent: React.FormEvent) => {
     objEvent.preventDefault();
-    const { username, password } = objFormData;
-    if (!username.length || !password.length) return;
+    const { email, password } = objFormData;
+    if (!email.length || !password.length) return;
     const strEncodedPassword = Base64.encode(password);
+
     try {
       await funcSignInMutation({
-        variables: { username, password: strEncodedPassword },
-        update: (cache, { data: { login } }) => {
-          const { token } = login || {};
-          if (token) {
-            funcSetAuthToken(token);
-            authStatusVar({ bLoggedIn: true });
+        variables: { email, password: strEncodedPassword },
+        update: (_, { data }) => {
+          const nObjUserData = data?.signIn.user || null;
+          if (nObjUserData) {
+            setObjAuthInfo({ nObjUserData });
             onLoginSuccess();
           }
         },
-        // refetchQueries: [{ query: GET_CURRENT_USER }],
       });
       setnstrSignInError(null);
     } catch (error) {
@@ -79,7 +79,7 @@ const useLoginForm = (onLoginSuccess: () => void) => {
 
   /**
    * @description show/hide pw value
-   * @returns {any}
+   * @returns {undefined} sets tate
    */
   const handleToggleShowPassword = useCallback(() => {
     setbShowPassword((bPrevShow) => !bPrevShow);

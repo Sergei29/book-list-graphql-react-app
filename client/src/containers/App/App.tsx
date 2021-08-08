@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Route, Switch } from "react-router-dom";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { ThemeProvider } from "@material-ui/core/styles";
-import useCurrentUser from "../../hooks/useCurrentUser/useCurrentUser";
+import { objAuthContext } from "../../containers/AuthProvider";
 import useCurrentTheme from "../../hooks/useCurrentTheme/useCurrentTheme";
 import muiThemeLight from "../../Theme/muiThemeLight";
 import muiThemeDark from "../../Theme/muiThemeDark";
@@ -21,8 +21,8 @@ import { useStyles } from "./style";
  */
 const App: React.FC = () => {
   const classes = useStyles();
-  const { bLoggedIn } = useCurrentUser();
   const { bLightTheme } = useCurrentTheme();
+  const { getIsAdmin } = useContext(objAuthContext);
 
   return (
     <ThemeProvider theme={bLightTheme ? muiThemeLight : muiThemeDark}>
@@ -32,7 +32,7 @@ const App: React.FC = () => {
         <Navigation />
         <Switch>
           <Route path="/" exact component={BookListPage} />
-          {bLoggedIn && <Route path="/admin" component={AdminPage} />}
+          {getIsAdmin() && <Route path="/admin" component={AdminPage} />}
           <Route render={() => <h4>Page not found.</h4>} />
         </Switch>
       </Container>

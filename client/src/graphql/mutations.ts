@@ -51,9 +51,33 @@ export const SIGN_IN = gql`
   }
 `;
 
+export const SIGN_OUT = gql`
+  mutation SignOut {
+    signOut {
+      user {
+        id
+        email
+        role
+      }
+    }
+  }
+`;
+
 export const REMOVE_USER = gql`
   mutation RemoveUser($id: ID!) {
     removeUser(id: $id) {
+      user {
+        id
+        email
+        role
+      }
+    }
+  }
+`;
+
+export const USER_INFO = gql`
+  mutation UserInfo {
+    userInfo {
       user {
         id
         email

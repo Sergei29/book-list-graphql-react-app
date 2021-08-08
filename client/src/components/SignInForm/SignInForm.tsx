@@ -20,7 +20,7 @@ type Props = {
  * @param {Object} props component props
  * @returns {JSX} markup, form with input fields and buttons
  */
-const AuthForm: React.FC<Props> = ({ funcCloseModal }) => {
+const SignInForm: React.FC<Props> = ({ funcCloseModal }) => {
   const classes = useStyles();
 
   const {
@@ -43,12 +43,12 @@ const AuthForm: React.FC<Props> = ({ funcCloseModal }) => {
       <FormControl>
         <TextField
           type="text"
-          name="username"
-          label="Username"
+          name="email"
+          label="Email"
           variant="outlined"
           onChange={handleChange}
           className={classes.authForm__input}
-          value={objFormData.username}
+          value={objFormData.email}
         />
       </FormControl>
       <FormControl>
@@ -88,4 +88,4 @@ const AuthForm: React.FC<Props> = ({ funcCloseModal }) => {
   );
 };
 
-export default AuthForm;
+export default SignInForm;

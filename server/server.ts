@@ -3,7 +3,7 @@ import { ApolloServer } from "apollo-server-express";
 import path from "path";
 import dotenv from "dotenv";
 import { connectMongoDB } from "./mongoDB/mongoDB";
-import { arrMiddleware } from "./middleware/middleware";
+import { arrMiddleware, corsOptions } from "./middleware/middleware";
 import { resolvers } from "./resolvers";
 import { typeDefs } from "./schema/schema";
 import { funcVerifyToken } from "./util/auth";
@@ -47,14 +47,6 @@ const apolloServer = new ApolloServer({
     return { user, res };
   },
 });
-
-const corsOptions = {
-  credentials: true,
-  origin:
-    process.env.NODE_ENV !== "production"
-      ? "http://localhost:3000"
-      : "https://reading-list-react-graphql.herokuapp.com",
-};
 
 apolloServer.applyMiddleware({
   app: app as any,

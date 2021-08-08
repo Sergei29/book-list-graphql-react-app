@@ -1,8 +1,15 @@
 import React, { useState, createContext } from "react";
-import { Role } from "../../types";
+import { UserType, Role } from "../../types";
+
+const objInitialContext: Readonly<AuthContextType> = {
+  objAuthInfo: { nObjUserData: null },
+  setObjAuthInfo: () => {},
+  getIsAuthenticated: () => false,
+  getIsAdmin: () => false,
+};
 
 type AuthStateType = {
-  nObjUserData: { email?: string; id?: string; role?: Role } | null;
+  nObjUserData: UserType | null;
 };
 
 type AuthContextType = {
@@ -12,15 +19,18 @@ type AuthContextType = {
   getIsAdmin: () => boolean;
 };
 
-export const objAuthContext = createContext<AuthContextType>({
-  objAuthInfo: { nObjUserData: null },
-  setObjAuthInfo: () => {},
-  getIsAuthenticated: () => false,
-  getIsAdmin: () => false,
-});
+/**
+ * @description authenticaton context bearing current user info and user info setter function and getter functions for auth status and admin status
+ */
+export const objAuthContext = createContext<AuthContextType>(objInitialContext);
 
 const { Provider } = objAuthContext;
 
+/**
+ * @description Auth info provider for the application
+ * @param {Node} children nested children components
+ * @returns {JSX} children components with provided context
+ */
 export const AuthProvider: React.FC = ({ children }) => {
   const [objAuthInfo, setObjAuthInfo] = useState<AuthStateType>({
     nObjUserData: null,

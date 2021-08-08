@@ -1,7 +1,6 @@
-import React, { useState, useCallback } from "react";
+import React from "react";
 import {
   IconButton,
-  Typography,
   Tooltip,
   ListItem,
   ListItemIcon,
@@ -24,7 +23,7 @@ type Props = {
  * @description functional component, authentication link and modal
  * @returns {JSX} authentication markup
  */
-const Authentication: React.FC<Props> = ({
+const AuthLink: React.FC<Props> = ({
   bLoggedIn,
   handleLogout,
   funcModalOpen,
@@ -73,4 +72,4 @@ const Authentication: React.FC<Props> = ({
   );
 };
 
-export default Authentication;
+export default AuthLink;

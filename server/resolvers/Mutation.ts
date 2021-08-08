@@ -10,6 +10,7 @@ import {
   funcHashPassword,
   funcCreateToken,
   funcVerifyPassword,
+  funcDecodeBase64Password,
 } from "../util/auth";
 import funcFormatUser from "../util/funcFormatUser";
 
@@ -108,7 +109,10 @@ export const Mutation: MutationResolverType = {
 
   signUp: async (parent, { credentials }, { dataSources, res }, info) => {
     const { email, password } = credentials;
-    const objUserCredentials = { email: email.toLowerCase(), password };
+    const objUserCredentials = {
+      email: email.toLowerCase(),
+      password: funcDecodeBase64Password(password),
+    };
     const { users } = dataSources;
 
     const nObjExistingUser = await users.getUserByEmail(
@@ -139,7 +143,10 @@ export const Mutation: MutationResolverType = {
 
   signIn: async (parent, { credentials }, { dataSources, res }, info) => {
     const { email, password } = credentials;
-    const objUserCredentials = { email: email.toLowerCase(), password };
+    const objUserCredentials = {
+      email: email.toLowerCase(),
+      password: funcDecodeBase64Password(password),
+    };
 
     const nObjExistingUser = await dataSources.users.getUserByEmail(
       objUserCredentials.email
@@ -170,6 +177,11 @@ export const Mutation: MutationResolverType = {
         role: nObjExistingUser.role,
       },
     };
+  },
+
+  signOut: async (parent, args, { res }, info) => {
+    res.clearCookie("token");
+    return { user: undefined };
   },
 
   userInfo: async (parent, args, { user }, info) => {

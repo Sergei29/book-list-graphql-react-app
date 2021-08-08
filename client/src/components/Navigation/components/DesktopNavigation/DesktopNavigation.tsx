@@ -4,7 +4,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { MuiSelectedTheme } from "../../../../types/types";
 // components:
 import GitHubButton from "../../../GitHubButton";
-import Authentication from "../../../Authentication";
+import AuthLink from "../../../AuthLink";
 import Switch from "../../../Switch";
 // styles:
 import { useStyles } from "./style";
@@ -12,6 +12,7 @@ import { useStyles } from "./style";
 const { LIGHT, DARK } = MuiSelectedTheme;
 
 type Props = {
+  bAdmin: boolean;
   bLoggedIn: boolean;
   bLightTheme: boolean;
   funcModalOpen: () => void;
@@ -25,6 +26,7 @@ type Props = {
  * @returns {JSX} component markup
  */
 const DesktopNavigation: React.FC<Props> = ({
+  bAdmin,
   bLoggedIn,
   bLightTheme,
   funcModalOpen,
@@ -41,7 +43,7 @@ const DesktopNavigation: React.FC<Props> = ({
             Home
           </NavLink>
         </li>
-        {bLoggedIn && (
+        {bAdmin && (
           <li className={classes.navigation__list__item}>
             <NavLink to="/admin" className={classes.navLink}>
               Admin
@@ -49,7 +51,7 @@ const DesktopNavigation: React.FC<Props> = ({
           </li>
         )}
         <li className={classes.navigation__list__item}>
-          <Authentication
+          <AuthLink
             bLoggedIn={bLoggedIn}
             funcModalOpen={funcModalOpen}
             handleLogout={handleLogout}

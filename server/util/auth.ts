@@ -1,5 +1,6 @@
 import JWT from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import { Base64 } from "js-base64";
 import dotenv from "dotenv";
 import { TokenPayloadType } from "../types";
 
@@ -7,6 +8,14 @@ if (process.env.NODE_ENV !== "production") {
   dotenv.config();
 }
 const strSecret = process.env.SECRET!;
+
+/**
+ * @description decode password that was encoded on client
+ * @param {String} strBase64Encoded base64 encoded password
+ * @returns {String} decoded password value
+ */
+export const funcDecodeBase64Password = (strBase64Encoded: string) =>
+  Base64.decode(strBase64Encoded);
 
 /**
  *@description generate JWT token based on user's info
