@@ -48,6 +48,7 @@ export const Mutation: MutationResolverType = {
       name: args.name,
       genre: args.genre,
       authorId: args.authorId,
+      addedBy: args.addedBy,
     });
   },
 
@@ -73,7 +74,7 @@ export const Mutation: MutationResolverType = {
   },
 
   editBook: async (parent, args, { dataSources }, info) => {
-    const { id, name, genre, authorId } = args;
+    const { id, name, genre, authorId, addedBy } = args;
     const objExistingBook = await dataSources.books.getBookById(id);
     if (!objExistingBook) {
       throw new UserInputError(ErrorMessage.BOOK_NOT_FOUND);
@@ -84,6 +85,7 @@ export const Mutation: MutationResolverType = {
       name,
       genre,
       authorId,
+      addedBy,
     });
   },
 

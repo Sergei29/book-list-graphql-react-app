@@ -35,6 +35,7 @@ export type BookType = {
   name: string;
   genre: string;
   authorId: string;
+  addedBy: string;
 } & Document;
 
 export type AuthorType = {
