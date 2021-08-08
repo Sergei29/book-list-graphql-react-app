@@ -53,16 +53,6 @@ export const GET_BOOK_DETAILS = gql`
   }
 `;
 
-export const GET_CURRENT_USER = gql`
-  query GetCurrentUser {
-    me {
-      id
-      email
-      role
-    }
-  }
-`;
-
 export const GET_FAVORITES = gql`
   query GetFavorites {
     arrFavoriteBookIds @client
