@@ -47,9 +47,11 @@ const BookDetails: React.FC<Props> = ({ strBookId }) => {
               <li key={objBook!.id}>{objBook!.name}</li>
             ))}
           </ul>
-          <Typography className={classes.bookDetails__addedBy}>
-            Book added by: {addedBy || "unknown"}
-          </Typography>
+          {!!addedBy && (
+            <Typography className={classes.bookDetails__addedBy}>
+              Book added by: {addedBy}
+            </Typography>
+          )}
         </>
       );
     } else {
