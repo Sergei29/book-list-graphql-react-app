@@ -35,6 +35,7 @@ export type AddBookFormStateType = {
   name: string;
   genre: string;
   authorId: string;
+  addedBy: string;
 };
 
 export type InputChangeEvent = React.ChangeEvent<
