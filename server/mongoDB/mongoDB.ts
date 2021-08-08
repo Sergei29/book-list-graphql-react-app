@@ -1,4 +1,5 @@
 import Mongoose from "mongoose";
+import { MONGO_URI } from "../constants";
 
 let database: Mongoose.Connection;
 
@@ -7,10 +8,9 @@ let database: Mongoose.Connection;
  * @returns {undefined} sets connection
  */
 export const connectMongoDB = () => {
-  const uri = process.env.MONGO_URI!;
   if (database) return;
 
-  Mongoose.connect(uri, {
+  Mongoose.connect(MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,

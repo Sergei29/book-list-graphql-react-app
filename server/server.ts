@@ -1,27 +1,18 @@
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import path from "path";
-import dotenv from "dotenv";
 import { connectMongoDB } from "./mongoDB/mongoDB";
-import { arrMiddleware, corsOptions } from "./middleware/middleware";
+import { arrMiddleware } from "./middleware/middleware";
 import { resolvers } from "./resolvers";
 import { typeDefs } from "./schema/schema";
 import { funcVerifyToken } from "./util/auth";
 import { dataSources } from "./datasources";
 import { TokenPayloadType } from "./types";
-
-if (process.env.NODE_ENV !== "production") {
-  dotenv.config();
-}
+import { NODE_ENV, PORT, CORS_OPTIONS } from "./constants";
 
 const app = express();
 app.use(...arrMiddleware);
 connectMongoDB();
-
-/**
- * @description when we deploy on heroku - it sets PORT env variable for us.
- */
-const port = process.env.PORT || 4000;
 
 /**
  * @description initialise GraphQL server and apply express middleware:
@@ -51,7 +42,7 @@ const apolloServer = new ApolloServer({
 apolloServer.applyMiddleware({
   app: app as any,
   path: "/graphql",
-  cors: corsOptions,
+  cors: CORS_OPTIONS,
 });
 
 /**
@@ -59,7 +50,7 @@ apolloServer.applyMiddleware({
  * indicate the path to static files and,
  * for every/all incoming get requests: serve react app index.html
  */
-if (process.env.NODE_ENV === "production") {
+if (NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "..", "..", "client/build")));
   app.get("*", (req, res) => {
     res.sendFile(
@@ -71,8 +62,8 @@ if (process.env.NODE_ENV === "production") {
 /**
  * @description server listen, for dev mode log the message.
  */
-app.listen(port, () => {
+app.listen(PORT, () => {
   console.log(
-    `server running on http://localhost:${port}, GraphQL server at http://localhost:${port}/graphql`
+    `server running on http://localhost:${PORT}, GraphQL server at http://localhost:${PORT}/graphql`
   );
 });

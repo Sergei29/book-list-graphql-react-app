@@ -1,13 +1,8 @@
 import JWT from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { Base64 } from "js-base64";
-import dotenv from "dotenv";
 import { TokenPayloadType } from "../types";
-
-if (process.env.NODE_ENV !== "production") {
-  dotenv.config();
-}
-const strSecret = process.env.SECRET!;
+import { SECRET } from "../constants";
 
 /**
  * @description decode password that was encoded on client
@@ -25,7 +20,7 @@ export const funcDecodeBase64Password = (strBase64Encoded: string) =>
 export const funcCreateToken = (userInfo: Record<string, any>) =>
   JWT.sign(
     { sub: userInfo.id, email: userInfo.email, role: userInfo.role },
-    strSecret
+    SECRET
   );
 
 /**
@@ -53,4 +48,4 @@ export const funcHashPassword = (strPassword: string) =>
  * @returns {String | Object} decoded user info
  */
 export const funcVerifyToken = (strToken: string): TokenPayloadType | string =>
-  JWT.verify(strToken, strSecret);
+  JWT.verify(strToken, SECRET);

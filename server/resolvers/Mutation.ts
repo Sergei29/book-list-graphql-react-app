@@ -4,7 +4,6 @@ import {
   UserInputError,
   ApolloError,
 } from "apollo-server-express";
-import dotenv from "dotenv";
 import { ErrorMessage, ContextType, Role, Expiry } from "../types/types";
 import {
   funcHashPassword,
@@ -12,12 +11,7 @@ import {
   funcVerifyPassword,
   funcDecodeBase64Password,
 } from "../util/auth";
-import funcFormatUser from "../util/funcFormatUser";
-
-if (process.env.NODE_ENV !== "production") {
-  dotenv.config();
-}
-const strAdminEmail = process.env.ADMIN_EMAIL!;
+import { ADMIN_EMAIL } from "../constants";
 
 const { ADMIN, USER } = Role;
 
@@ -120,7 +114,7 @@ export const Mutation: MutationResolverType = {
     );
     if (nObjExistingUser) throw new ApolloError(ErrorMessage.USER_EXISTS);
 
-    const role = objUserCredentials.email === strAdminEmail ? ADMIN : USER;
+    const role = objUserCredentials.email === ADMIN_EMAIL ? ADMIN : USER;
 
     const hash = funcHashPassword(objUserCredentials.password);
     const objNewUser = await users.addNewUser({
