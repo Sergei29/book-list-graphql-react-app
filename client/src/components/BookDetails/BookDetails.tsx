@@ -48,7 +48,7 @@ const BookDetails: React.FC<Props> = ({ strBookId }) => {
             ))}
           </ul>
           <Typography className={classes.bookDetails__addedBy}>
-            Book added by: {addedBy}
+            Book added by: {addedBy || "unknown"}
           </Typography>
         </>
       );
