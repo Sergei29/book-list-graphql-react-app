@@ -5,7 +5,7 @@ import { USER_INFO, SIGN_OUT } from "../../graphql/mutations";
 import { objAuthContext } from "../../containers/AuthProvider";
 import { UserType } from "../../types";
 
-type UserInfoPaloadType = { user: UserType };
+type UserInfoPayloadType = { userInfo: { user: UserType } };
 
 type HookReturnType = {
   bLoadingUserInfo: boolean;
@@ -22,7 +22,7 @@ export const useAuthentication = (): HookReturnType => {
   const { setObjAuthInfo } = useContext(objAuthContext);
 
   const [getUserInfo, { loading: bLoadingUserInfo }] =
-    useMutation<UserInfoPaloadType>(USER_INFO);
+    useMutation<UserInfoPayloadType>(USER_INFO);
 
   const [handleSignOut, { loading: bSigningOut }] = useMutation(SIGN_OUT, {
     onCompleted: () => {
@@ -31,11 +31,15 @@ export const useAuthentication = (): HookReturnType => {
     },
   });
 
+  /**
+   * @description effect to run on app load/reload
+   * @returns {undefined} fetches user info, sets auth context value
+   */
   useEffect(() => {
     const handleSessionInit = async () => {
       try {
         const { data } = await getUserInfo();
-        setObjAuthInfo({ nObjUserData: data!.user || null });
+        setObjAuthInfo({ nObjUserData: data!.userInfo.user || null });
       } catch (error) {
         console.log(`error session init: `, error.message);
       }
