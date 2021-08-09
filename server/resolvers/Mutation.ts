@@ -10,9 +10,9 @@ import {
   funcCreateToken,
   funcVerifyPassword,
   funcDecodeBase64Password,
-} from "../util/auth";
-import { funcSendEmail } from "../util/funcSendEmail";
-import funcFormatUser from "../util/funcFormatUser";
+  funcFormatUser,
+  funcSendEmail,
+} from "../util";
 import { ADMIN_EMAIL, origin } from "../constants";
 
 const { ADMIN, USER } = Role;
