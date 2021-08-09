@@ -20,6 +20,7 @@ export type UserType = {
   id: string;
   email?: string;
   role?: Role;
+  active?: boolean;
 };
 
 export type MaybeArrBooks = (Book | null)[] | undefined | null;

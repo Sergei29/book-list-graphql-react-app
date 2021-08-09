@@ -119,9 +119,9 @@ export const Mutation: MutationResolverType = {
     if (nObjExistingUser) throw new ApolloError(ErrorMessage.USER_EXISTS);
 
     const role = objUserCredentials.email === ADMIN_EMAIL ? ADMIN : USER;
-
+    console.log(`objUserCredentials.password: `, objUserCredentials.password);
     const hash = funcHashPassword(objUserCredentials.password);
-
+    console.log(`hash: `, hash);
     const objNewUser = await users.addNewUser({
       email: objUserCredentials.email,
       hash,
@@ -176,7 +176,6 @@ export const Mutation: MutationResolverType = {
       objUserCredentials.email
     );
     if (!nObjExistingUser) throw new ApolloError(ErrorMessage.USER_NOT_FOUND);
-
     const bValidPassword = funcVerifyPassword(
       objUserCredentials.password,
       nObjExistingUser.hash!
@@ -199,6 +198,7 @@ export const Mutation: MutationResolverType = {
         id: nObjExistingUser.id,
         email: nObjExistingUser.email,
         role: nObjExistingUser.role,
+        active: nObjExistingUser.active,
       },
     };
   },
@@ -211,7 +211,12 @@ export const Mutation: MutationResolverType = {
   userInfo: async (parent, args, { user }, info) => {
     if (user) {
       return {
-        user: { id: user.sub, email: user.email, role: user.role },
+        user: {
+          id: user.sub,
+          email: user.email,
+          role: user.role,
+          active: true,
+        },
       };
     }
 
