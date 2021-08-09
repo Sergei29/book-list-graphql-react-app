@@ -129,7 +129,7 @@ export const Mutation: MutationResolverType = {
       active: false,
     });
 
-    await funcSendEmail(objNewUser.email, {
+    const strNewUserEmail = await funcSendEmail(objNewUser.email, {
       subject: "verify new user email",
       text: `Copy and paste this link: ${origin}/confirm/${objNewUser.id}`,
       html: `<a href="${origin}/confirm/${objNewUser.id}" >verify your email link</a>`,
@@ -138,7 +138,7 @@ export const Mutation: MutationResolverType = {
     return {
       user: {
         id: objNewUser.id,
-        email: objNewUser.email,
+        email: strNewUserEmail,
         role: objNewUser.role,
         active: objNewUser.active,
       },

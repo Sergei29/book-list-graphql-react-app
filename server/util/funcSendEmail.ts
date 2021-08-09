@@ -24,7 +24,7 @@ const transporter = nodemailer.createTransport(credentials);
  * @description util function to send email from server
  * @param {String} strEmailTo destination email
  * @param {Object} objContent email content
- * @returns {Promise<void>} promise that resolves to undefined on success
+ * @returns {Promise<string>} promise that resolves to and email address on success
  */
 export const funcSendEmail = async (
   strEmailTo: string,
@@ -39,7 +39,8 @@ export const funcSendEmail = async (
 
   try {
     const mixedSentMessageInfo = await transporter.sendMail(objEmail);
-    console.log(`mixedSentMessageInfo: `, mixedSentMessageInfo);
+    const strEmailAddressAccepted = mixedSentMessageInfo.accepted[0];
+    return strEmailAddressAccepted as string;
   } catch (error) {
     console.log("Error sending email: ", error.messsage);
   }
