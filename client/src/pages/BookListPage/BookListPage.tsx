@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Typography } from "@material-ui/core";
+import { objAuthContext } from "../../containers/AuthProvider";
 import useBookListPage from "../../hooks/useBookListPage/useBookListPage";
 //components:
 import BookList from "../../components/BookList";
@@ -15,6 +16,7 @@ import { useStyles } from "./style";
  */
 const BookListPage: React.FC = () => {
   const classes = useStyles();
+  const { getIsAuthenticated } = useContext(objAuthContext);
   const { nstrSelectedBookId, handleBookSelect, handleBookDeselect } =
     useBookListPage();
 
@@ -28,7 +30,9 @@ const BookListPage: React.FC = () => {
         My Reading List
       </Typography>
       <BookList onBookSelect={handleBookSelect} />
-      <AddBook nstrSelectedBookId={nstrSelectedBookId} />
+      {getIsAuthenticated() && (
+        <AddBook nstrSelectedBookId={nstrSelectedBookId} />
+      )}
       <BookDetails
         nstrBookId={nstrSelectedBookId}
         handleBookDeselect={handleBookDeselect}

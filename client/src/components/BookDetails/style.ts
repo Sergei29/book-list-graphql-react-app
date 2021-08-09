@@ -3,6 +3,11 @@ import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     bookDetailsContainer: {
+      "& > div": {
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+      },
       [theme.breakpoints.up("md")]: {
         position: "fixed",
         top: 0,
@@ -17,6 +22,12 @@ export const useStyles = makeStyles((theme: Theme) =>
       boxSizing: "border-box",
       color: theme.components?.bookDetails?.color,
       zIndex: 2,
+    },
+    bookDetails__addedBy: {
+      fontSize: 12,
+      marginTop: "auto",
+      textAlign: "end",
+      color: "rgba(0, 0, 0, 0.54)",
     },
   })
 );

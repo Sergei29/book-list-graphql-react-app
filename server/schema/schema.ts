@@ -24,6 +24,7 @@ export const typeDefs = gql`
     name: String
     genre: String
     author: Author
+    addedBy: String # user's email
   }
 
   type Author {
@@ -51,8 +52,19 @@ export const typeDefs = gql`
   type Mutation {
     addAuthor(name: String!, age: Int!): Author!
     editAuthor(id: ID!, name: String!, age: Int!): Author!
-    addBook(name: String!, genre: String!, authorId: ID!): Book!
-    editBook(id: ID!, name: String!, genre: String!, authorId: ID!): Book!
+    addBook(
+      name: String!
+      genre: String!
+      authorId: ID!
+      addedBy: String
+    ): Book!
+    editBook(
+      id: ID!
+      name: String!
+      genre: String!
+      authorId: ID!
+      addedBy: String
+    ): Book!
     removeAuthor(id: ID!): Author!
     removeBook(id: ID!): Book!
     signUp(credentials: Credentials!): AuthPayload

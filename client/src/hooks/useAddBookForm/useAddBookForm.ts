@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import {
   GET_BOOKS,
@@ -7,6 +7,7 @@ import {
 } from "../../graphql/queries";
 import { ADD_BOOK } from "../../graphql/mutations";
 import { validateForm } from "../helpers/validateForm";
+import { objAuthContext } from "../../containers/AuthProvider";
 import {
   ValidationType,
   AddBookFormStateType,
@@ -19,6 +20,7 @@ const INITIAL_BOOK: Readonly<AddBookFormStateType> = {
   name: "",
   genre: "",
   authorId: "",
+  addedBy: "unknown",
 };
 
 /**
@@ -27,23 +29,25 @@ const INITIAL_BOOK: Readonly<AddBookFormStateType> = {
  * @returns {Object} form status and handler functions
  */
 const useAddBookForm = (nstrSelectedBookId: null | string) => {
-  const [objBook, setObjBook] = useState<AddBookFormStateType>(INITIAL_BOOK);
+  const { objAuthInfo } = useContext(objAuthContext);
+  const [objBook, setObjBook] = useState<AddBookFormStateType>({
+    ...INITIAL_BOOK,
+    addedBy: objAuthInfo.nObjUserData?.email || "unknown",
+  });
   const [objFormValidaton, setObjFormValidaton] = useState<ValidationType>({
     bIsValid: false,
     nstrErrorMessage: null,
   });
 
-  const objAuthorsQueryResponse = useQuery<{ authors: AuthorType[] }>(
-    GET_AUTHORS
-  );
+  const objAuthorsQueryResponse =
+    useQuery<{ authors: AuthorType[] }>(GET_AUTHORS);
   const objBookQueryResponse = useQuery<{ books: BookType[] }>(GET_BOOKS);
 
   /**
    * @description add book mutation, updates cache when created, and refetches a query for book details if any book is currently selected
    */
-  const [funcAddBookMutation, objAddBookMutationResponse] = useMutation(
-    ADD_BOOK
-  );
+  const [funcAddBookMutation, objAddBookMutationResponse] =
+    useMutation(ADD_BOOK);
 
   /**
    * @description callback on input change
