@@ -119,9 +119,7 @@ export const Mutation: MutationResolverType = {
     if (nObjExistingUser) throw new ApolloError(ErrorMessage.USER_EXISTS);
 
     const role = objUserCredentials.email === ADMIN_EMAIL ? ADMIN : USER;
-    console.log(`objUserCredentials.password: `, objUserCredentials.password);
     const hash = funcHashPassword(objUserCredentials.password);
-    console.log(`hash: `, hash);
     const objNewUser = await users.addNewUser({
       email: objUserCredentials.email,
       hash,
