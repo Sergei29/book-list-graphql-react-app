@@ -13,6 +13,12 @@ export enum Expiry {
   IN_7_DAYS = 60 * 60 * 24 * 7 * 1000,
 }
 
+export type EmailContentType = {
+  subject: string;
+  text: string;
+  html: string;
+};
+
 export type TokenPayloadType = {
   email?: string;
   role?: Role;
