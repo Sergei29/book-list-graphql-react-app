@@ -35,6 +35,7 @@ export type UserType = {
   email: string;
   hash?: string;
   role?: Role;
+  active?: boolean;
 } & Document;
 
 export type BookType = {
