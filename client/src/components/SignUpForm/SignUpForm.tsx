@@ -6,6 +6,7 @@ import TextField from "../common/TextField";
 import ShowPasswordButton from "../common/ShowPasswordButton";
 import SubmitButton from "../common/SubmitButton";
 import ResetButton from "../common/ResetButton";
+import PageBackDrop from "../common/PageBackDrop";
 import useSignUpForm from "../../hooks/useSignUpForm/useSignUpForm";
 // styles:
 import { useStyles } from "./style";
@@ -45,6 +46,13 @@ const SignUpForm: React.FC<Props> = ({ funcCloseModal, setBSignUp }) => {
     objFormData,
   } = useSignUpForm({ handleSubmitSuccess });
 
+  if (bSignUpLoading) {
+    return (
+      <PageBackDrop>
+        <span>Signing up...</span>
+      </PageBackDrop>
+    );
+  }
   return (
     <Fragment>
       <Typography variant="h5" component="h3" className={classes.authHeading}>

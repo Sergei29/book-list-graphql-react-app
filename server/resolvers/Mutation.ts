@@ -178,8 +178,10 @@ export const Mutation: MutationResolverType = {
       objUserCredentials.password,
       nObjExistingUser.hash!
     );
+    const bActiveUser = nObjExistingUser.active;
 
-    if (!bValidPassword) throw new ApolloError(ErrorMessage.WRONG_PASSWORD);
+    if (!bValidPassword || !bActiveUser)
+      throw new ApolloError(ErrorMessage.WRONG_PASSWORD);
 
     const token = funcCreateToken(nObjExistingUser);
 

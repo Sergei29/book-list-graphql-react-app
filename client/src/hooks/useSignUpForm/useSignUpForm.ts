@@ -22,7 +22,7 @@ type HookReturnType = {
   handleBlur: (strFieldName: string, strFieldValue: string) => void;
   handleChange: (strFieldName: string, strValue: string) => void;
   handleResetForm: () => void;
-  handleSubmit: (objEvent: React.FormEvent) => Promise<void>;
+  handleSubmit: (objEvent: React.FormEvent) => void;
   handleToggleConfirmPassword: () => void;
   handleTogglePassword: () => void;
   nstrSignUpError: string | null;
@@ -63,8 +63,11 @@ const useSignUpForm = ({
   const [bShowConfirmPassword, setbShowConfirmPassword] =
     useState<boolean>(false);
   const [bFormComplete, setbFormComplete] = useState<boolean>(false);
-  const [funcSignUpMutation, { loading: bSignUpLoading }] =
-    useMutation<SignUpPayloadType>(SIGN_UP);
+
+  const [
+    funcSignUpMutation,
+    { loading: bSignUpLoading, error: signUpError, data: objSignUpData },
+  ] = useMutation<SignUpPayloadType>(SIGN_UP, { errorPolicy: "all" });
 
   const { setObjAuthInfo } = useContext(objAuthContext);
 
@@ -122,32 +125,31 @@ const useSignUpForm = ({
   /**
    * @description on form submit callback
    * @param {Object} objEvent form event object
-   * @returns {Promise<void>} promise that on success sets state
+   * @returns {undefined} sets state
    */
-  const handleSubmit = async (objEvent: React.FormEvent) => {
+  const handleSubmit = (objEvent: React.FormEvent) => {
     objEvent.preventDefault();
     if (!bFormComplete) return;
     const { email, password } = objFormData;
     const strEncodedPassword = Base64.encode(password);
-    try {
-      funcSignUpMutation({
-        variables: {
-          email,
-          password: strEncodedPassword,
-        },
-        update: (_, { data }) => {
-          const objNewUser = data?.signUp.user || null;
-          setObjAuthInfo({ nObjUserData: objNewUser });
-          setnstrSignUpError(null);
-          if (objNewUser) {
-            handleSubmitSuccess();
-          }
-        },
-      });
-    } catch (error) {
-      setnstrSignUpError(error.message || "Failed to sign up.");
-    }
+    funcSignUpMutation({
+      variables: {
+        email,
+        password: strEncodedPassword,
+      },
+    });
   };
+
+  useEffect(() => {
+    if (!objSignUpData || !objSignUpData?.signUp) return;
+    setObjAuthInfo({ nObjUserData: objSignUpData.signUp.user || null });
+    handleSubmitSuccess();
+  }, [objSignUpData]);
+
+  useEffect(() => {
+    const nStrErrorMessage = signUpError?.message || null;
+    setnstrSignUpError(nStrErrorMessage);
+  }, [signUpError]);
 
   useEffect(() => {
     const bFormValid = funcIsFormValid(objFormData, objFieldsValidation);
