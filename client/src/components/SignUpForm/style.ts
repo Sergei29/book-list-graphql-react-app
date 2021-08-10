@@ -33,7 +33,6 @@ export const useStyles = makeStyles((theme: Theme) =>
         color: theme.palette.info.main,
       },
     },
-    authForm__buttons__submit: {},
     authForm__buttons__reset: {},
     authForm__error: {
       color: theme.palette.error.main,

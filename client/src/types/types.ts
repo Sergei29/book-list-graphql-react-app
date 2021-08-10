@@ -45,3 +45,14 @@ export type InputChangeEvent = React.ChangeEvent<
   | HTMLSelectElement
   | Record<string, any>
 >;
+
+export type ObjValidationType = {
+  bIsValid: boolean;
+  strErrorMessage: string;
+};
+
+export type SignUpFormStateType = {
+  email: string;
+  password: string;
+  confirm_password: string;
+};

@@ -26,6 +26,7 @@ type Props = {
 
 /**
  * @description add new book form
+ * @param {String | null} nstrSelectedBookId selected book ID
  * @returns {JSX} component markup
  */
 const AddBook: React.FC<Props> = ({ nstrSelectedBookId }) => {

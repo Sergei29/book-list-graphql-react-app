@@ -53,6 +53,19 @@ export const SIGN_UP = gql`
   }
 `;
 
+export const SIGN_UP_CONFIRM = gql`
+  mutation SignUpConfirm($id: ID!) {
+    signUpConfirm(id: $id) {
+      user {
+        id
+        email
+        role
+        active
+      }
+    }
+  }
+`;
+
 export const SIGN_IN = gql`
   mutation SignIn($email: String!, $password: String!) {
     signIn(credentials: { email: $email, password: $password }) {

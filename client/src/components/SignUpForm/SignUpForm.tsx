@@ -1,9 +1,12 @@
 import React, { Fragment } from "react";
+import { useHistory } from "react-router-dom";
 import { FormControl, Button, Box, Typography } from "@material-ui/core";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import TextField from "../common/TextField";
 import ShowPasswordButton from "../common/ShowPasswordButton";
-import useLoginForm from "../../hooks/useLoginForm";
+import SubmitButton from "../common/SubmitButton";
+import ResetButton from "../common/ResetButton";
+import useSignUpForm from "../../hooks/useSignUpForm/useSignUpForm";
 // styles:
 import { useStyles } from "./style";
 
@@ -17,32 +20,44 @@ type Props = {
  * @param {Object} props component props
  * @returns {JSX} markup, form with input fields and buttons
  */
-const SignInForm: React.FC<Props> = ({ funcCloseModal, setBSignUp }) => {
+const SignUpForm: React.FC<Props> = ({ funcCloseModal, setBSignUp }) => {
   const classes = useStyles();
+  const history = useHistory();
+
+  const handleSubmitSuccess = () => {
+    funcCloseModal();
+    history.push("/verify-email");
+  };
 
   const {
+    bFormComplete,
+    bShowConfirmPassword,
     bShowPassword,
-    handleToggleShowPassword,
-    nstrSignInError,
+    bSignUpLoading,
+    handleBlur,
     handleChange,
-    handleReset,
+    handleResetForm,
     handleSubmit,
+    handleToggleConfirmPassword,
+    handleTogglePassword,
+    nstrSignUpError,
+    objFieldsValidation,
     objFormData,
-  } = useLoginForm(funcCloseModal);
+  } = useSignUpForm({ handleSubmitSuccess });
 
   return (
     <Fragment>
       <Typography variant="h5" component="h3" className={classes.authHeading}>
-        Sign In
+        Sign Up
       </Typography>
       <Typography className={classes.authHelperText}>
-        Not registered ?
+        Already registered ?
         <Button
           endIcon={<ExitToAppIcon />}
-          onClick={() => setBSignUp(true)}
+          onClick={() => setBSignUp(false)}
           className={classes.authHelperText__button}
         >
-          Sign Up
+          Log in
         </Button>
       </Typography>
       <Box
@@ -50,9 +65,9 @@ const SignInForm: React.FC<Props> = ({ funcCloseModal, setBSignUp }) => {
         onSubmit={handleSubmit}
         className={classes.authForm}
       >
-        {nstrSignInError && (
+        {nstrSignUpError && (
           <Typography className={classes.authForm__error}>
-            {nstrSignInError}
+            {nstrSignUpError}
           </Typography>
         )}
         <FormControl>
@@ -63,6 +78,9 @@ const SignInForm: React.FC<Props> = ({ funcCloseModal, setBSignUp }) => {
             strFieldname="email"
             strValue={objFormData.email}
             handleChange={handleChange}
+            handleBlur={handleBlur}
+            objValidation={objFieldsValidation.email}
+            required
           />
         </FormControl>
         <FormControl>
@@ -73,33 +91,50 @@ const SignInForm: React.FC<Props> = ({ funcCloseModal, setBSignUp }) => {
             strFieldname="password"
             strValue={objFormData.password}
             handleChange={handleChange}
+            handleBlur={handleBlur}
+            objValidation={objFieldsValidation.password}
+            required
             InputProps={{
               endAdornment: (
                 <ShowPasswordButton
                   bShowPassword={bShowPassword}
-                  handleClick={handleToggleShowPassword}
+                  handleClick={handleTogglePassword}
                   bDisabled={objFormData.password.length === 0}
                 />
               ),
             }}
           />
         </FormControl>
+        <FormControl>
+          <TextField
+            label="Confirm Password"
+            variant="outlined"
+            type={bShowConfirmPassword ? "text" : "password"}
+            strFieldname="confirm_password"
+            strValue={objFormData.confirm_password}
+            handleChange={handleChange}
+            handleBlur={handleBlur}
+            objValidation={objFieldsValidation.confirm_password}
+            required
+            disabled={!objFieldsValidation.password.bIsValid}
+            InputProps={{
+              endAdornment: (
+                <ShowPasswordButton
+                  bShowPassword={bShowConfirmPassword}
+                  handleClick={handleToggleConfirmPassword}
+                  bDisabled={objFormData.confirm_password.length === 0}
+                />
+              ),
+            }}
+          />
+        </FormControl>
         <FormControl className={classes.authForm__buttons}>
-          <Button variant="contained" type="submit" color="secondary">
-            submit
-          </Button>
-          <Button
-            variant="contained"
-            type="reset"
-            onClick={handleReset}
-            color="primary"
-          >
-            reset
-          </Button>
+          <SubmitButton disabled={!bFormComplete}>submit</SubmitButton>
+          <ResetButton onClick={handleResetForm}>reset</ResetButton>
         </FormControl>
       </Box>
     </Fragment>
   );
 };
 
-export default SignInForm;
+export default SignUpForm;
