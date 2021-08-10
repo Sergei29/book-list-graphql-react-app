@@ -11,6 +11,8 @@ import muiThemeDark from "../../Theme/muiThemeDark";
 import BookListPage from "../../pages/BookListPage";
 import AdminPage from "../../pages/AdminPage";
 import Navigation from "../../components/Navigation";
+import SignUpCompletePage from "../../pages/SignUpCompletePage";
+import EmailConfirmedPage from "../../pages/EmailConfirmedPage";
 import PageBackground from "../../components/PageBackground";
 // style:
 import { useStyles } from "./style";
@@ -32,6 +34,8 @@ const App: React.FC = () => {
         <Navigation />
         <Switch>
           <Route path="/" exact component={BookListPage} />
+          <Route path="/signup-complete" component={SignUpCompletePage} />
+          <Route path="/confirm/:userId" component={EmailConfirmedPage} />
           {getIsAdmin() && <Route path="/admin" component={AdminPage} />}
           <Route render={() => <h4>Page not found.</h4>} />
         </Switch>

@@ -28,7 +28,7 @@ const SignUpForm: React.FC<Props> = ({ funcCloseModal, setBSignUp }) => {
 
   const handleSubmitSuccess = () => {
     funcCloseModal();
-    history.push("/verify-email");
+    history.push("/signup-complete");
   };
 
   const {
