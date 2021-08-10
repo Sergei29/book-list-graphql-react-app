@@ -30,12 +30,20 @@ type HookReturnType = {
   objFormData: SignUpFormStateType;
 };
 
+/**
+ * @description generates initial form state
+ * @returns {Object} initial form state
+ */
 const getIntitialFormState = (): Readonly<SignUpFormStateType> => ({
   email: "",
   password: "",
   confirm_password: "",
 });
 
+/**
+ * @description generates initial validation state
+ * @returns {Object} initial validation state
+ */
 const getIntitialValidationState = (): Readonly<
   Record<string, ObjValidationType>
 > => ({
@@ -140,17 +148,29 @@ const useSignUpForm = ({
     });
   };
 
+  /**
+   * @description effect to run on signUp mutation data response
+   * @returns {undefined} sets state
+   */
   useEffect(() => {
     if (!objSignUpData || !objSignUpData?.signUp) return;
     setObjAuthInfo({ nObjUserData: objSignUpData.signUp.user || null });
     handleSubmitSuccess();
   }, [objSignUpData]);
 
+  /**
+   * @description effect to run on signUp mutation error response
+   * @returns {undefined} sets state
+   */
   useEffect(() => {
     const nStrErrorMessage = signUpError?.message || null;
     setnstrSignUpError(nStrErrorMessage);
   }, [signUpError]);
 
+  /**
+   * @description effect to run on form update - define overall form validation
+   * @returns {undefined} sets state
+   */
   useEffect(() => {
     const bFormValid = funcIsFormValid(objFormData, objFieldsValidation);
     setbFormComplete(bFormValid);

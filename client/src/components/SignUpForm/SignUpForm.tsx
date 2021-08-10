@@ -7,6 +7,7 @@ import ShowPasswordButton from "../common/ShowPasswordButton";
 import SubmitButton from "../common/SubmitButton";
 import ResetButton from "../common/ResetButton";
 import PageBackDrop from "../common/PageBackDrop";
+import Loader from "../common/Loader";
 import useSignUpForm from "../../hooks/useSignUpForm/useSignUpForm";
 // styles:
 import { useStyles } from "./style";
@@ -49,7 +50,7 @@ const SignUpForm: React.FC<Props> = ({ funcCloseModal, setBSignUp }) => {
   if (bSignUpLoading) {
     return (
       <PageBackDrop>
-        <span>Signing up...</span>
+        <Loader strLoadingMessage="Signing up..." />
       </PageBackDrop>
     );
   }
