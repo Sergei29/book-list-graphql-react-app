@@ -2,8 +2,12 @@ import React from "react";
 import { Typography, Chip } from "@material-ui/core";
 import { useRouteMatch } from "react-router-dom";
 import { useConfirmLink } from "../../hooks/useConfirmLink/useConfirmLink";
+import PageBackground from "./components/PageBackground";
+// styles:
+import { useStyles } from "./style";
 
 const EmailConfirmedPage: React.FC = () => {
+  const classes = useStyles();
   const {
     params: { strUserId },
   } = useRouteMatch<{ strUserId: string }>();
@@ -17,14 +21,17 @@ const EmailConfirmedPage: React.FC = () => {
 
   return (
     <div>
+      <PageBackground />
       {!bLoading && !nstrConfirmError && nObjUserInfo?.active ? (
-        <Typography>
+        <Typography className={classes.page__text}>
           {`Thank you, your email `}
           <Chip label={nObjUserInfo!.email} color="secondary" />
           {` has been verified.`}
         </Typography>
       ) : (
-        <Typography>{strErrorMessage}</Typography>
+        <Typography className={classes.page__text}>
+          {strErrorMessage}
+        </Typography>
       )}
     </div>
   );
