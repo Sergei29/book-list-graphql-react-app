@@ -35,7 +35,7 @@ const App: React.FC = () => {
         <Switch>
           <Route path="/" exact component={BookListPage} />
           <Route path="/signup-complete" component={SignUpCompletePage} />
-          <Route path="/confirm/:userId" component={EmailConfirmedPage} />
+          <Route path="/confirm/:strUserId" component={EmailConfirmedPage} />
           {getIsAdmin() && <Route path="/admin" component={AdminPage} />}
           <Route render={() => <h4>Page not found.</h4>} />
         </Switch>
