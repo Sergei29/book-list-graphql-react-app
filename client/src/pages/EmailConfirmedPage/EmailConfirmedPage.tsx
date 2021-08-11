@@ -13,7 +13,7 @@ const EmailConfirmedPage: React.FC = () => {
 
   const strErrorMessage = `Sorry, it looks like an error has occured while verifying your email. ${
     nstrConfirmError || ""
-  }. Please re-try to sign up again.`;
+  }`;
 
   return (
     <div>

@@ -146,6 +146,10 @@ export const Mutation: MutationResolverType = {
   signUpConfirm: async (parent, { id }, { dataSources, res }, info) => {
     const nObjExistingUser = await dataSources.users.getUserById(id);
     if (!nObjExistingUser) throw new ApolloError(ErrorMessage.USER_NOT_FOUND);
+    if (nObjExistingUser.active) {
+      throw new ApolloError(ErrorMessage.USER_ALREADY_ACTIVE);
+    }
+
     const objUpdatedUser = await dataSources.users.updateUserById({
       ...funcFormatUser(nObjExistingUser),
       active: true,

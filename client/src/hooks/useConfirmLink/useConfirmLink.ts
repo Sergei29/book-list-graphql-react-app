@@ -27,20 +27,32 @@ export const useConfirmLink = ({
   const [nstrConfirmError, setnstrConfirmError] = useState<null | string>(null);
   const { setObjAuthInfo, objAuthInfo } = useContext(objAuthContext);
   const [funcConfirmLink, { loading: bLoading, error, data }] =
-    useMutation<MutationResponseType>(SIGN_UP_CONFIRM);
+    useMutation<MutationResponseType>(SIGN_UP_CONFIRM, { errorPolicy: "all" });
 
+  /**
+   * @description effect to run on mount, fires mutaton to confirm link by ID
+   * @returns {undefined}
+   */
   useEffect(() => {
     if (!!strUserId === false) return;
     funcConfirmLink({ variables: { id: strUserId } });
   }, [strUserId]);
 
+  /**
+   * @description effect to run on error updates - mutation outcome
+   * @returns {undefined} sets state
+   */
   useEffect(() => {
     const nstrErrorMessage = error?.message || null;
     setnstrConfirmError(nstrErrorMessage);
   }, [error]);
 
+  /**
+   * @description effect to run on data updates - mutation outcome
+   * @returns {undefined} sets state
+   */
   useEffect(() => {
-    if (!data) return;
+    if (!data || !data?.signUpConfirm) return;
     const { user } = data.signUpConfirm;
     setObjAuthInfo({ nObjUserData: user });
   }, [data]);
