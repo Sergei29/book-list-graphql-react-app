@@ -33,5 +33,14 @@ export const useStyles = makeStyles((theme: Theme) =>
         animation: `$shake 0.5s`,
       },
     },
+    bookList__cloudItem: {
+      zIndex: 2,
+      cursor: "pointer",
+      color: theme.palette.primary.main,
+      transition: `all 200ms ${theme.transitions.easing.easeInOut}`,
+      "&:hover": {
+        textDecoration: "underline",
+      },
+    },
   })
 );

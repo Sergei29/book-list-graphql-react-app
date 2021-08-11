@@ -1,9 +1,8 @@
 import React from "react";
-import TagCloud from "react-tag-cloud";
-import randomColor from "randomcolor";
 import { useQuery } from "@apollo/client";
 import { GET_BOOKS } from "../../graphql/queries";
 import { BookType } from "../../types/types";
+import TagCloudList from "./components/TagCloudList";
 //styles:
 import { useStyles } from "./style";
 
@@ -25,31 +24,8 @@ const BookList: React.FC<Props> = ({ bDisplayCloud, onBookSelect }) => {
   if (error) return <p>Error: {error.message}</p>;
   if (data?.books?.length === 0) return <p>No books.</p>;
 
-  const renderTagCloud = () => (
-    <TagCloud
-      style={
-        {
-          fontFamily: "sans-serif",
-          fontSize: 30,
-          fontWeight: "bold",
-          fontStyle: "italic",
-          color: () => randomColor(),
-          padding: 5,
-          width: "100%",
-          height: "80vh",
-        } as any
-      }
-    >
-      {data!.books.map((objBook) => (
-        <div key={objBook!.id} onClick={onBookSelect!(objBook!.id)}>
-          {objBook!.name}
-        </div>
-      ))}
-    </TagCloud>
-  );
-
   return bDisplayCloud ? (
-    renderTagCloud()
+    <TagCloudList arrBooks={data!.books} onBookSelect={onBookSelect} />
   ) : (
     <ul className={classes.bookList}>
       {data!.books.map((objBook) => (
