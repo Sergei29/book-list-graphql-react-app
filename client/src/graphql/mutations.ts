@@ -47,6 +47,20 @@ export const SIGN_UP = gql`
         id
         email
         role
+        active
+      }
+    }
+  }
+`;
+
+export const SIGN_UP_CONFIRM = gql`
+  mutation SignUpConfirm($id: ID!) {
+    signUpConfirm(id: $id) {
+      user {
+        id
+        email
+        role
+        active
       }
     }
   }
@@ -59,6 +73,7 @@ export const SIGN_IN = gql`
         id
         email
         role
+        active
       }
     }
   }
@@ -71,6 +86,7 @@ export const SIGN_OUT = gql`
         id
         email
         role
+        active
       }
     }
   }
@@ -83,6 +99,7 @@ export const REMOVE_USER = gql`
         id
         email
         role
+        active
       }
     }
   }
@@ -95,6 +112,7 @@ export const USER_INFO = gql`
         id
         email
         role
+        active
       }
     }
   }

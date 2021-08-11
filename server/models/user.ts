@@ -5,6 +5,7 @@ const userSchema = new Schema({
   email: String,
   hash: String,
   role: String,
+  active: Boolean,
 });
 
 /**

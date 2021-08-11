@@ -38,6 +38,7 @@ export const typeDefs = gql`
     id: ID!
     email: String!
     role: Role
+    active: Boolean
   }
 
   input Credentials {
@@ -68,6 +69,7 @@ export const typeDefs = gql`
     removeAuthor(id: ID!): Author!
     removeBook(id: ID!): Book!
     signUp(credentials: Credentials!): AuthPayload
+    signUpConfirm(id: ID!): AuthPayload
     signIn(credentials: Credentials!): AuthPayload
     userInfo: AuthPayload
     signOut: AuthPayload

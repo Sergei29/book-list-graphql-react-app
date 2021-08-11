@@ -5,7 +5,7 @@ import { objAuthContext } from "../../containers/AuthProvider";
 import { SIGN_IN } from "../../graphql/mutations";
 import { UserType } from "../../types";
 
-type SignInPaloadType = { signIn: { user: UserType } };
+type SignInPayloadType = { signIn: { user: UserType } };
 type FormStateType = {
   email: string;
   password: string;
@@ -26,20 +26,18 @@ const useLoginForm = (onLoginSuccess: () => void) => {
 
   const { setObjAuthInfo } = useContext(objAuthContext);
 
-  const [funcSignInMutation] = useMutation<SignInPaloadType>(SIGN_IN);
+  const [funcSignInMutation] = useMutation<SignInPayloadType>(SIGN_IN);
 
   /**
    * @description on input change callback
-   * @param {Object} objEvent input change event object
+   * @param {String} strFieldName field name
+   * @param {String} strValue field value
    * @returns {undefined} sets state
    */
-  const handleChange = (
-    objEvent: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = objEvent.target;
+  const handleChange = (strFieldName: string, strValue: string) => {
     setObjFormData((objPrevState) => ({
       ...objPrevState,
-      [name]: value.trim(),
+      [strFieldName]: strValue.trim(),
     }));
   };
 

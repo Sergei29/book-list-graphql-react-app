@@ -20,6 +20,7 @@ export type UserType = {
   id: string;
   email?: string;
   role?: Role;
+  active?: boolean;
 };
 
 export type MaybeArrBooks = (Book | null)[] | undefined | null;
@@ -44,3 +45,14 @@ export type InputChangeEvent = React.ChangeEvent<
   | HTMLSelectElement
   | Record<string, any>
 >;
+
+export type ObjValidationType = {
+  bIsValid: boolean;
+  strErrorMessage: string;
+};
+
+export type SignUpFormStateType = {
+  email: string;
+  password: string;
+  confirm_password: string;
+};

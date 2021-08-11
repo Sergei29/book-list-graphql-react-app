@@ -36,10 +36,12 @@ export const AuthProvider: React.FC = ({ children }) => {
     nObjUserData: null,
   });
 
-  const getIsAuthenticated = () => !!objAuthInfo.nObjUserData;
+  const getIsAuthenticated = () =>
+    !!objAuthInfo.nObjUserData && !!objAuthInfo.nObjUserData.active;
 
   const getIsAdmin = () =>
     objAuthInfo.nObjUserData !== null &&
+    !!objAuthInfo.nObjUserData.active &&
     objAuthInfo.nObjUserData.role === Role.ADMIN;
 
   return (

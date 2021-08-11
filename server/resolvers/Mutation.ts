@@ -10,8 +10,10 @@ import {
   funcCreateToken,
   funcVerifyPassword,
   funcDecodeBase64Password,
-} from "../util/auth";
-import { ADMIN_EMAIL } from "../constants";
+  funcFormatUser,
+  funcSendEmail,
+} from "../util";
+import { ADMIN_EMAIL, origin } from "../constants";
 
 const { ADMIN, USER } = Role;
 
@@ -117,22 +119,50 @@ export const Mutation: MutationResolverType = {
     if (nObjExistingUser) throw new ApolloError(ErrorMessage.USER_EXISTS);
 
     const role = objUserCredentials.email === ADMIN_EMAIL ? ADMIN : USER;
-
     const hash = funcHashPassword(objUserCredentials.password);
     const objNewUser = await users.addNewUser({
       email: objUserCredentials.email,
       hash,
       role,
+      active: false,
     });
 
-    const token = funcCreateToken(objNewUser);
-    res.cookie("token", token, { httpOnly: true, maxAge: Expiry.IN_24_HOURS });
+    const strNewUserEmail = await funcSendEmail(objNewUser.email, {
+      subject: "verify new user email",
+      text: `Copy and paste this link: ${origin}/confirm/${objNewUser.id}`,
+      html: `<a href="${origin}/confirm/${objNewUser.id}" >verify your email link</a>`,
+    });
 
     return {
       user: {
         id: objNewUser.id,
-        email: objNewUser.email,
+        email: strNewUserEmail,
         role: objNewUser.role,
+        active: objNewUser.active,
+      },
+    };
+  },
+
+  signUpConfirm: async (parent, { id }, { dataSources, res }, info) => {
+    const nObjExistingUser = await dataSources.users.getUserById(id);
+    if (!nObjExistingUser) throw new ApolloError(ErrorMessage.USER_NOT_FOUND);
+    if (nObjExistingUser.active) {
+      throw new ApolloError(ErrorMessage.USER_ALREADY_ACTIVE);
+    }
+
+    const objUpdatedUser = await dataSources.users.updateUserById({
+      ...funcFormatUser(nObjExistingUser),
+      active: true,
+    });
+    const token = funcCreateToken(objUpdatedUser!);
+    res.cookie("token", token, { httpOnly: true, maxAge: Expiry.IN_24_HOURS });
+
+    return {
+      user: {
+        id: objUpdatedUser!.id,
+        email: objUpdatedUser!.email,
+        role: objUpdatedUser!.role,
+        active: objUpdatedUser!.active,
       },
     };
   },
@@ -148,13 +178,14 @@ export const Mutation: MutationResolverType = {
       objUserCredentials.email
     );
     if (!nObjExistingUser) throw new ApolloError(ErrorMessage.USER_NOT_FOUND);
-
     const bValidPassword = funcVerifyPassword(
       objUserCredentials.password,
       nObjExistingUser.hash!
     );
+    const bActiveUser = nObjExistingUser.active;
 
-    if (!bValidPassword) throw new ApolloError(ErrorMessage.WRONG_PASSWORD);
+    if (!bValidPassword || !bActiveUser)
+      throw new ApolloError(ErrorMessage.WRONG_PASSWORD);
 
     const token = funcCreateToken(nObjExistingUser);
 
@@ -171,6 +202,7 @@ export const Mutation: MutationResolverType = {
         id: nObjExistingUser.id,
         email: nObjExistingUser.email,
         role: nObjExistingUser.role,
+        active: nObjExistingUser.active,
       },
     };
   },
@@ -183,7 +215,12 @@ export const Mutation: MutationResolverType = {
   userInfo: async (parent, args, { user }, info) => {
     if (user) {
       return {
-        user: { id: user.sub, email: user.email, role: user.role },
+        user: {
+          id: user.sub,
+          email: user.email,
+          role: user.role,
+          active: true,
+        },
       };
     }
 

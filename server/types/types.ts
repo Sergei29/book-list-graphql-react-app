@@ -13,6 +13,12 @@ export enum Expiry {
   IN_7_DAYS = 60 * 60 * 24 * 7 * 1000,
 }
 
+export type EmailContentType = {
+  subject: string;
+  text: string;
+  html: string;
+};
+
 export type TokenPayloadType = {
   email?: string;
   role?: Role;
@@ -29,6 +35,7 @@ export type UserType = {
   email: string;
   hash?: string;
   role?: Role;
+  active?: boolean;
 } & Document;
 
 export type BookType = {
@@ -51,6 +58,7 @@ export enum ErrorMessage {
   AUTHOR_EXISTS = "Author already exists.",
   AUTHOR_NOT_FOUND = "Author does not exist.",
   USER_EXISTS = "User already exists.",
+  USER_ALREADY_ACTIVE = "User already activated.",
   USER_NOT_FOUND = "User does not exist.",
   LOGIN_REQUIRED = "Please login again.",
   WRONG_PASSWORD = "Wrong password.",

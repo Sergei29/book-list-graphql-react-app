@@ -4,13 +4,20 @@ import { Base64 } from "js-base64";
 import { TokenPayloadType } from "../types";
 import { SECRET } from "../constants";
 
+const base64regex =
+  /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
+const isBase64Encoded = (strBase64Encoded: string) =>
+  base64regex.test(strBase64Encoded);
+
 /**
  * @description decode password that was encoded on client
  * @param {String} strBase64Encoded base64 encoded password
  * @returns {String} decoded password value
  */
 export const funcDecodeBase64Password = (strBase64Encoded: string) =>
-  Base64.decode(strBase64Encoded);
+  isBase64Encoded(strBase64Encoded)
+    ? Base64.decode(strBase64Encoded)
+    : strBase64Encoded;
 
 /**
  *@description generate JWT token based on user's info

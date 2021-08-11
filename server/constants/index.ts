@@ -25,4 +25,6 @@ export const MONGO_URI = process.env.MONGO_URI!;
 
 export const ADMIN_EMAIL = process.env.ADMIN_EMAIL!;
 
+export const ADMIN_EMAIL_PASSWORD = process.env.ADMIN_EMAIL_PASSWORD!;
+
 export const SECRET = process.env.SECRET!;

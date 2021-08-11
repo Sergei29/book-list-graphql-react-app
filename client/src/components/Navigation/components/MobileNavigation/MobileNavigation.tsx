@@ -16,7 +16,7 @@ import { MuiSelectedTheme } from "../../../../types/types";
 // components:
 import GitHubButton from "../../../GitHubButton";
 import AuthLink from "../../../AuthLink";
-import Switch from "../../../Switch";
+import Switch from "../../../common/Switch";
 // styles:
 import { useStyles } from "./style";
 
