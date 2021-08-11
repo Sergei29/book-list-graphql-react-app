@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Typography } from "@material-ui/core";
 import { objAuthContext } from "../../containers/AuthProvider";
 import useBookListPage from "../../hooks/useBookListPage/useBookListPage";
@@ -7,6 +7,7 @@ import BookList from "../../components/BookList";
 import BookDetails from "../../components/BookDetails";
 import AddBook from "../../components/AddBook";
 import Background from "../../components/Background";
+import ChangeListLayoutButton from "../../components/ChangeListLayoutButton";
 //styles:
 import { useStyles } from "./style";
 
@@ -16,10 +17,12 @@ import { useStyles } from "./style";
  */
 const BookListPage: React.FC = () => {
   const classes = useStyles();
+  const [bDisplayCloud, setbDisplayCloud] = useState<boolean>(false);
   const { getIsAuthenticated } = useContext(objAuthContext);
   const { nstrSelectedBookId, handleBookSelect, handleBookDeselect } =
     useBookListPage();
 
+  const funcToggleLayout = () => setbDisplayCloud((bPrevState) => !bPrevState);
   return (
     <div className={classes.bookListPage}>
       <Typography
@@ -28,8 +31,13 @@ const BookListPage: React.FC = () => {
         component="h1"
       >
         My Reading List
+        <ChangeListLayoutButton
+          onClick={funcToggleLayout}
+          bDisplayCloud={bDisplayCloud}
+        />
       </Typography>
-      <BookList onBookSelect={handleBookSelect} />
+      <BookList bDisplayCloud={bDisplayCloud} onBookSelect={handleBookSelect} />
+
       {getIsAuthenticated() && (
         <AddBook nstrSelectedBookId={nstrSelectedBookId} />
       )}
