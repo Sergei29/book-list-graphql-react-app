@@ -63,7 +63,7 @@ const AuthLink: React.FC<Props> = ({
           className={classes.authButton}
           disableFocusRipple
         >
-          <Tooltip title="login">
+          <Tooltip title="login / sign up">
             <LockIcon fontSize="large" />
           </Tooltip>
         </IconButton>
