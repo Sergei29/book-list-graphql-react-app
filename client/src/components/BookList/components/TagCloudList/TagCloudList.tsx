@@ -1,9 +1,9 @@
 import React, { memo } from "react";
 import TagCloud from "react-tag-cloud";
 import randomColor from "randomcolor";
-import Tooltip from "@material-ui/core/Tooltip";
 import useCurrentTheme from "../../../../hooks/useCurrentTheme/useCurrentTheme";
 import { BookType } from "../../../../types/types";
+import CloudItem from "./components/CloudItem/CloudItem";
 import { useStyles } from "./style";
 
 type Props = {
@@ -26,7 +26,7 @@ const TagCloudList: React.FC<Props> = ({ arrBooks, onBookSelect }) => {
       style={
         {
           fontFamily: "sans-serif",
-          fontSize: 20,
+          fontSize: () => Math.round(Math.random() * 30) + 16,
           fontWeight: "bold",
           fontStyle: "italic",
           color: () =>
@@ -35,20 +35,19 @@ const TagCloudList: React.FC<Props> = ({ arrBooks, onBookSelect }) => {
             }),
           padding: 5,
           width: "100%",
-          height: "80vh",
+          height: "90vh",
           zIndex: 2,
         } as any
       }
+      spiral="rectangular"
     >
       {arrBooks.map((objBook) => (
-        <Tooltip key={objBook!.id} title={objBook!.name || ""}>
-          <div
-            onClick={onBookSelect!(objBook!.id)}
-            className={classes.bookList__cloudItem}
-          >
-            {objBook!.name}
-          </div>
-        </Tooltip>
+        <CloudItem
+          strTitle={objBook!.name!}
+          key={objBook!.id}
+          onClick={onBookSelect!(objBook!.id)}
+          className={classes.bookList__cloudItem}
+        />
       ))}
     </TagCloud>
   );
