@@ -12,4 +12,11 @@ type BookResolverType = Record<
 export const Book: BookResolverType = {
   author: async (parent, args, ctx, info) =>
     await AuthorsDB.findById(parent.authorId),
+  image: async (parent, args, ctx, info) => {
+    const strImageId = parent.imageId;
+    const { images } = ctx.dataSources;
+
+    const nObjImage = (await images.getImageById(strImageId)) || null;
+    return nObjImage;
+  },
 };

@@ -45,13 +45,17 @@ export const Mutation: MutationResolverType = {
     if (objExistingBook) {
       throw new UserInputError(ErrorMessage.BOOK_EXISTS);
     }
+    const objNewImage = await dataSources.images.addNewImage(args.imageFile);
 
-    return await dataSources.books.addNewBook({
+    const objNewBook = await dataSources.books.addNewBook({
       name: args.name,
       genre: args.genre,
       authorId: args.authorId,
       addedBy: args.addedBy,
+      imageId: objNewImage?.id || null,
     });
+
+    return objNewBook;
   },
 
   removeAuthor: async (parent, args, { dataSources }, info) => {
@@ -59,10 +63,17 @@ export const Mutation: MutationResolverType = {
     if (!objExistingAuthor) {
       throw new UserInputError(ErrorMessage.AUTHOR_NOT_FOUND);
     }
-
-    // 1. remove all author's books (if any)
+    // 1. remove all associated images:
+    const arrAuthorBooks = await dataSources.books.getBooksByAuthorId(args.id);
+    const arrImagesIds = arrAuthorBooks.reduce((arrIds, objCurrentBook) => {
+      return objCurrentBook?.imageId
+        ? [...arrIds, objCurrentBook?.imageId]
+        : arrIds;
+    }, [] as string[]);
+    await dataSources.images.deleteImagesByIds(arrImagesIds);
+    // 2. remove all author's books (if any)
     await dataSources.books.deleteBooksByAuthor(args.id);
-    // 2. remove Author:
+    // 3. remove Author:
     return await dataSources.authors.deleteAuthorById(args.id);
   },
 
@@ -71,16 +82,20 @@ export const Mutation: MutationResolverType = {
     if (!objExistingBook) {
       throw new UserInputError(ErrorMessage.BOOK_NOT_FOUND);
     }
-
+    await dataSources.images.deleteImageById(objExistingBook.imageId);
     return await dataSources.books.deleteBookById(args.id);
   },
 
   editBook: async (parent, args, { dataSources }, info) => {
-    const { id, name, genre, authorId, addedBy } = args;
+    const { id, name, genre, authorId, addedBy, imageId, imageFile } = args;
     const objExistingBook = await dataSources.books.getBookById(id);
     if (!objExistingBook) {
       throw new UserInputError(ErrorMessage.BOOK_NOT_FOUND);
     }
+    const objNewImage = await dataSources.images.updateImageById(
+      imageId,
+      imageFile
+    );
 
     return await dataSources.books.updateBookById({
       id,
@@ -88,6 +103,7 @@ export const Mutation: MutationResolverType = {
       genre,
       authorId,
       addedBy,
+      imageId: objNewImage?.id || imageId,
     });
   },
 

@@ -53,8 +53,9 @@ export class BooksDataSource extends MongoDataSource<BookType, ContextType> {
    * @param {Object} objNewBook book's data
    * @returns {Promise<Object>}  promise resolving to newly written book's object
    */
-  addNewBook = async (objNewBook: Record<string, any>) =>
-    await this.saveAndGetDocFromDB(objNewBook);
+  addNewBook = async (objNewBook: Record<string, any>) => {
+    return await this.saveAndGetDocFromDB(objNewBook);
+  };
 
   /**
    * @description updating an exiting book inside the collection
@@ -62,9 +63,15 @@ export class BooksDataSource extends MongoDataSource<BookType, ContextType> {
    * @returns {Promise<Object | null>}  promise resolving to re-written book's object
    */
   updateBookById = async (objNewBook: Record<string, any>) => {
+    const { name, genre, authorId, id, imageId } = objNewBook;
     try {
-      const { name, genre, authorId, id } = objNewBook;
-      await this.model.findByIdAndUpdate(id, { name, genre, authorId });
+      await this.model.findByIdAndUpdate(id, {
+        name,
+        genre,
+        authorId,
+        imageId,
+      });
+
       return await this.model.findOne({ _id: id });
     } catch (error) {
       throw new Error(error);

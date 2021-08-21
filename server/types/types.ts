@@ -13,6 +13,14 @@ export enum Expiry {
   IN_7_DAYS = 60 * 60 * 24 * 7 * 1000,
 }
 
+export type ImageType = {
+  id: string;
+  imageUrl: string;
+  width: number;
+  height: number;
+  size: number;
+} & Document;
+
 export type EmailContentType = {
   subject: string;
   text: string;
@@ -43,6 +51,7 @@ export type BookType = {
   genre: string;
   authorId: string;
   addedBy: string;
+  imageId: string;
 } & Document;
 
 export type AuthorType = {

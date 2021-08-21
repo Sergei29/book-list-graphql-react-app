@@ -6,6 +6,7 @@ const bookSchema = new Schema({
   genre: String,
   authorId: String,
   addedBy: String,
+  imageId: String,
 });
 
 /**
