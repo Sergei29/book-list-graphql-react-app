@@ -2,7 +2,7 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "/server/dist/server.js",
   "scripts": {
     "client": "cd client && npm start",
     "compile-server": "cd server/ && tsc -w",
