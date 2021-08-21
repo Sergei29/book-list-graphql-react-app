@@ -41,6 +41,10 @@ export const GET_BOOK_DETAILS = gql`
       name
       genre
       addedBy
+      image {
+        id
+        imageUrl
+      }
       author {
         id
         name

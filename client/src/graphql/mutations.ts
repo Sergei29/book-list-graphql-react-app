@@ -6,12 +6,14 @@ export const ADD_BOOK = gql`
     $genre: String!
     $authorId: ID!
     $addedBy: String
+    $imageFile: String
   ) {
     addBook(
       name: $name
       genre: $genre
       authorId: $authorId
       addedBy: $addedBy
+      imageFile: $imageFile
     ) {
       id
       name
@@ -34,8 +36,8 @@ export const REMOVE_BOOK = gql`
 export const REMOVE_AUTHOR = gql`
   mutation RemoveAuthorById($id: ID!) {
     removeAuthor(id: $id) {
-      name
       id
+      name
     }
   }
 `;

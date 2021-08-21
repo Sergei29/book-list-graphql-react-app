@@ -1,4 +1,5 @@
 import { MongoDataSource } from "apollo-datasource-mongodb";
+import { ApolloError } from "apollo-server";
 import { cloudinary } from "../util/cloudinary";
 import { ContextType, ImageType } from "../types/types";
 
@@ -49,7 +50,9 @@ export class ImagesDataSource extends MongoDataSource<ImageType, ContextType> {
         size,
       };
     } catch (error) {
-      throw new Error(`Image cannot be uploaded. ${error.message}`);
+      throw new ApolloError(
+        `Image cannot be uploaded to Cloudinary. ${error.message}`
+      );
     }
   };
 
@@ -64,7 +67,9 @@ export class ImagesDataSource extends MongoDataSource<ImageType, ContextType> {
     try {
       return await cloudinary.uploader.destroy(strPublicId);
     } catch (error) {
-      throw new Error(`Image cannot be deleted. ${error.message}`);
+      throw new ApolloError(
+        `Image cannot be deleted from Cloudinary. ${error.message}`
+      );
     }
   };
 
@@ -77,7 +82,10 @@ export class ImagesDataSource extends MongoDataSource<ImageType, ContextType> {
     try {
       return await cloudinary.api.delete_resources(arrImageIds);
     } catch (error) {
-      throw new Error(error);
+      throw new ApolloError(
+        `the list of images cannot be deleted from Cloudinary.`,
+        error
+      );
     }
   };
 
@@ -91,7 +99,9 @@ export class ImagesDataSource extends MongoDataSource<ImageType, ContextType> {
       const objNewImage = await this.uploadImageToCloudinary(imageFile);
       return await this.model.create(objNewImage);
     } catch (error) {
-      throw new Error(error);
+      throw new ApolloError(
+        `the image cannot be saved to database. ${error.mesage}`
+      );
     }
   };
 
@@ -113,11 +123,18 @@ export class ImagesDataSource extends MongoDataSource<ImageType, ContextType> {
    */
   updateImageById = async (strImageId: string, newImageFile?: string) => {
     if (!newImageFile) return null;
+    const nObjExistingImage = this.getImageById(strImageId);
+    if (!nObjExistingImage) {
+      throw new ApolloError(
+        `Image ID: ${strImageId} - does not exist in database`
+      );
+    }
+
     try {
       await this.deleteImageFromCloudinary(strImageId);
       return await this.saveAndGetDocFromDB(newImageFile);
     } catch (error) {
-      throw new Error(error);
+      throw new ApolloError("Failed to update image: ", error);
     }
   };
 
@@ -129,14 +146,13 @@ export class ImagesDataSource extends MongoDataSource<ImageType, ContextType> {
   deleteImageById = async (strImageId: string) => {
     try {
       const nObjDeletedImage = await this.model.findByIdAndDelete(strImageId);
-      if (!nObjDeletedImage) {
-        throw new Error("Image does not exist in the datatbase");
+      if (!!nObjDeletedImage) {
+        await this.deleteImageFromCloudinary(strImageId);
       }
-      await this.deleteImageFromCloudinary(strImageId);
 
       return nObjDeletedImage;
     } catch (error) {
-      throw new Error(error);
+      throw new ApolloError("Failed to delete image from database ", error);
     }
   };
 
@@ -146,18 +162,29 @@ export class ImagesDataSource extends MongoDataSource<ImageType, ContextType> {
    * @returns {Array} array of deleted images IDs
    */
   deleteImagesByIds = async (arrImagesIds: string[]) => {
-    await this.deleteManyFromCloudinaryByIds(arrImagesIds);
+    try {
+      await this.deleteManyFromCloudinaryByIds(arrImagesIds);
+    } catch (error) {
+      console.log(error);
+    }
 
-    const arrDeletedImages = await Promise.all(
-      arrImagesIds.map((strImageId) => {
-        return this.model.findByIdAndDelete(strImageId);
-      })
-    );
+    try {
+      const arrDeletedImages = await Promise.all(
+        arrImagesIds.map((strImageId) => {
+          return this.model.findByIdAndDelete(strImageId);
+        })
+      );
 
-    const arrDeletedImageIds: (string | null)[] = arrDeletedImages.map(
-      (nObjImage) => nObjImage?.id || null
-    );
+      const arrDeletedImageIds: (string | null)[] = arrDeletedImages.map(
+        (nObjImage) => nObjImage?.id || null
+      );
 
-    return arrDeletedImageIds;
+      return arrDeletedImageIds;
+    } catch (error) {
+      throw new ApolloError(
+        "Failed to delete the images from database ",
+        error
+      );
+    }
   };
 }
