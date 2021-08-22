@@ -14,9 +14,9 @@ export const Book: BookResolverType = {
     await AuthorsDB.findById(parent.authorId),
   image: async (parent, args, ctx, info) => {
     const strImageId = parent.imageId;
+    if (!strImageId) return null;
     const { images } = ctx.dataSources;
-
-    const nObjImage = (await images.getImageById(strImageId)) || null;
+    const nObjImage = await images.getImageById(strImageId);
     return nObjImage;
   },
 };

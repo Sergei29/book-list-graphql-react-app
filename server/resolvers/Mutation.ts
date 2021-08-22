@@ -46,13 +46,12 @@ export const Mutation: MutationResolverType = {
       throw new UserInputError(ErrorMessage.BOOK_EXISTS);
     }
     const objNewImage = await dataSources.images.addNewImage(args.imageFile);
-
     const objNewBook = await dataSources.books.addNewBook({
       name: args.name,
       genre: args.genre,
       authorId: args.authorId,
       addedBy: args.addedBy,
-      imageId: objNewImage?.id || null,
+      imageId: objNewImage?._id || null,
     });
 
     return objNewBook;

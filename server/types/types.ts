@@ -14,7 +14,7 @@ export enum Expiry {
 }
 
 export type ImageType = {
-  id: string;
+  publicId: string;
   imageUrl: string;
   width: number;
   height: number;

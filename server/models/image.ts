@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 import { ImageType } from "../types/types";
 
 const imageSchema = new Schema({
-  id: String,
+  publicId: String,
   imageUrl: String,
   width: Number,
   height: Number,

@@ -20,7 +20,15 @@ export class ImagesDataSource extends MongoDataSource<ImageType, ContextType> {
    * @returns {Promise<Object | null | undefined>} promise resolving to image's object if found
    */
   getImageById = async (strImageId: string) =>
-    await this.model.findOne({ id: strImageId });
+    await this.findOneById(strImageId);
+
+  /**
+   * @description returns an image by a given public ID
+   * @param {String} strImagePublicId image's public ID
+   * @returns {Promise<Object | null | undefined>} promise resolving to image's object if found
+   */
+  getImageByPublicId = async (strImagePublicId: string) =>
+    await this.model.findOne({ publicId: strImagePublicId });
 
   /**
    * @description uploading image file to Cloudinary CDN
@@ -35,7 +43,7 @@ export class ImagesDataSource extends MongoDataSource<ImageType, ContextType> {
       });
 
       const {
-        public_id: id,
+        public_id: publicId,
         secure_url: imageUrl,
         width,
         height,
@@ -43,7 +51,7 @@ export class ImagesDataSource extends MongoDataSource<ImageType, ContextType> {
       } = objResponse;
 
       return {
-        id,
+        publicId,
         imageUrl,
         width,
         height,
@@ -75,12 +83,12 @@ export class ImagesDataSource extends MongoDataSource<ImageType, ContextType> {
 
   /**
    * @description deletes images from Cloudinary CDN by IDs
-   * @param {Array} arrImageIds array of images IDs
+   * @param {Array} arrImagePublicIds array of images public IDs
    * @returns {Promise<Object>} promise resolving to object bearing info on deleted resources
    */
-  deleteManyFromCloudinaryByIds = async (arrImageIds: string[]) => {
+  deleteManyFromCloudinaryByIds = async (arrImagePublicIds: string[]) => {
     try {
-      return await cloudinary.api.delete_resources(arrImageIds);
+      return await cloudinary.api.delete_resources(arrImagePublicIds);
     } catch (error) {
       throw new ApolloError(
         `the list of images cannot be deleted from Cloudinary.`,
@@ -123,7 +131,7 @@ export class ImagesDataSource extends MongoDataSource<ImageType, ContextType> {
    */
   updateImageById = async (strImageId: string, newImageFile?: string) => {
     if (!newImageFile) return null;
-    const nObjExistingImage = this.getImageById(strImageId);
+    const nObjExistingImage = await this.getImageById(strImageId);
     if (!nObjExistingImage) {
       throw new ApolloError(
         `Image ID: ${strImageId} - does not exist in database`
@@ -131,7 +139,7 @@ export class ImagesDataSource extends MongoDataSource<ImageType, ContextType> {
     }
 
     try {
-      await this.deleteImageFromCloudinary(strImageId);
+      await this.deleteImageFromCloudinary(nObjExistingImage.publicId);
       return await this.saveAndGetDocFromDB(newImageFile);
     } catch (error) {
       throw new ApolloError("Failed to update image: ", error);
@@ -147,7 +155,7 @@ export class ImagesDataSource extends MongoDataSource<ImageType, ContextType> {
     try {
       const nObjDeletedImage = await this.model.findByIdAndDelete(strImageId);
       if (!!nObjDeletedImage) {
-        await this.deleteImageFromCloudinary(strImageId);
+        await this.deleteImageFromCloudinary(nObjDeletedImage.publicId);
       }
 
       return nObjDeletedImage;
@@ -158,19 +166,19 @@ export class ImagesDataSource extends MongoDataSource<ImageType, ContextType> {
 
   /**
    * @description deletes multiple images by their IDs
-   * @param {Array} arrImagesIds array of images IDs to delete
+   * @param {Array} arrImagesPublicIds array of images public IDs to delete
    * @returns {Array} array of deleted images IDs
    */
-  deleteImagesByIds = async (arrImagesIds: string[]) => {
+  deleteImagesByIds = async (arrImagesPublicIds: string[]) => {
     try {
-      await this.deleteManyFromCloudinaryByIds(arrImagesIds);
+      await this.deleteManyFromCloudinaryByIds(arrImagesPublicIds);
     } catch (error) {
       console.log(error);
     }
 
     try {
       const arrDeletedImages = await Promise.all(
-        arrImagesIds.map((strImageId) => {
+        arrImagesPublicIds.map((strImageId) => {
           return this.model.findByIdAndDelete(strImageId);
         })
       );

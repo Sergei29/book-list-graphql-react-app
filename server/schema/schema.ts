@@ -21,6 +21,7 @@ export const typeDefs = gql`
 
   type Image {
     id: ID!
+    publicId: String!
     imageUrl: String!
     width: Int
     height: Int
