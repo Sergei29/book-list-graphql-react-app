@@ -17,7 +17,7 @@ import {
 import { objInitialValidation } from "../../constants";
 
 export type FormValidationStateType = Readonly<
-  Record<"name" | "genre" | "authorId" | "image", ValidationType>
+  Record<"name" | "genre" | "authorId" | "imageFile", ValidationType>
 >;
 
 const INITIAL_BOOK: Readonly<AddBookFormStateType> = {
@@ -25,14 +25,14 @@ const INITIAL_BOOK: Readonly<AddBookFormStateType> = {
   genre: "",
   authorId: "",
   addedBy: "unknown",
-  image: null,
+  imageFile: null,
 };
 
 const INITIAL_BOOK_VALIDATION: FormValidationStateType = {
   name: objInitialValidation,
   genre: objInitialValidation,
   authorId: objInitialValidation,
-  image: objInitialValidation,
+  imageFile: objInitialValidation,
 };
 
 /**
@@ -92,7 +92,7 @@ const useAddBookForm = (nstrSelectedBookId: null | string) => {
       setUObjImageFile(undefined);
       setObjBook((objPrevBook) => ({
         ...objPrevBook,
-        image: null,
+        [strFieldName]: null,
       }));
       return;
     }
@@ -102,7 +102,7 @@ const useAddBookForm = (nstrSelectedBookId: null | string) => {
       setUObjImageFile(objImageFile);
       setObjBook((objPrevBook) => ({
         ...objPrevBook,
-        image: objReader.result as string,
+        [strFieldName]: objReader.result as string,
       }));
     };
     objReader.readAsDataURL(objImageFile);
