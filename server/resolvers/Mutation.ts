@@ -57,7 +57,10 @@ export const Mutation: MutationResolverType = {
     return objNewBook;
   },
 
-  removeAuthor: async (parent, args, { dataSources }, info) => {
+  removeAuthor: async (parent, args, { dataSources, user }, info) => {
+    if (user?.role !== ADMIN) {
+      throw new UserInputError(ErrorMessage.NOT_ALOWED);
+    }
     const objExistingAuthor = await dataSources.authors.getAuthorById(args.id);
     if (!objExistingAuthor) {
       throw new UserInputError(ErrorMessage.AUTHOR_NOT_FOUND);
@@ -76,7 +79,10 @@ export const Mutation: MutationResolverType = {
     return await dataSources.authors.deleteAuthorById(args.id);
   },
 
-  removeBook: async (parent, args, { dataSources }, info) => {
+  removeBook: async (parent, args, { dataSources, user }, info) => {
+    if (user?.role !== ADMIN) {
+      throw new UserInputError(ErrorMessage.NOT_ALOWED);
+    }
     const objExistingBook = await dataSources.books.getBookById(args.id);
     if (!objExistingBook) {
       throw new UserInputError(ErrorMessage.BOOK_NOT_FOUND);
@@ -85,7 +91,10 @@ export const Mutation: MutationResolverType = {
     return await dataSources.books.deleteBookById(args.id);
   },
 
-  editBook: async (parent, args, { dataSources }, info) => {
+  editBook: async (parent, args, { dataSources, user }, info) => {
+    if (user?.role !== ADMIN) {
+      throw new UserInputError(ErrorMessage.NOT_ALOWED);
+    }
     const { id, name, genre, authorId, addedBy, imageId, imageFile } = args;
     const objExistingBook = await dataSources.books.getBookById(id);
     if (!objExistingBook) {
@@ -106,7 +115,10 @@ export const Mutation: MutationResolverType = {
     });
   },
 
-  editAuthor: async (parent, args, { dataSources }, info) => {
+  editAuthor: async (parent, args, { dataSources, user }, info) => {
+    if (user?.role !== ADMIN) {
+      throw new UserInputError(ErrorMessage.NOT_ALOWED);
+    }
     const { id, name, age } = args;
     const objExistingAuthor = await dataSources.authors.getAuthorById(id);
     if (!objExistingAuthor) {
@@ -242,7 +254,10 @@ export const Mutation: MutationResolverType = {
     return { user: undefined };
   },
 
-  removeUser: async (parent, args, { dataSources }, info) => {
+  removeUser: async (parent, args, { dataSources, user }, info) => {
+    if (user?.role !== ADMIN) {
+      throw new UserInputError(ErrorMessage.NOT_ALOWED);
+    }
     const objUser = await dataSources.users.getUserById(args.id);
     if (!objUser) throw new AuthenticationError(ErrorMessage.USER_NOT_FOUND);
 
