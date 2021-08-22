@@ -20,7 +20,7 @@ export class ImagesDataSource extends MongoDataSource<ImageType, ContextType> {
    * @returns {Promise<Object | null | undefined>} promise resolving to image's object if found
    */
   getImageById = async (strImageId: string) =>
-    await this.findOneById(strImageId);
+    await this.model.findOne({ id: strImageId });
 
   /**
    * @description uploading image file to Cloudinary CDN
