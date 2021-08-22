@@ -17,7 +17,7 @@ import {
 import { objInitialValidation } from "../../constants";
 
 export type FormValidationStateType = Readonly<
-  Record<"name" | "genre" | "authorId", ValidationType>
+  Record<"name" | "genre" | "authorId" | "image", ValidationType>
 >;
 
 const INITIAL_BOOK: Readonly<AddBookFormStateType> = {
@@ -25,12 +25,14 @@ const INITIAL_BOOK: Readonly<AddBookFormStateType> = {
   genre: "",
   authorId: "",
   addedBy: "unknown",
+  image: null,
 };
 
 const INITIAL_BOOK_VALIDATION: FormValidationStateType = {
   name: objInitialValidation,
   genre: objInitialValidation,
   authorId: objInitialValidation,
+  image: objInitialValidation,
 };
 
 /**
@@ -47,6 +49,8 @@ const useAddBookForm = (nstrSelectedBookId: null | string) => {
   const [objFormValidation, setObjFormValidation] =
     useState<FormValidationStateType>(INITIAL_BOOK_VALIDATION);
   const [bFormValid, setBFormValid] = useState<boolean>(false);
+  const [uObjImageFile, setUObjImageFile] =
+    useState<InstanceType<typeof File>>();
 
   const objAuthorsQueryResponse =
     useQuery<{ authors: AuthorType[] }>(GET_AUTHORS);
@@ -72,6 +76,36 @@ const useAddBookForm = (nstrSelectedBookId: null | string) => {
       ...objPrevBook,
       [strFieldName]: mixedValue,
     }));
+  };
+
+  /**
+   * @description callback on image input change
+   * @param {String} strFieldName input field name
+   * @param {Object} objImageFile mage File object
+   * @returns {undefined} sets state
+   */
+  const handleChangeImage = (
+    strFieldName: string,
+    objImageFile?: InstanceType<typeof File>
+  ) => {
+    if (!objImageFile) {
+      setUObjImageFile(undefined);
+      setObjBook((objPrevBook) => ({
+        ...objPrevBook,
+        image: null,
+      }));
+      return;
+    }
+    const objReader = new FileReader();
+
+    objReader.onloadend = () => {
+      setUObjImageFile(objImageFile);
+      setObjBook((objPrevBook) => ({
+        ...objPrevBook,
+        image: objReader.result as string,
+      }));
+    };
+    objReader.readAsDataURL(objImageFile);
   };
 
   /**
@@ -178,7 +212,9 @@ const useAddBookForm = (nstrSelectedBookId: null | string) => {
     bFormValid,
     handleBlur,
     handleChange,
+    handleChangeImage,
     handleSubmit,
+    uObjImageFile,
     objAddBookMutationResponse,
     objAuthorsQueryResponse,
     objBook,
