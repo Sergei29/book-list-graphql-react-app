@@ -2,12 +2,13 @@ import React, { Fragment } from "react";
 import Classnames from "classnames";
 import MuiTextField, { TextFieldProps } from "@material-ui/core/TextField";
 import FormHelperText from "@material-ui/core/FormHelperText";
+import { ValidationType } from "../../../types";
 import { useStyles } from "./style";
 
 type Props = {
   handleChange: (strFieldName: string, strValue: string) => void;
   handleBlur?: (strFieldName: string, strValue: string) => void;
-  objValidation?: { bIsValid: boolean; strErrorMessage: string };
+  objValidation?: ValidationType;
   strFieldname: string;
   strValue: string;
   strCustomClass?: string;
@@ -65,6 +66,7 @@ const TextField: React.FC<Props> = ({
         error={!objValidation.bIsValid}
         name={strFieldname}
         value={strValue}
+        variant="outlined"
         onChange={onInputChange}
         onBlur={onInputBlur}
         {...restMuiTextFieldProps}

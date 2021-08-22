@@ -11,16 +11,26 @@ import { objAuthContext } from "../../containers/AuthProvider";
 import {
   ValidationType,
   AddBookFormStateType,
-  InputChangeEvent,
   AuthorType,
   BookType,
 } from "../../types/types";
+import { objInitialValidation } from "../../constants";
+
+export type FormValidationStateType = Readonly<
+  Record<"name" | "genre" | "authorId", ValidationType>
+>;
 
 const INITIAL_BOOK: Readonly<AddBookFormStateType> = {
   name: "",
   genre: "",
   authorId: "",
   addedBy: "unknown",
+};
+
+const INITIAL_BOOK_VALIDATION: FormValidationStateType = {
+  name: objInitialValidation,
+  genre: objInitialValidation,
+  authorId: objInitialValidation,
 };
 
 /**
@@ -34,10 +44,9 @@ const useAddBookForm = (nstrSelectedBookId: null | string) => {
     ...INITIAL_BOOK,
     addedBy: objAuthInfo.nObjUserData?.email || "unknown",
   });
-  const [objFormValidaton, setObjFormValidaton] = useState<ValidationType>({
-    bIsValid: false,
-    nstrErrorMessage: null,
-  });
+  const [objFormValidation, setObjFormValidation] =
+    useState<FormValidationStateType>(INITIAL_BOOK_VALIDATION);
+  const [bFormValid, setBFormValid] = useState<boolean>(false);
 
   const objAuthorsQueryResponse =
     useQuery<{ authors: AuthorType[] }>(GET_AUTHORS);
@@ -51,14 +60,35 @@ const useAddBookForm = (nstrSelectedBookId: null | string) => {
 
   /**
    * @description callback on input change
-   * @param {Object} objEvent input change event
+   * @param {String} strFieldName input field name
+   * @param {String|Object} mixedValue input field value
    * @returns {undefined} sets state
    */
-  const handleChange = (objEvent: InputChangeEvent) => {
-    const { name, value } = objEvent.target;
+  const handleChange = (
+    strFieldName: string,
+    mixedValue: string | Record<string, any>
+  ) => {
     setObjBook((objPrevBook) => ({
       ...objPrevBook,
-      [name!]: value,
+      [strFieldName]: mixedValue,
+    }));
+  };
+
+  /**
+   * @description callback on input blur run field validation
+   * @param {String} strFieldName field name
+   * @param {String} strFieldValue field value
+   * @returns {any}
+   */
+  const handleBlur = (strFieldName: string, strFieldValue: string) => {
+    const objFieldValidation = validateForm(
+      strFieldName,
+      strFieldValue,
+      objBookQueryResponse.data?.books
+    );
+    setObjFormValidation((objPrevState) => ({
+      ...objPrevState,
+      ...objFieldValidation,
     }));
   };
 
@@ -67,8 +97,8 @@ const useAddBookForm = (nstrSelectedBookId: null | string) => {
    * @returns {undefined} sets state
    */
   const clearForm = () => {
-    setObjBook(INITIAL_BOOK);
-    setObjFormValidaton({ bIsValid: false, nstrErrorMessage: null });
+    setObjBook({ ...INITIAL_BOOK });
+    setObjFormValidation({ ...INITIAL_BOOK_VALIDATION });
   };
 
   /**
@@ -78,7 +108,12 @@ const useAddBookForm = (nstrSelectedBookId: null | string) => {
    */
   const handleSubmit = (objEvent: React.FormEvent) => {
     objEvent.preventDefault();
-    if (!objFormValidaton.bIsValid) return;
+    const bFormValid = Object.values(objFormValidation).reduce(
+      (bIsValid, objCurrentValidation) =>
+        bIsValid && objCurrentValidation.bIsValid,
+      true
+    );
+    if (!bFormValid) return;
 
     // if ok, submit:
     funcAddBookMutation({
@@ -129,23 +164,25 @@ const useAddBookForm = (nstrSelectedBookId: null | string) => {
     clearForm();
   };
 
-  /**
-   * @description running validation when form data updated
-   * @returns {undefined} sets validation state
-   */
   useEffect(() => {
-    const { data } = objBookQueryResponse;
-    const arrBooks = (!!data && data.books) || [];
-    setObjFormValidaton(validateForm(objBook, arrBooks));
-  }, [objBook]);
+    const bFormIsValid = Object.values(objFormValidation).reduce(
+      (bIsValid, objCurrentValidation) =>
+        bIsValid && objCurrentValidation.bIsValid,
+      true
+    );
+
+    setBFormValid(bFormIsValid);
+  }, [objFormValidation]);
 
   return {
-    objFormValidaton,
-    objAuthorsQueryResponse,
-    objAddBookMutationResponse,
-    objBook,
-    handleSubmit,
+    bFormValid,
+    handleBlur,
     handleChange,
+    handleSubmit,
+    objAddBookMutationResponse,
+    objAuthorsQueryResponse,
+    objBook,
+    objFormValidation,
   };
 };
 

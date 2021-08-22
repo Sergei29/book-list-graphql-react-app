@@ -29,7 +29,7 @@ export type MaybeArrAuthors = (Author | null)[] | undefined | null;
 
 export type ValidationType = {
   bIsValid: boolean;
-  nstrErrorMessage: string | null;
+  strErrorMessage: string;
 };
 
 export type AddBookFormStateType = {

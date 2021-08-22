@@ -4,11 +4,9 @@ import MenuBookIcon from "@material-ui/icons/MenuBook";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import CollectionsBookmarkIcon from "@material-ui/icons/CollectionsBookmark";
 import MenuItem from "@material-ui/core/MenuItem";
-import Input from "@material-ui/core/Input";
-import TextField from "@material-ui/core/TextField";
 import FormControl from "@material-ui/core/FormControl";
-import FormLabel from "@material-ui/core/FormLabel";
-import Button from "@material-ui/core/Button";
+import TextField from "../../../common/TextField";
+import SubmitButton from "../../../common/SubmitButton";
 import useAddBookForm from "../../../../hooks/useAddBookForm";
 import { AuthorType } from "../../../../types/types";
 // styles:
@@ -23,12 +21,14 @@ const AddBookForm: React.FC<Props> = ({ nstrSelectedBookId, onSumbit }) => {
   const classes = useStyles();
 
   const {
-    objFormValidaton,
+    bFormValid,
+    handleBlur,
+    handleChange,
+    handleSubmit,
     objAddBookMutationResponse,
     objAuthorsQueryResponse,
     objBook,
-    handleSubmit,
-    handleChange,
+    objFormValidation,
   } = useAddBookForm(nstrSelectedBookId);
 
   const { error: objMutationError, loading: bMutationLoading } =
@@ -56,96 +56,74 @@ const AddBookForm: React.FC<Props> = ({ nstrSelectedBookId, onSumbit }) => {
 
   return (
     <form onSubmit={handleSubmit} className={classes.addBookForm}>
-      {objFormValidaton.nstrErrorMessage && (
-        <span className={classes.addBookForm__errorMessage}>
-          {objFormValidaton.nstrErrorMessage}
-        </span>
-      )}
       {objMutationError && (
         <span className={classes.addBookForm__errorMessage}>
           {objMutationError.message}
         </span>
       )}
-      <FormControl className={classes.addBookForm__formControl}>
-        <FormLabel
-          className={classes.addBookForm__formControl__label}
-          classes={{ focused: classes.formLabelFocused }}
-        >
-          Book name:
-        </FormLabel>
-        <Input
-          type="text"
-          name="name"
-          value={objBook.name}
-          onChange={handleChange}
-          className={classes.addBookForm__formControl__inputText}
-          disableUnderline
-          endAdornment={
-            <InputAdornment position="end">
-              <MenuBookIcon />
-            </InputAdornment>
-          }
-        />
-      </FormControl>
 
-      <FormControl className={classes.addBookForm__formControl}>
-        <FormLabel
-          className={classes.addBookForm__formControl__label}
-          classes={{ focused: classes.formLabelFocused }}
-        >
-          Genre:
-        </FormLabel>
-        <Input
-          type="text"
-          name="genre"
-          value={objBook.genre}
-          onChange={handleChange}
-          className={classes.addBookForm__formControl__inputText}
-          disableUnderline
-          endAdornment={
-            <InputAdornment position="end">
-              <CollectionsBookmarkIcon />
-            </InputAdornment>
-          }
-        />
-      </FormControl>
-
-      <FormControl
-        className={classes.addBookForm__formControl}
-        variant="outlined"
-      >
-        <FormLabel
-          className={classes.addBookForm__formControl__label}
-          classes={{ focused: classes.formLabelFocused }}
-        >
-          Author:
-        </FormLabel>
+      <FormControl>
         <TextField
-          select
-          name="authorId"
-          onChange={handleChange}
-          value={objBook.authorId}
-          className={classes.addBookForm__formControl__inputSelect}
+          label="Name"
+          strFieldname="name"
+          strValue={objBook.name}
+          handleChange={handleChange}
+          handleBlur={handleBlur}
+          objValidation={objFormValidation.name}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <AccountBoxIcon />
+                <MenuBookIcon color="secondary" />
               </InputAdornment>
             ),
-            disableUnderline: true,
+          }}
+        />
+      </FormControl>
+
+      <FormControl>
+        <TextField
+          label="Genre"
+          strFieldname="genre"
+          strValue={objBook.genre}
+          handleChange={handleChange}
+          handleBlur={handleBlur}
+          objValidation={objFormValidation.genre}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <CollectionsBookmarkIcon color="secondary" />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </FormControl>
+
+      <FormControl>
+        <TextField
+          select
+          label="Author"
+          strFieldname="authorId"
+          strValue={objBook.authorId}
+          handleChange={handleChange}
+          handleBlur={handleBlur}
+          objValidation={objFormValidation.authorId}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <AccountBoxIcon color="secondary" />
+              </InputAdornment>
+            ),
           }}
         >
           {displayAuthors()}
         </TextField>
       </FormControl>
 
-      <Button
-        className={classes.addBookForm__submitButton}
-        type="submit"
-        disabled={!objFormValidaton.bIsValid || bMutationLoading}
-      >
-        Add Book
-      </Button>
+      <div>
+        <SubmitButton type="submit" disabled={!bFormValid || bMutationLoading}>
+          Add Book
+        </SubmitButton>
+      </div>
     </form>
   );
 };
