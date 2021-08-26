@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, Fragment } from "react";
 import {
   Typography,
   useMediaQuery,
@@ -28,21 +28,50 @@ const BookDetailsContainer: React.FC<Props> = ({
   const classes = useStyles();
   const theme = useTheme();
   const bIsMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
+  const [bShowEditModal, setBShowEditModal] = useState<boolean>(false);
 
-  return bIsMediumScreen ? (
-    <div className={classes.bookDetailsContainer}>
-      {nstrBookId ? (
-        <BookDetails strBookId={nstrBookId} />
-      ) : (
-        <Typography>No book selected.</Typography>
-      )}
-    </div>
-  ) : (
-    <Dialog open={!!nstrBookId} onClose={handleBookDeselect} fullWidth>
-      <DialogContent className={classes.bookDetailsContainer}>
-        {nstrBookId && <BookDetails strBookId={nstrBookId} />}
-      </DialogContent>
-    </Dialog>
+  const renderBookDetails = () =>
+    bIsMediumScreen ? (
+      <div className={classes.bookDetailsContainer}>
+        {nstrBookId ? (
+          <BookDetails
+            strBookId={nstrBookId}
+            setBShowEditModal={setBShowEditModal}
+          />
+        ) : (
+          <Typography>No book selected.</Typography>
+        )}
+      </div>
+    ) : (
+      <Dialog
+        open={!!nstrBookId && !bShowEditModal}
+        onClose={handleBookDeselect}
+        fullWidth
+      >
+        <DialogContent className={classes.bookDetailsContainer}>
+          {nstrBookId && (
+            <BookDetails
+              strBookId={nstrBookId}
+              setBShowEditModal={setBShowEditModal}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
+    );
+
+  return (
+    <Fragment>
+      {renderBookDetails()}
+      <Dialog
+        open={bShowEditModal}
+        onClose={() => setBShowEditModal(false)}
+        fullWidth
+      >
+        <DialogContent className={classes.bookDetailsContainer}>
+          edit book form
+        </DialogContent>
+      </Dialog>
+    </Fragment>
   );
 };
 

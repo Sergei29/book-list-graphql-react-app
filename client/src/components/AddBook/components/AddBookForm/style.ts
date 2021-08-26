@@ -13,6 +13,10 @@ export const useStyles = makeStyles((theme: Theme) => {
         padding: 0,
       },
     },
+    addBookForm__fileInput: {
+      display: "flex",
+      padding: `${theme.spacing(2)}px ${theme.spacing(6)}px`,
+    },
     addBookForm__inputFields: {
       display: "flex",
       columnGap: `${theme.spacing(2)}px`,

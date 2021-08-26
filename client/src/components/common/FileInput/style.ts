@@ -8,12 +8,12 @@ export const useStyles = makeStyles((theme: Theme) => {
     outline: "none",
   };
   const objInputCss: CSSProperties = {
-    paddingRight: theme.spacing(0.5),
     boxSizing: "border-box",
     borderRadius: 4,
     backgroundColor: theme.palette.info.main,
     border: `1px solid ${theme.palette.secondary.dark}`,
     color: theme.palette.secondary.dark,
+    textTransform: "capitalize",
   };
 
   return createStyles({

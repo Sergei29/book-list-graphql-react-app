@@ -5,6 +5,7 @@ import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import CollectionsBookmarkIcon from "@material-ui/icons/CollectionsBookmark";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "../../../common/TextField";
+import CardMedia from "@material-ui/core/CardMedia";
 import FileInput from "../../../common/FileInput";
 import SubmitButton from "../../../common/SubmitButton";
 import useAddBookForm from "../../../../hooks/useAddBookForm";
@@ -116,12 +117,15 @@ const AddBookForm: React.FC<Props> = ({ nstrSelectedBookId, onSumbit }) => {
         </div>
         <div>
           <FileInput
-            label="Image"
             strFieldName="imageFile"
             objValidation={objFormValidation.imageFile}
             objFileValue={uObjImageFile}
             handleChange={handleChangeImage}
+            strCustomClass={classes.addBookForm__fileInput}
           />
+          {objBook.imageFile && (
+            <CardMedia component="img" src={objBook.imageFile} />
+          )}
         </div>
       </div>
 

@@ -1,6 +1,7 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useRef } from "react";
 import Classnames from "classnames";
-import MuiTextField, { TextFieldProps } from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import { ValidationType } from "../../../types";
 import { useStyles } from "./style";
@@ -18,7 +19,7 @@ type Props = {
   strFieldName: string;
   objFileValue?: InstanceType<typeof File>;
   strCustomClass?: string;
-} & TextFieldProps;
+};
 
 /**
  * @description common component, textfield input
@@ -38,10 +39,9 @@ const FileInput: React.FC<Props> = ({
   strFieldName,
   objFileValue,
   strCustomClass,
-  ...restMuiTextFieldProps
 }) => {
   const classes = useStyles();
-
+  const hiddenFileInputRef = useRef<null | HTMLInputElement>(null);
   /**
    * @description input field change handler
    * @param {Object} objEvent change event object
@@ -66,17 +66,28 @@ const FileInput: React.FC<Props> = ({
     handleBlur(strFieldName, objFile);
   };
 
+  const handleButtonClick = (objEvent: React.MouseEvent) => {
+    hiddenFileInputRef.current!.click();
+  };
+
   return (
     <Fragment>
-      <MuiTextField
-        type="file"
-        className={Classnames(classes.inputText, strCustomClass)}
-        error={!objValidation.bIsValid}
-        name={strFieldName}
+      <Button
         variant="outlined"
+        color="secondary"
+        onClick={handleButtonClick}
+        className={Classnames(classes.inputText, strCustomClass)}
+        endIcon={<AddAPhotoIcon />}
+      >
+        Upload image
+      </Button>
+      <input
+        ref={hiddenFileInputRef}
+        type="file"
+        name={strFieldName}
         onChange={onInputChange}
         onBlur={onInputBlur}
-        {...restMuiTextFieldProps}
+        style={{ display: "none" }}
       />
       {!objValidation.bIsValid && (
         <FormHelperText className={classes.errorMessage}>
