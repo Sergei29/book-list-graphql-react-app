@@ -1,48 +1,47 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import {
-  GET_BOOKS,
-  GET_BOOK_DETAILS,
-  GET_AUTHORS,
-} from "../../graphql/queries";
+import { GET_BOOKS, GET_BOOK_DETAILS } from "../../graphql/queries";
 import { ADD_BOOK } from "../../graphql/mutations";
 import { validateForm } from "../helpers/validateForm";
 import { objAuthContext } from "../../containers/AuthProvider";
 import {
   ValidationType,
-  AddBookFormStateType,
-  AuthorType,
+  NewBookFormStateType,
   BookType,
 } from "../../types/types";
 import { objInitialValidation } from "../../constants";
 
 export type FormValidationStateType = Readonly<
-  Record<"name" | "genre" | "authorId" | "imageFile", ValidationType>
+  Record<"name" | "genre" | "authorId" | "strBase64ImageFile", ValidationType>
 >;
 
-const INITIAL_BOOK: Readonly<AddBookFormStateType> = {
+const INITIAL_BOOK: Readonly<NewBookFormStateType> = {
   name: "",
   genre: "",
   authorId: "",
   addedBy: "unknown",
-  imageFile: null,
+  strBase64ImageFile: null,
 };
 
 const INITIAL_BOOK_VALIDATION: FormValidationStateType = {
   name: objInitialValidation,
   genre: objInitialValidation,
   authorId: objInitialValidation,
-  imageFile: objInitialValidation,
+  strBase64ImageFile: objInitialValidation,
 };
 
 /**
  * @description custom hook for add book form
- * @param {null|String} nstrSelectedBookId currently selected book id , if any
+ * @param {null|String} nStrSelectedBookId currently selected book id , if any
+ * @param {Function | undefined} onSubmit callback on submit success, optional
  * @returns {Object} form status and handler functions
  */
-const useAddBookForm = (nstrSelectedBookId: null | string) => {
+const useAddBookForm = (
+  nStrSelectedBookId: null | string,
+  onSubmit?: () => void
+) => {
   const { objAuthInfo } = useContext(objAuthContext);
-  const [objBook, setObjBook] = useState<AddBookFormStateType>({
+  const [objBook, setObjBook] = useState<NewBookFormStateType>({
     ...INITIAL_BOOK,
     addedBy: objAuthInfo.nObjUserData?.email || "unknown",
   });
@@ -52,15 +51,19 @@ const useAddBookForm = (nstrSelectedBookId: null | string) => {
   const [uObjImageFile, setUObjImageFile] =
     useState<InstanceType<typeof File>>();
 
-  const objAuthorsQueryResponse =
-    useQuery<{ authors: AuthorType[] }>(GET_AUTHORS);
   const objBookQueryResponse = useQuery<{ books: BookType[] }>(GET_BOOKS);
 
   /**
    * @description add book mutation, updates cache when created, and refetches a query for book details if any book is currently selected
    */
-  const [funcAddBookMutation, objAddBookMutationResponse] =
-    useMutation(ADD_BOOK);
+  const [funcAddBookMutation, objAddBookMutationResponse] = useMutation(
+    ADD_BOOK,
+    {
+      onCompleted: () => {
+        onSubmit && onSubmit();
+      },
+    }
+  );
 
   /**
    * @description callback on input change
@@ -159,7 +162,7 @@ const useAddBookForm = (nstrSelectedBookId: null | string) => {
         const { book: objSelectedBook } =
           cache.readQuery<{ book: BookType }>({
             query: GET_BOOK_DETAILS,
-            variables: { id: nstrSelectedBookId },
+            variables: { id: nStrSelectedBookId },
           }) || {};
 
         if (
@@ -198,6 +201,10 @@ const useAddBookForm = (nstrSelectedBookId: null | string) => {
     clearForm();
   };
 
+  /**
+   * @description effect to run overall form validation
+   * @returns {undefined}
+   */
   useEffect(() => {
     const bFormIsValid = Object.values(objFormValidation).reduce(
       (bIsValid, objCurrentValidation) =>
@@ -216,7 +223,6 @@ const useAddBookForm = (nstrSelectedBookId: null | string) => {
     handleSubmit,
     uObjImageFile,
     objAddBookMutationResponse,
-    objAuthorsQueryResponse,
     objBook,
     objFormValidation,
   };

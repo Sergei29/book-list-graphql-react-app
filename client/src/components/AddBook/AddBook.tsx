@@ -11,15 +11,15 @@ import AddBookForm from "./components/AddBookForm";
 import { useStyles } from "./style";
 
 type Props = {
-  nstrSelectedBookId: null | string;
+  nStrSelectedBookId: null | string;
 };
 
 /**
  * @description add new book form
- * @param {String | null} nstrSelectedBookId selected book ID
+ * @param {String | null} nStrSelectedBookId selected book ID
  * @returns {JSX} component markup
  */
-const AddBook: React.FC<Props> = ({ nstrSelectedBookId }) => {
+const AddBook: React.FC<Props> = ({ nStrSelectedBookId }) => {
   const classes = useStyles();
   const [bDisplayModal, setBDisplayModal] = useState<boolean>(false);
 
@@ -44,7 +44,7 @@ const AddBook: React.FC<Props> = ({ nstrSelectedBookId }) => {
         </DialogTitle>
         <DialogContent className={classes.addBookModal__content}>
           <AddBookForm
-            nstrSelectedBookId={nstrSelectedBookId}
+            nStrSelectedBookId={nStrSelectedBookId}
             onSumbit={handleModalClose}
           />
         </DialogContent>

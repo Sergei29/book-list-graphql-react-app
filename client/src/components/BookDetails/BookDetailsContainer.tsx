@@ -67,9 +67,7 @@ const BookDetailsContainer: React.FC<Props> = ({
         onClose={() => setBShowEditModal(false)}
         fullWidth
       >
-        <DialogContent className={classes.bookDetailsContainer}>
-          edit book form
-        </DialogContent>
+        <DialogContent>edit book form</DialogContent>
       </Dialog>
     </Fragment>
   );

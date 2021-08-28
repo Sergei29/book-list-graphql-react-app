@@ -1,5 +1,5 @@
 import {
-  AddBookFormStateType,
+  NewBookFormStateType,
   BookType,
   ValidationType,
 } from "../../types/types";

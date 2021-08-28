@@ -14,7 +14,8 @@ type Props = {
 
 /**
  * @description selected book details
- * @param {String} {strBookId book ID}
+ * @param {String} strBookId book ID
+ * @param {Function} setBShowEditModal operate edit modal
  * @returns {JSX} component markup
  */
 const BookDetails: React.FC<Props> = ({ strBookId, setBShowEditModal }) => {

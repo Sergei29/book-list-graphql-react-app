@@ -6,14 +6,14 @@ export const ADD_BOOK = gql`
     $genre: String!
     $authorId: ID!
     $addedBy: String
-    $imageFile: String
+    $strBase64ImageFile: String
   ) {
     addBook(
       name: $name
       genre: $genre
       authorId: $authorId
       addedBy: $addedBy
-      imageFile: $imageFile
+      strBase64ImageFile: $strBase64ImageFile
     ) {
       id
       name

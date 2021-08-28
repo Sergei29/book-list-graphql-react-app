@@ -32,12 +32,12 @@ export class ImagesDataSource extends MongoDataSource<ImageType, ContextType> {
 
   /**
    * @description uploading image file to Cloudinary CDN
-   * @param {String} imageFile image file
+   * @param {String} strBase64ImageFile image file
    * @returns {Promise<Object>} promise resolving to response data about image stored in Cloudinary cdn.
    */
-  uploadImageToCloudinary = async (imageFile: string) => {
+  uploadImageToCloudinary = async (strBase64ImageFile: string) => {
     try {
-      const objResponse = await cloudinary.uploader.upload(imageFile, {
+      const objResponse = await cloudinary.uploader.upload(strBase64ImageFile, {
         allowed_formats: ["jpg", "jpeg", "png", "PNG"],
         folder: "image_list_images",
       });
@@ -99,12 +99,14 @@ export class ImagesDataSource extends MongoDataSource<ImageType, ContextType> {
 
   /**
    * @description util to save image's data in DB
-   * @param {String} imageFile image file
+   * @param {String} strBase64ImageFile image file
    * @returns {Promise<Object>}  promise resolving to newly written image's object
    */
-  saveAndGetDocFromDB = async (imageFile: string) => {
+  saveAndGetDocFromDB = async (strBase64ImageFile: string) => {
     try {
-      const objNewImage = await this.uploadImageToCloudinary(imageFile);
+      const objNewImage = await this.uploadImageToCloudinary(
+        strBase64ImageFile
+      );
       return await this.model.create(objNewImage);
     } catch (error) {
       throw new ApolloError(
@@ -115,12 +117,12 @@ export class ImagesDataSource extends MongoDataSource<ImageType, ContextType> {
 
   /**
    * @description add new image to collection
-   * @param {String} imageFile image's file
+   * @param {String} strBase64ImageFile image's file
    * @returns {Promise<Object | null>}  promise resolving to newly written image's object
    */
-  addNewImage = async (imageFile?: string) => {
-    if (!imageFile) return null;
-    return await this.saveAndGetDocFromDB(imageFile);
+  addNewImage = async (strBase64ImageFile?: string) => {
+    if (!strBase64ImageFile) return null;
+    return await this.saveAndGetDocFromDB(strBase64ImageFile);
   };
 
   /**

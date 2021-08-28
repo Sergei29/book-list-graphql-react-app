@@ -45,7 +45,9 @@ export const Mutation: MutationResolverType = {
     if (objExistingBook) {
       throw new UserInputError(ErrorMessage.BOOK_EXISTS);
     }
-    const objNewImage = await dataSources.images.addNewImage(args.imageFile);
+    const objNewImage = await dataSources.images.addNewImage(
+      args.strBase64ImageFile
+    );
     const objNewBook = await dataSources.books.addNewBook({
       name: args.name,
       genre: args.genre,
@@ -95,14 +97,15 @@ export const Mutation: MutationResolverType = {
     if (user?.role !== ADMIN) {
       throw new UserInputError(ErrorMessage.NOT_ALOWED);
     }
-    const { id, name, genre, authorId, addedBy, imageId, imageFile } = args;
+    const { id, name, genre, authorId, addedBy, imageId, strBase64ImageFile } =
+      args;
     const objExistingBook = await dataSources.books.getBookById(id);
     if (!objExistingBook) {
       throw new UserInputError(ErrorMessage.BOOK_NOT_FOUND);
     }
     const objNewImage = await dataSources.images.updateImageById(
       imageId,
-      imageFile
+      strBase64ImageFile
     );
 
     return await dataSources.books.updateBookById({

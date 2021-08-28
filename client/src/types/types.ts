@@ -32,12 +32,12 @@ export type ValidationType = {
   strErrorMessage: string;
 };
 
-export type AddBookFormStateType = {
+export type NewBookFormStateType = {
   name: string;
   genre: string;
   authorId: string;
   addedBy: string;
-  imageFile: null | string;
+  strBase64ImageFile: null | string;
 };
 
 export type InputChangeEvent = React.ChangeEvent<

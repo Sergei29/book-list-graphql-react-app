@@ -68,7 +68,7 @@ export const typeDefs = gql`
       genre: String!
       authorId: ID!
       addedBy: String
-      imageFile: String
+      strBase64ImageFile: String
     ): Book!
     editBook(
       id: ID!
@@ -76,7 +76,7 @@ export const typeDefs = gql`
       genre: String!
       authorId: ID!
       addedBy: String
-      imageFile: String
+      strBase64ImageFile: String
     ): Book!
     removeAuthor(id: ID!): Author!
     removeBook(id: ID!): Book!

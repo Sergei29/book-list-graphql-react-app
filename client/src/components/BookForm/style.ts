@@ -2,7 +2,7 @@ import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 
 export const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
-    addBookForm: {
+    bookForm: {
       padding: theme.spacing(2.5),
       display: "flex",
       flexDirection: "column",
@@ -13,11 +13,11 @@ export const useStyles = makeStyles((theme: Theme) => {
         padding: 0,
       },
     },
-    addBookForm__fileInput: {
+    bookForm__fileInput: {
       display: "flex",
       padding: `${theme.spacing(2)}px ${theme.spacing(6)}px`,
     },
-    addBookForm__inputFields: {
+    bookForm__inputFields: {
       display: "flex",
       columnGap: `${theme.spacing(2)}px`,
       [theme.breakpoints.down("xs")]: {
@@ -30,8 +30,8 @@ export const useStyles = makeStyles((theme: Theme) => {
         maxWidth: 240,
       },
     },
-    addBookForm__buttons: {},
-    addBookForm__errorMessage: {
+    bookForm__buttons: {},
+    bookForm__errorMessage: {
       color: theme.palette.secondary.dark,
     },
   });
