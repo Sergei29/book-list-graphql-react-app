@@ -43,6 +43,7 @@ const useEditBookForm = (nObjBook: BookType | null, onSubmit?: () => void) => {
   const [funcEditBookMutation, objEditBookMutationResponse] = useMutation(
     EDIT_BOOK,
     {
+      errorPolicy: "all",
       onCompleted: () => {
         onSubmit && onSubmit();
       },
@@ -139,7 +140,7 @@ const useEditBookForm = (nObjBook: BookType | null, onSubmit?: () => void) => {
 
     // if ok, submit:
     funcEditBookMutation({
-      variables: objNewBook,
+      variables: { ...objNewBook, id: nObjBook?.id },
     });
   };
 
