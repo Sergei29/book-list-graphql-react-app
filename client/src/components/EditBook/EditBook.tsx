@@ -6,14 +6,16 @@ import { useStyles } from "./style";
 
 type Props = {
   strSelectedBookId: string;
+  onSumbit?: () => void;
 };
 
 /**
  * @description edit selected book
  * @param {String} strSelectedBookId current selected book ID
+ * @param {Function | undefined} onSumbit on submit callback, optional
  * @returns {JSX} markup
  */
-const EditBook: React.FC<Props> = ({ strSelectedBookId }) => {
+const EditBook: React.FC<Props> = ({ strSelectedBookId, onSumbit }) => {
   const classes = useStyles();
   const { data, loading, error } = useBookDetails({
     strBookId: strSelectedBookId,
@@ -27,7 +29,7 @@ const EditBook: React.FC<Props> = ({ strSelectedBookId }) => {
     if (loading) return <Typography>Loading book details...</Typography>;
     if (error) return <Typography>Error: {error.message}</Typography>;
     if (!data?.book) return <Typography>No book details found.</Typography>;
-    return <EditBookForm objSelectedBook={data?.book} />;
+    return <EditBookForm objSelectedBook={data?.book} onSumbit={onSumbit} />;
   };
 
   return (

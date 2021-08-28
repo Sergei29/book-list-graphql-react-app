@@ -6,6 +6,7 @@ import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import CollectionsBookmarkIcon from "@material-ui/icons/CollectionsBookmark";
 import MenuItem from "@material-ui/core/MenuItem";
 import CardMedia from "@material-ui/core/CardMedia";
+import Typography from "@material-ui/core/Typography";
 import { GET_AUTHORS } from "../../graphql/queries";
 import TextField from "../common/TextField";
 import FileInput from "../common/FileInput";
@@ -78,6 +79,16 @@ const BookForm: React.FC<Props> = ({
       ));
     }
   };
+
+  if (bMutationLoading) {
+    return (
+      <div className={classes.bookForm}>
+        <Typography className={classes.bookForm__loader}>
+          {bEditBook ? "Updating..." : "Creating..."}
+        </Typography>
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit} className={classes.bookForm}>

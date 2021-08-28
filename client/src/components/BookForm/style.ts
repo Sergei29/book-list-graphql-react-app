@@ -34,5 +34,8 @@ export const useStyles = makeStyles((theme: Theme) => {
     bookForm__errorMessage: {
       color: theme.palette.secondary.dark,
     },
+    bookForm__loader: {
+      color: theme.palette.info.main,
+    },
   });
 });

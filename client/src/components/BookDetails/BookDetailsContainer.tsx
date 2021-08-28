@@ -32,6 +32,8 @@ const BookDetailsContainer: React.FC<Props> = ({
   const bIsMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
   const [bShowEditModal, setBShowEditModal] = useState<boolean>(false);
 
+  const handleCloseEditModal = () => setBShowEditModal(false);
+
   const renderBookDetails = () =>
     bIsMediumScreen ? (
       <div className={classes.bookDetailsContainer}>
@@ -66,10 +68,13 @@ const BookDetailsContainer: React.FC<Props> = ({
       {renderBookDetails()}
       <Dialog
         open={bShowEditModal && !!nstrBookId}
-        onClose={() => setBShowEditModal(false)}
+        onClose={handleCloseEditModal}
         fullWidth
       >
-        <EditBook strSelectedBookId={nstrBookId!} />
+        <EditBook
+          strSelectedBookId={nstrBookId!}
+          onSumbit={handleCloseEditModal}
+        />
       </Dialog>
     </Fragment>
   );
