@@ -129,10 +129,13 @@ export class ImagesDataSource extends MongoDataSource<ImageType, ContextType> {
    * @description updating an exiting image inside the collection
    * @param {String} strImageId existing image's public ID
    * @param {String} newImageFile image's file
-   * @returns {Promise<Object>}  promise resolving to re-written image's object
+   * @returns {Promise<Object | undefined>}  promise resolving to re-written image's object or undefined if fails
    */
-  updateImageById = async (strImageId: string, newImageFile?: string) => {
-    if (!newImageFile) return null;
+  updateImageById = async (
+    strImageId: string,
+    newImageFile?: string
+  ): Promise<ImageType | undefined> => {
+    if (!newImageFile) return;
     const nObjExistingImage = await this.getImageById(strImageId);
     if (!nObjExistingImage) {
       throw new ApolloError(

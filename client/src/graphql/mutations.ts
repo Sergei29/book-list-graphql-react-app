@@ -33,6 +33,44 @@ export const REMOVE_BOOK = gql`
   }
 `;
 
+export const EDIT_BOOK = gql`
+  mutation EditBook(
+    $id: ID!
+    $name: String!
+    $genre: String!
+    $authorId: ID!
+    $addedBy: String
+    $strBase64ImageFile: String
+  ) {
+    editBook(
+      id: $id
+      name: $name
+      genre: $genre
+      authorId: $authorId
+      addedBy: $addedBy
+      strBase64ImageFile: $strBase64ImageFile
+    ) {
+      id
+      name
+      genre
+      addedBy
+      image {
+        id
+        imageUrl
+      }
+      author {
+        id
+        name
+        age
+        books {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
+
 export const REMOVE_AUTHOR = gql`
   mutation RemoveAuthorById($id: ID!) {
     removeAuthor(id: $id) {

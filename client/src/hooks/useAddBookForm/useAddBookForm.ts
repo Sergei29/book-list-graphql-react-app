@@ -61,6 +61,8 @@ const useAddBookForm = (
     {
       onCompleted: () => {
         onSubmit && onSubmit();
+        setObjBook({ ...INITIAL_BOOK });
+        setObjFormValidation({ ...INITIAL_BOOK_VALIDATION });
       },
     }
   );
@@ -133,7 +135,7 @@ const useAddBookForm = (
    * @description clear form
    * @returns {undefined} sets state
    */
-  const clearForm = () => {
+  const handleClearForm = () => {
     setObjBook({ ...INITIAL_BOOK });
     setObjFormValidation({ ...INITIAL_BOOK_VALIDATION });
   };
@@ -196,9 +198,6 @@ const useAddBookForm = (
         });
       },
     });
-
-    // clear form
-    clearForm();
   };
 
   /**

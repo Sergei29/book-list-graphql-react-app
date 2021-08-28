@@ -4,7 +4,13 @@ import {
   UserInputError,
   ApolloError,
 } from "apollo-server-express";
-import { ErrorMessage, ContextType, Role, Expiry } from "../types/types";
+import {
+  ErrorMessage,
+  ContextType,
+  Role,
+  Expiry,
+  ImageType,
+} from "../types/types";
 import {
   funcHashPassword,
   funcCreateToken,
@@ -97,14 +103,16 @@ export const Mutation: MutationResolverType = {
     if (user?.role !== ADMIN) {
       throw new UserInputError(ErrorMessage.NOT_ALOWED);
     }
-    const { id, name, genre, authorId, addedBy, imageId, strBase64ImageFile } =
-      args;
+
+    const { id, name, genre, authorId, addedBy, strBase64ImageFile } = args;
+
     const objExistingBook = await dataSources.books.getBookById(id);
     if (!objExistingBook) {
       throw new UserInputError(ErrorMessage.BOOK_NOT_FOUND);
     }
+
     const objNewImage = await dataSources.images.updateImageById(
-      imageId,
+      objExistingBook.imageId,
       strBase64ImageFile
     );
 
@@ -114,7 +122,7 @@ export const Mutation: MutationResolverType = {
       genre,
       authorId,
       addedBy,
-      imageId: objNewImage?.id || imageId,
+      imageId: objNewImage?.id || objExistingBook.imageId,
     });
   },
 

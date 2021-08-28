@@ -5,8 +5,10 @@ import {
   useTheme,
   Dialog,
   DialogContent,
+  DialogTitle,
 } from "@material-ui/core";
 // components:
+import EditBook from "../EditBook";
 import BookDetails from "./BookDetails";
 // styles:
 import { useStyles } from "./style";
@@ -63,11 +65,11 @@ const BookDetailsContainer: React.FC<Props> = ({
     <Fragment>
       {renderBookDetails()}
       <Dialog
-        open={bShowEditModal}
+        open={bShowEditModal && !!nstrBookId}
         onClose={() => setBShowEditModal(false)}
         fullWidth
       >
-        <DialogContent>edit book form</DialogContent>
+        <EditBook strSelectedBookId={nstrBookId!} />
       </Dialog>
     </Fragment>
   );
