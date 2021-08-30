@@ -51,6 +51,7 @@ export type BookType = {
   genre: string;
   authorId: string;
   addedBy: string;
+  description: string;
   imageId: string;
 } & Document;
 

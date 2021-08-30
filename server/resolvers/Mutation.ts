@@ -59,6 +59,7 @@ export const Mutation: MutationResolverType = {
       genre: args.genre,
       authorId: args.authorId,
       addedBy: args.addedBy,
+      description: args.description,
       imageId: objNewImage?._id || null,
     });
 
@@ -104,7 +105,15 @@ export const Mutation: MutationResolverType = {
       throw new UserInputError(ErrorMessage.NOT_ALOWED);
     }
 
-    const { id, name, genre, authorId, addedBy, strBase64ImageFile } = args;
+    const {
+      id,
+      name,
+      genre,
+      authorId,
+      addedBy,
+      description,
+      strBase64ImageFile,
+    } = args;
 
     const objExistingBook = await dataSources.books.getBookById(id);
     if (!objExistingBook) {
@@ -122,6 +131,7 @@ export const Mutation: MutationResolverType = {
       genre,
       authorId,
       addedBy,
+      description,
       imageId: objNewImage?.id || objExistingBook.imageId,
     });
   },
