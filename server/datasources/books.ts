@@ -63,12 +63,15 @@ export class BooksDataSource extends MongoDataSource<BookType, ContextType> {
    * @returns {Promise<Object | null>}  promise resolving to re-written book's object
    */
   updateBookById = async (objNewBook: Record<string, any>) => {
-    const { name, genre, authorId, id, imageId } = objNewBook;
+    const { name, genre, authorId, id, addedBy, description, imageId } =
+      objNewBook;
     try {
       await this.model.findByIdAndUpdate(id, {
         name,
         genre,
         authorId,
+        addedBy,
+        description,
         imageId,
       });
 
