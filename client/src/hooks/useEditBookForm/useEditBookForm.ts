@@ -2,13 +2,9 @@ import React, { useState, useEffect, useContext } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { GET_BOOKS } from "../../graphql/queries";
 import { EDIT_BOOK } from "../../graphql/mutations";
-import { validateForm } from "../helpers/validateForm";
+import { validateEditBookForm } from "../helpers/validateForm";
 import { objAuthContext } from "../../containers/AuthProvider";
-import {
-  ValidationType,
-  NewBookFormStateType,
-  BookType,
-} from "../../types/types";
+import { NewBookFormStateType, BookType } from "../../types/types";
 import {
   getNewBookInitialState,
   INITIAL_BOOK_BLANK_STATE,
@@ -100,9 +96,10 @@ const useEditBookForm = (nObjBook: BookType | null, onSubmit?: () => void) => {
    * @returns {any}
    */
   const handleBlur = (strFieldName: string, strFieldValue: string) => {
-    const objFieldValidation = validateForm(
+    const objFieldValidation = validateEditBookForm(
       strFieldName,
       strFieldValue,
+      nObjBook?.id!,
       objBookQueryResponse.data?.books
     );
     setObjFormValidation((objPrevState) => ({

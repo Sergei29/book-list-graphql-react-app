@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { GET_BOOKS, GET_BOOK_DETAILS } from "../../graphql/queries";
 import { ADD_BOOK } from "../../graphql/mutations";
-import { validateForm } from "../helpers/validateForm";
+import { validateAddBookForm } from "../helpers/validateForm";
 import { objAuthContext } from "../../containers/AuthProvider";
 import {
   ValidationType,
@@ -125,7 +125,7 @@ const useAddBookForm = (
    * @returns {any}
    */
   const handleBlur = (strFieldName: string, strFieldValue: string) => {
-    const objFieldValidation = validateForm(
+    const objFieldValidation = validateAddBookForm(
       strFieldName,
       strFieldValue,
       objBookQueryResponse.data?.books

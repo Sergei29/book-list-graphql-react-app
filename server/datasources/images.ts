@@ -137,14 +137,12 @@ export class ImagesDataSource extends MongoDataSource<ImageType, ContextType> {
   ): Promise<ImageType | undefined> => {
     if (!newImageFile) return;
     const nObjExistingImage = await this.getImageById(strImageId);
-    if (!nObjExistingImage) {
-      throw new ApolloError(
-        `Image ID: ${strImageId} - does not exist in database`
-      );
-    }
 
     try {
-      await this.deleteImageFromCloudinary(nObjExistingImage.publicId);
+      if (nObjExistingImage) {
+        await this.deleteImageFromCloudinary(nObjExistingImage.publicId);
+      }
+
       return await this.saveAndGetDocFromDB(newImageFile);
     } catch (error) {
       throw new ApolloError("Failed to update image: ", error);
