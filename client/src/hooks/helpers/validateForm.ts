@@ -36,6 +36,14 @@ export const validateBookGenre = (strGenre: string) => {
   };
 };
 
+export const validateBookDescription = (strDescription: string) => {
+  const bDescriptionValid = strDescription.length <= 300;
+  return {
+    bIsValid: bDescriptionValid,
+    strErrorMessage: bDescriptionValid ? "" : "Maximum 300 characters allowed",
+  };
+};
+
 export const validateBookAuthor = (strAuthor: string) => {
   const bAuthorValid = strAuthor.length > 0;
   return {
@@ -63,6 +71,8 @@ export const validateForm = (
       return { genre: validateBookGenre(strFieldValue) };
     case "authorId":
       return { authorId: validateBookAuthor(strFieldValue) };
+    case "description":
+      return { description: validateBookDescription(strFieldValue) };
     default:
       return {};
   }

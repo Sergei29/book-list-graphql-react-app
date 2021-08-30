@@ -12,7 +12,10 @@ import {
 import { objInitialValidation } from "../../constants";
 
 export type FormValidationStateType = Readonly<
-  Record<"name" | "genre" | "authorId" | "strBase64ImageFile", ValidationType>
+  Record<
+    "name" | "genre" | "authorId" | "description" | "strBase64ImageFile",
+    ValidationType
+  >
 >;
 
 const INITIAL_BOOK: Readonly<NewBookFormStateType> = {
@@ -20,6 +23,7 @@ const INITIAL_BOOK: Readonly<NewBookFormStateType> = {
   genre: "",
   authorId: "",
   addedBy: "unknown",
+  description: "",
   strBase64ImageFile: null,
 };
 
@@ -27,6 +31,7 @@ const INITIAL_BOOK_VALIDATION: FormValidationStateType = {
   name: objInitialValidation,
   genre: objInitialValidation,
   authorId: objInitialValidation,
+  description: objInitialValidation,
   strBase64ImageFile: objInitialValidation,
 };
 

@@ -3,6 +3,7 @@ import { MutationResult, useQuery } from "@apollo/client";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import MenuBookIcon from "@material-ui/icons/MenuBook";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
+import DescriptionIcon from "@material-ui/icons/Description";
 import CollectionsBookmarkIcon from "@material-ui/icons/CollectionsBookmark";
 import MenuItem from "@material-ui/core/MenuItem";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -16,6 +17,7 @@ import {
   NewBookFormStateType,
   AuthorType,
 } from "../../types/types";
+import { FormValidationStateType } from "../../hooks/useAddBookForm";
 // styles:
 import { useStyles } from "./style";
 
@@ -34,9 +36,7 @@ type Props = {
   handleSubmit: (objEvent: React.FormEvent) => void;
   objNewBook: NewBookFormStateType;
   objBookMutationResponse: MutationResult<any>;
-  objFormValidation: Readonly<
-    Record<"name" | "genre" | "authorId" | "strBase64ImageFile", ValidationType>
-  >;
+  objFormValidation: FormValidationStateType;
   uObjImageFile: File | undefined;
 };
 
@@ -147,6 +147,26 @@ const BookForm: React.FC<Props> = ({
           >
             {displayAuthors()}
           </TextField>
+          <TextField
+            label="Description"
+            strFieldname="description"
+            strValue={objNewBook.description}
+            handleChange={handleChange}
+            handleBlur={handleBlur}
+            objValidation={objFormValidation.description}
+            multiline
+            rows={6}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment
+                  position="end"
+                  className={classes.bookForm__inputTextarea__adornment}
+                >
+                  <DescriptionIcon color="secondary" />
+                </InputAdornment>
+              ),
+            }}
+          />
         </div>
         <div>
           <FileInput

@@ -30,6 +30,10 @@ export const useStyles = makeStyles((theme: Theme) => {
         maxWidth: 240,
       },
     },
+    bookForm__inputTextarea__adornment: {
+      alignSelf: "flex-start",
+      marginTop: theme.spacing(1),
+    },
     bookForm__buttons: {},
     bookForm__errorMessage: {
       color: theme.palette.secondary.dark,

@@ -37,6 +37,7 @@ export type NewBookFormStateType = {
   genre: string;
   authorId: string;
   addedBy: string;
+  description: string;
   strBase64ImageFile: null | string;
 };
 

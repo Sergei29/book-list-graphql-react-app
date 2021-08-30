@@ -13,11 +13,8 @@ import {
   getNewBookInitialState,
   INITIAL_BOOK_BLANK_STATE,
   INITIAL_BOOK_VALIDATION,
+  FormValidationStateType,
 } from "./initialState";
-
-export type FormValidationStateType = Readonly<
-  Record<"name" | "genre" | "authorId" | "strBase64ImageFile", ValidationType>
->;
 
 /**
  * @description custom hook for edit book form

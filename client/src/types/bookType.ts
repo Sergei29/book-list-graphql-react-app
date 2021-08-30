@@ -11,6 +11,6 @@ export type Book = {
   genre?: string;
   author?: Author;
   addedBy?: string;
-  image?: null | ImageType;
   description?: null | string;
+  image?: null | ImageType;
 };
