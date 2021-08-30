@@ -44,6 +44,7 @@ const BookListPage: React.FC = () => {
       <BookDetails
         nstrBookId={nStrSelectedBookId}
         handleBookDeselect={handleBookDeselect}
+        handleBookSelect={handleBookSelect}
       />
       <Background />
     </div>

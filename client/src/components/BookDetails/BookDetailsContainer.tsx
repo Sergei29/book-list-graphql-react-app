@@ -5,7 +5,6 @@ import {
   useTheme,
   Dialog,
   DialogContent,
-  DialogTitle,
 } from "@material-ui/core";
 // components:
 import EditBook from "../EditBook";
@@ -16,6 +15,7 @@ import { useStyles } from "./style";
 type Props = {
   nstrBookId: null | string;
   handleBookDeselect: () => void;
+  handleBookSelect: (strBookId: string) => () => void;
 };
 
 /**
@@ -26,6 +26,7 @@ type Props = {
 const BookDetailsContainer: React.FC<Props> = ({
   nstrBookId,
   handleBookDeselect,
+  handleBookSelect,
 }) => {
   const classes = useStyles();
   const theme = useTheme();
@@ -41,6 +42,7 @@ const BookDetailsContainer: React.FC<Props> = ({
           <BookDetails
             strBookId={nstrBookId}
             setBShowEditModal={setBShowEditModal}
+            handleBookSelect={handleBookSelect}
           />
         ) : (
           <Typography>No book selected.</Typography>
@@ -57,6 +59,7 @@ const BookDetailsContainer: React.FC<Props> = ({
             <BookDetails
               strBookId={nstrBookId}
               setBShowEditModal={setBShowEditModal}
+              handleBookSelect={handleBookSelect}
             />
           )}
         </DialogContent>

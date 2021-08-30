@@ -12,6 +12,7 @@ export const useStyles = makeStyles((theme: Theme) =>
         display: "flex",
         flexDirection: "column",
         height: "100%",
+        gap: `${theme.spacing(2)}px`,
       },
       [theme.breakpoints.up("md")]: {
         position: "fixed",
@@ -33,6 +34,22 @@ export const useStyles = makeStyles((theme: Theme) =>
       marginTop: "auto",
       textAlign: "end",
       color: "rgba(0, 0, 0, 0.54)",
+    },
+    bookDetails__header: {
+      minHeight: 145,
+    },
+    bookDetails__otherBooksList: {
+      display: "flex",
+      flexDirection: "column",
+      rowGap: `${theme.spacing(2)}px`,
+      "& > h5": {
+        fontSize: "1.5rem",
+      },
+      "& > div": {
+        display: "flex",
+        flexWrap: "wrap",
+        gap: `${theme.spacing(1)}px`,
+      },
     },
   })
 );

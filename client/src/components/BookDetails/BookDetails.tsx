@@ -1,15 +1,16 @@
-import React, { Fragment, useContext } from "react";
-import { Typography } from "@material-ui/core";
-import { BookType } from "../../types/types";
+import React, { useContext } from "react";
+import Typography from "@material-ui/core/Typography";
+import Chip from "@material-ui/core/Chip";
 import useBookDetails from "../../hooks/useBookDetails/useBookDetails";
 import { objAuthContext } from "../../containers/AuthProvider";
-import FavButton from "./components/FavButton";
-import EditButton from "./components/EditButton";
+import BookDetailsHeader from "./components/BookDetailsHeader";
+import BookDetailsMain from "./components/BookDetailsMain";
 import { useStyles } from "./style";
 
 type Props = {
   strBookId: string;
   setBShowEditModal: React.Dispatch<React.SetStateAction<boolean>>;
+  handleBookSelect: (strBookId: string) => () => void;
 };
 
 /**
@@ -18,7 +19,11 @@ type Props = {
  * @param {Function} setBShowEditModal operate edit modal
  * @returns {JSX} component markup
  */
-const BookDetails: React.FC<Props> = ({ strBookId, setBShowEditModal }) => {
+const BookDetails: React.FC<Props> = ({
+  strBookId,
+  setBShowEditModal,
+  handleBookSelect,
+}) => {
   const classes = useStyles();
   const { getIsAdmin } = useContext(objAuthContext);
   const { data, loading, error, funcIsBookFavorite, funcToggleAsFavorite } =
@@ -27,47 +32,45 @@ const BookDetails: React.FC<Props> = ({ strBookId, setBShowEditModal }) => {
   if (loading) return <Typography>Loading book details...</Typography>;
   if (error) return <Typography>Error: {error.message}</Typography>;
   if (!data?.book) return <Typography>No book selected.</Typography>;
-
-  /**
-   * @param {Object} objBook fetched book object
-   * @returns {JSX} book details conditional render
-   */
-  const renderBook = (objBook?: BookType) => {
-    if (objBook) {
-      const { id, name, genre, author, addedBy } = objBook;
-      return (
-        <Fragment>
-          <Typography variant="h4" component="h2">
-            {name}
-            <FavButton
-              bFavorite={funcIsBookFavorite(id)}
-              handleClick={funcToggleAsFavorite(id)}
+  const { id, genre, name, author, addedBy, image } = data?.book;
+  return (
+    <div>
+      <BookDetailsHeader
+        bFavorite={funcIsBookFavorite(id)}
+        bIsAdmin={getIsAdmin()}
+        handleClickFavorite={funcToggleAsFavorite(id)}
+        handleOpenEditModal={() => setBShowEditModal(true)}
+        strAuthorName={author?.name!}
+        strBookGenre={genre!}
+        strBookTitle={name!}
+        strCustomClass={classes.bookDetails__header}
+      />
+      <BookDetailsMain
+        strImageUrl={image?.imageUrl}
+        strDescription="book brief description"
+      />
+      <div className={classes.bookDetails__otherBooksList}>
+        <Typography variant="h4" component="h5">
+          All books by this author:
+        </Typography>
+        <div>
+          {author!.books!.map((objBook: Record<string, any>) => (
+            <Chip
+              key={objBook!.id}
+              label={objBook!.name}
+              onClick={handleBookSelect(objBook!.id)}
+              disabled={objBook!.id === strBookId}
             />
-            {true === getIsAdmin() && (
-              <EditButton handleClick={() => setBShowEditModal(true)} />
-            )}
+          ))}
+        </div>
+        {!!addedBy && (
+          <Typography className={classes.bookDetails__addedBy}>
+            Book added by: {addedBy}
           </Typography>
-          <Typography>{genre}</Typography>
-          <Typography>{author!.name}</Typography>
-          <Typography>All books by this author:</Typography>
-          <ul>
-            {author!.books!.map((objBook: Record<string, any>) => (
-              <li key={objBook!.id}>{objBook!.name}</li>
-            ))}
-          </ul>
-          {!!addedBy && (
-            <Typography className={classes.bookDetails__addedBy}>
-              Book added by: {addedBy}
-            </Typography>
-          )}
-        </Fragment>
-      );
-    } else {
-      return <Typography>No book selected.</Typography>;
-    }
-  };
-
-  return <div>{renderBook(data.book)}</div>;
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default BookDetails;
