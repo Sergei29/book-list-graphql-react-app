@@ -32,7 +32,7 @@ const BookDetails: React.FC<Props> = ({
   if (loading) return <Typography>Loading book details...</Typography>;
   if (error) return <Typography>Error: {error.message}</Typography>;
   if (!data?.book) return <Typography>No book selected.</Typography>;
-  const { id, genre, name, author, addedBy, image } = data?.book;
+  const { id, genre, name, author, addedBy, description, image } = data?.book;
   return (
     <div>
       <BookDetailsHeader
@@ -47,7 +47,7 @@ const BookDetails: React.FC<Props> = ({
       />
       <BookDetailsMain
         strImageUrl={image?.imageUrl}
-        strDescription="book brief description"
+        strDescription={description || "book brief description"}
       />
       <div className={classes.bookDetails__otherBooksList}>
         <Typography variant="h4" component="h5">

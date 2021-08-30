@@ -24,9 +24,7 @@ const BookDetailsMain: React.FC<Props> = ({
         <CardMedia component="img" src={strImageUrl} />
       </div>
       <div className={classes.bookDetails__description}>
-        {strDescription && (
-          <Typography>book synopsis: {strDescription}</Typography>
-        )}
+        {strDescription && <Typography>{strDescription}</Typography>}
       </div>
     </div>
   );

@@ -8,7 +8,9 @@ export const useStyles = makeStyles((theme: Theme) =>
       minHeight: 170,
     },
     bookDetails__image: {
-      width: "40%",
+      "& > img": {
+        width: 124,
+      },
     },
     bookDetails__description: {},
   })
