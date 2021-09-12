@@ -114,7 +114,6 @@ export const Mutation: MutationResolverType = {
       description,
       strBase64ImageFile,
     } = args;
-    console.log("Book name :>> ", name);
 
     const objExistingBook = await dataSources.books.getBookById(id);
     if (!objExistingBook) {
