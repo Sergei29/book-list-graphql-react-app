@@ -19,7 +19,7 @@ const BookListPage: React.FC = () => {
   const classes = useStyles();
   const [bDisplayCloud, setbDisplayCloud] = useState<boolean>(false);
   const { getIsAuthenticated } = useContext(objAuthContext);
-  const { nstrSelectedBookId, handleBookSelect, handleBookDeselect } =
+  const { nStrSelectedBookId, handleBookSelect, handleBookDeselect } =
     useBookListPage();
 
   const funcToggleLayout = () => setbDisplayCloud((bPrevState) => !bPrevState);
@@ -39,11 +39,12 @@ const BookListPage: React.FC = () => {
       <BookList bDisplayCloud={bDisplayCloud} onBookSelect={handleBookSelect} />
 
       {getIsAuthenticated() && (
-        <AddBook nstrSelectedBookId={nstrSelectedBookId} />
+        <AddBook nStrSelectedBookId={nStrSelectedBookId} />
       )}
       <BookDetails
-        nstrBookId={nstrSelectedBookId}
+        nstrBookId={nStrSelectedBookId}
         handleBookDeselect={handleBookDeselect}
+        handleBookSelect={handleBookSelect}
       />
       <Background />
     </div>

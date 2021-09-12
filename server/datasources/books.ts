@@ -1,5 +1,6 @@
 import { MongoDataSource } from "apollo-datasource-mongodb";
 import { ContextType, BookType } from "../types/types";
+import { ApolloError } from "apollo-server";
 
 /**
  * @description datasource class for books entity
@@ -43,8 +44,10 @@ export class BooksDataSource extends MongoDataSource<BookType, ContextType> {
   saveAndGetDocFromDB = async (objNewBook: Record<string, any>) => {
     try {
       return await this.model.create(objNewBook);
-    } catch (error) {
-      throw new Error(error);
+    } catch (error: any) {
+      throw new ApolloError(
+        `Book cannot be saved to Database. ${error.message ?? ""}`
+      );
     }
   };
 
@@ -53,8 +56,9 @@ export class BooksDataSource extends MongoDataSource<BookType, ContextType> {
    * @param {Object} objNewBook book's data
    * @returns {Promise<Object>}  promise resolving to newly written book's object
    */
-  addNewBook = async (objNewBook: Record<string, any>) =>
-    await this.saveAndGetDocFromDB(objNewBook);
+  addNewBook = async (objNewBook: Record<string, any>) => {
+    return await this.saveAndGetDocFromDB(objNewBook);
+  };
 
   /**
    * @description updating an exiting book inside the collection
@@ -62,12 +66,23 @@ export class BooksDataSource extends MongoDataSource<BookType, ContextType> {
    * @returns {Promise<Object | null>}  promise resolving to re-written book's object
    */
   updateBookById = async (objNewBook: Record<string, any>) => {
+    const { name, genre, authorId, id, addedBy, description, imageId } =
+      objNewBook;
     try {
-      const { name, genre, authorId, id } = objNewBook;
-      await this.model.findByIdAndUpdate(id, { name, genre, authorId });
+      await this.model.findByIdAndUpdate(id, {
+        name,
+        genre,
+        authorId,
+        addedBy,
+        description,
+        imageId,
+      });
+
       return await this.model.findOne({ _id: id });
-    } catch (error) {
-      throw new Error(error);
+    } catch (error: any) {
+      throw new ApolloError(
+        `Book ${name} cannot be updated. ${error.message ?? ""}`
+      );
     }
   };
 
@@ -80,8 +95,10 @@ export class BooksDataSource extends MongoDataSource<BookType, ContextType> {
     try {
       await this.deleteFromCacheById(strBookId);
       return await this.model.findByIdAndDelete(strBookId);
-    } catch (error) {
-      throw new Error(error);
+    } catch (error: any) {
+      throw new ApolloError(
+        `Book ${strBookId} cannot be deleted. ${error.message ?? ""}`
+      );
     }
   };
 
@@ -93,8 +110,12 @@ export class BooksDataSource extends MongoDataSource<BookType, ContextType> {
   deleteBooksByAuthor = async (strAuthorId: string) => {
     try {
       return await this.model.deleteMany({ authorId: strAuthorId });
-    } catch (error) {
-      throw new Error(error);
+    } catch (error: any) {
+      throw new ApolloError(
+        `Failed to delete all books by author: ${strAuthorId}. ${
+          error.message ?? ""
+        }`
+      );
     }
   };
 }

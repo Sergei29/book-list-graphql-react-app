@@ -1,39 +1,132 @@
+import { Tracing } from "trace_events";
 import {
-  AddBookFormStateType,
+  NewBookFormStateType,
   BookType,
   ValidationType,
 } from "../../types/types";
+import { FormValidationStateType } from "../useAddBookForm/useAddBookForm";
 
-/**
- * @description validate form data helper function
- * @param {Object} objBook form data
- * @param {Array} arrBooks existing books list
- * @returns {Object} info on validation and error message if any
- */
-export const validateForm = (
-  objBook: AddBookFormStateType | null,
+export const validateAddBookName = (
+  strBookName: string,
   arrBooks?: (BookType | null)[]
 ): ValidationType => {
-  const { name, genre, authorId } = objBook!;
-
-  let bHasName = false,
-    bHasGenre = false,
-    bHasAuthorId = false,
-    nstrErrorMessage = null;
-
-  if (name.length > 0) {
-    let bNameUnique = true;
-    if (arrBooks) {
-      bNameUnique = !arrBooks.some((objBook) => objBook!.name === name);
-      nstrErrorMessage = bNameUnique ? null : "Book name already exists.";
-    }
-    bHasName = true && bNameUnique;
+  if (strBookName.length === 0) {
+    return { bIsValid: false, strErrorMessage: "Required field" };
   }
-  if (genre.length > 0) bHasGenre = true;
-  if (authorId.length > 0) bHasAuthorId = true;
 
+  const objValidation = { bIsValid: true, strErrorMessage: "" };
+
+  if (arrBooks) {
+    const bNameUnique = !arrBooks.some(
+      (objBook) => objBook!.name === strBookName
+    );
+    objValidation.bIsValid = bNameUnique;
+    objValidation.strErrorMessage = bNameUnique
+      ? ""
+      : "Book name already exists.";
+  }
+
+  return objValidation;
+};
+
+export const validateEditBookName = (
+  strBookName: string,
+  strBookId: string,
+  arrBooks?: (BookType | null)[]
+): ValidationType => {
+  if (strBookName.length === 0) {
+    return { bIsValid: false, strErrorMessage: "Required field" };
+  }
+
+  const objValidation = { bIsValid: true, strErrorMessage: "" };
+
+  if (arrBooks) {
+    const bNameUnique = !arrBooks.some(
+      (objBook) => objBook?.id !== strBookId && objBook!.name === strBookName
+    );
+    objValidation.bIsValid = bNameUnique;
+    objValidation.strErrorMessage = bNameUnique
+      ? ""
+      : "Book name already exists.";
+  }
+
+  return objValidation;
+};
+
+export const validateBookGenre = (strGenre: string) => {
+  const bGenreValid = strGenre.length > 0;
   return {
-    bIsValid: bHasName && bHasGenre && bHasAuthorId,
-    nstrErrorMessage,
+    bIsValid: bGenreValid,
+    strErrorMessage: bGenreValid ? "" : "Required field",
   };
+};
+
+export const validateBookDescription = (strDescription: string) => {
+  const bDescriptionValid = strDescription.length <= 300;
+  return {
+    bIsValid: bDescriptionValid,
+    strErrorMessage: bDescriptionValid ? "" : "Maximum 300 characters allowed",
+  };
+};
+
+export const validateBookAuthor = (strAuthor: string) => {
+  const bAuthorValid = strAuthor.length > 0;
+  return {
+    bIsValid: bAuthorValid,
+    strErrorMessage: bAuthorValid ? "" : "Required field",
+  };
+};
+
+/**
+ * @description validates form field for add book
+ * @param {String} strFieldName field name
+ * @param {String} strFieldValue field value
+ * @param {Array} arrBooks existing books list
+ * @returns {Object} field validation result
+ */
+export const validateAddBookForm = (
+  strFieldName: string,
+  strFieldValue: string,
+  arrBooks?: (BookType | null)[]
+): Partial<FormValidationStateType> => {
+  switch (strFieldName) {
+    case "name":
+      return { name: validateAddBookName(strFieldValue, arrBooks) };
+    case "genre":
+      return { genre: validateBookGenre(strFieldValue) };
+    case "authorId":
+      return { authorId: validateBookAuthor(strFieldValue) };
+    case "description":
+      return { description: validateBookDescription(strFieldValue) };
+    default:
+      return {};
+  }
+};
+
+/**
+ * @description validates form field
+ * @param {String} strFieldName field name
+ * @param {String} strFieldValue field value
+ * @param {String} strBookId Book ID to be edited
+ * @param {Array} arrBooks existing books list
+ * @returns {Object} field validation result
+ */
+export const validateEditBookForm = (
+  strFieldName: string,
+  strFieldValue: string,
+  strBookId: string,
+  arrBooks?: (BookType | null)[]
+): Partial<FormValidationStateType> => {
+  switch (strFieldName) {
+    case "name":
+      return { name: validateEditBookName(strFieldValue, strBookId, arrBooks) };
+    case "genre":
+      return { genre: validateBookGenre(strFieldValue) };
+    case "authorId":
+      return { authorId: validateBookAuthor(strFieldValue) };
+    case "description":
+      return { description: validateBookDescription(strFieldValue) };
+    default:
+      return {};
+  }
 };

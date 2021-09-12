@@ -13,6 +13,14 @@ export enum Expiry {
   IN_7_DAYS = 60 * 60 * 24 * 7 * 1000,
 }
 
+export type ImageType = {
+  publicId: string;
+  imageUrl: string;
+  width: number;
+  height: number;
+  size: number;
+} & Document;
+
 export type EmailContentType = {
   subject: string;
   text: string;
@@ -43,6 +51,8 @@ export type BookType = {
   genre: string;
   authorId: string;
   addedBy: string;
+  description: string;
+  imageId: string;
 } & Document;
 
 export type AuthorType = {
@@ -62,4 +72,5 @@ export enum ErrorMessage {
   USER_NOT_FOUND = "User does not exist.",
   LOGIN_REQUIRED = "Please login again.",
   WRONG_PASSWORD = "Wrong password.",
+  NOT_ALOWED = "Action not allowed.",
 }

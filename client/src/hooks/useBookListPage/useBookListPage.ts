@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 
 type HookReturnType = {
-  nstrSelectedBookId: null | string;
+  nStrSelectedBookId: null | string;
   handleBookSelect: (strBookId: string) => () => void;
   handleBookDeselect: () => void;
 };
@@ -11,8 +11,9 @@ type HookReturnType = {
  * @returns {Object} current selected book, select/add book handlers
  */
 const useBookListPage = (): HookReturnType => {
-  const [nstrSelectedBookId, setNStrSelectedBookId] =
-    useState<null | string>(null);
+  const [nStrSelectedBookId, setNStrSelectedBookId] = useState<null | string>(
+    null
+  );
 
   /**
    * @description callback on book click
@@ -31,7 +32,7 @@ const useBookListPage = (): HookReturnType => {
   const handleBookDeselect = useCallback(() => setNStrSelectedBookId(null), []);
 
   return {
-    nstrSelectedBookId,
+    nStrSelectedBookId,
     handleBookSelect,
     handleBookDeselect,
   };

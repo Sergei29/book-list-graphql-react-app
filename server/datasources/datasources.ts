@@ -1,10 +1,16 @@
-import { AuthorsDataSource, BooksDataSource, UsersDataSource } from "./index";
-import { Author, Book, User } from "../models";
+import {
+  AuthorsDataSource,
+  BooksDataSource,
+  UsersDataSource,
+  ImagesDataSource,
+} from "./index";
+import { Author, Book, User, Image } from "../models";
 
 export type DataSourcesType = {
   authors: InstanceType<typeof AuthorsDataSource>;
   books: InstanceType<typeof BooksDataSource>;
   users: InstanceType<typeof UsersDataSource>;
+  images: InstanceType<typeof ImagesDataSource>;
 };
 
 /**
@@ -14,4 +20,5 @@ export const dataSources = () => ({
   authors: new AuthorsDataSource(Author),
   books: new BooksDataSource(Book),
   users: new UsersDataSource(User),
+  images: new ImagesDataSource(Image),
 });

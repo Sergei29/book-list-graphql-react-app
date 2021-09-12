@@ -4,7 +4,13 @@ import {
   UserInputError,
   ApolloError,
 } from "apollo-server-express";
-import { ErrorMessage, ContextType, Role, Expiry } from "../types/types";
+import {
+  ErrorMessage,
+  ContextType,
+  Role,
+  Expiry,
+  ImageType,
+} from "../types/types";
 import {
   funcHashPassword,
   funcCreateToken,
@@ -45,42 +51,80 @@ export const Mutation: MutationResolverType = {
     if (objExistingBook) {
       throw new UserInputError(ErrorMessage.BOOK_EXISTS);
     }
-
-    return await dataSources.books.addNewBook({
+    const objNewImage = await dataSources.images.addNewImage(
+      args.strBase64ImageFile
+    );
+    const objNewBook = await dataSources.books.addNewBook({
       name: args.name,
       genre: args.genre,
       authorId: args.authorId,
       addedBy: args.addedBy,
+      description: args.description,
+      imageId: objNewImage?._id || null,
     });
+
+    return objNewBook;
   },
 
-  removeAuthor: async (parent, args, { dataSources }, info) => {
+  removeAuthor: async (parent, args, { dataSources, user }, info) => {
+    if (user?.role !== ADMIN) {
+      throw new UserInputError(ErrorMessage.NOT_ALOWED);
+    }
     const objExistingAuthor = await dataSources.authors.getAuthorById(args.id);
     if (!objExistingAuthor) {
       throw new UserInputError(ErrorMessage.AUTHOR_NOT_FOUND);
     }
-
-    // 1. remove all author's books (if any)
+    // 1. remove all associated images:
+    const arrAuthorBooks = await dataSources.books.getBooksByAuthorId(args.id);
+    const arrImagesIds = arrAuthorBooks.reduce((arrIds, objCurrentBook) => {
+      return objCurrentBook?.imageId
+        ? [...arrIds, objCurrentBook?.imageId]
+        : arrIds;
+    }, [] as string[]);
+    await dataSources.images.deleteImagesByIds(arrImagesIds);
+    // 2. remove all author's books (if any)
     await dataSources.books.deleteBooksByAuthor(args.id);
-    // 2. remove Author:
+    // 3. remove Author:
     return await dataSources.authors.deleteAuthorById(args.id);
   },
 
-  removeBook: async (parent, args, { dataSources }, info) => {
+  removeBook: async (parent, args, { dataSources, user }, info) => {
+    if (user?.role !== ADMIN) {
+      throw new UserInputError(ErrorMessage.NOT_ALOWED);
+    }
     const objExistingBook = await dataSources.books.getBookById(args.id);
     if (!objExistingBook) {
       throw new UserInputError(ErrorMessage.BOOK_NOT_FOUND);
     }
-
+    await dataSources.images.deleteImageById(objExistingBook.imageId);
     return await dataSources.books.deleteBookById(args.id);
   },
 
-  editBook: async (parent, args, { dataSources }, info) => {
-    const { id, name, genre, authorId, addedBy } = args;
+  editBook: async (parent, args, { dataSources, user }, info) => {
+    if (user?.role !== ADMIN) {
+      throw new UserInputError(ErrorMessage.NOT_ALOWED);
+    }
+
+    const {
+      id,
+      name,
+      genre,
+      authorId,
+      addedBy,
+      description,
+      strBase64ImageFile,
+    } = args;
+    console.log("Book name :>> ", name);
+
     const objExistingBook = await dataSources.books.getBookById(id);
     if (!objExistingBook) {
       throw new UserInputError(ErrorMessage.BOOK_NOT_FOUND);
     }
+
+    const objNewImage = await dataSources.images.updateImageById(
+      objExistingBook.imageId,
+      strBase64ImageFile
+    );
 
     return await dataSources.books.updateBookById({
       id,
@@ -88,10 +132,15 @@ export const Mutation: MutationResolverType = {
       genre,
       authorId,
       addedBy,
+      description,
+      imageId: objNewImage?.id || objExistingBook.imageId,
     });
   },
 
-  editAuthor: async (parent, args, { dataSources }, info) => {
+  editAuthor: async (parent, args, { dataSources, user }, info) => {
+    if (user?.role !== ADMIN) {
+      throw new UserInputError(ErrorMessage.NOT_ALOWED);
+    }
     const { id, name, age } = args;
     const objExistingAuthor = await dataSources.authors.getAuthorById(id);
     if (!objExistingAuthor) {
@@ -227,7 +276,10 @@ export const Mutation: MutationResolverType = {
     return { user: undefined };
   },
 
-  removeUser: async (parent, args, { dataSources }, info) => {
+  removeUser: async (parent, args, { dataSources, user }, info) => {
+    if (user?.role !== ADMIN) {
+      throw new UserInputError(ErrorMessage.NOT_ALOWED);
+    }
     const objUser = await dataSources.users.getUserById(args.id);
     if (!objUser) throw new AuthenticationError(ErrorMessage.USER_NOT_FOUND);
 

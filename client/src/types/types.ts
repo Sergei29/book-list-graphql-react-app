@@ -29,14 +29,16 @@ export type MaybeArrAuthors = (Author | null)[] | undefined | null;
 
 export type ValidationType = {
   bIsValid: boolean;
-  nstrErrorMessage: string | null;
+  strErrorMessage: string;
 };
 
-export type AddBookFormStateType = {
+export type NewBookFormStateType = {
   name: string;
   genre: string;
   authorId: string;
   addedBy: string;
+  description: string;
+  strBase64ImageFile: null | string;
 };
 
 export type InputChangeEvent = React.ChangeEvent<

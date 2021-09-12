@@ -2,7 +2,7 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "/server/dist/server.js",
   "scripts": {
     "client": "cd client && npm start",
     "compile-server": "cd server/ && tsc -w",
@@ -24,6 +24,7 @@
     "apollo-server-express": "^2.25.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "cloudinary": "^1.26.3",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",

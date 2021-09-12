@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, Fragment } from "react";
 import {
   Typography,
   useMediaQuery,
@@ -7,6 +7,7 @@ import {
   DialogContent,
 } from "@material-ui/core";
 // components:
+import EditBook from "../EditBook";
 import BookDetails from "./BookDetails";
 // styles:
 import { useStyles } from "./style";
@@ -14,6 +15,7 @@ import { useStyles } from "./style";
 type Props = {
   nstrBookId: null | string;
   handleBookDeselect: () => void;
+  handleBookSelect: (strBookId: string) => () => void;
 };
 
 /**
@@ -24,25 +26,60 @@ type Props = {
 const BookDetailsContainer: React.FC<Props> = ({
   nstrBookId,
   handleBookDeselect,
+  handleBookSelect,
 }) => {
   const classes = useStyles();
   const theme = useTheme();
   const bIsMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
+  const [bShowEditModal, setBShowEditModal] = useState<boolean>(false);
 
-  return bIsMediumScreen ? (
-    <div className={classes.bookDetailsContainer}>
-      {nstrBookId ? (
-        <BookDetails strBookId={nstrBookId} />
-      ) : (
-        <Typography>No book selected.</Typography>
-      )}
-    </div>
-  ) : (
-    <Dialog open={!!nstrBookId} onClose={handleBookDeselect} fullWidth>
-      <DialogContent className={classes.bookDetailsContainer}>
-        {nstrBookId && <BookDetails strBookId={nstrBookId} />}
-      </DialogContent>
-    </Dialog>
+  const handleCloseEditModal = () => setBShowEditModal(false);
+
+  const renderBookDetails = () =>
+    bIsMediumScreen ? (
+      <div className={classes.bookDetailsContainer}>
+        {nstrBookId ? (
+          <BookDetails
+            strBookId={nstrBookId}
+            setBShowEditModal={setBShowEditModal}
+            handleBookSelect={handleBookSelect}
+          />
+        ) : (
+          <Typography>No book selected.</Typography>
+        )}
+      </div>
+    ) : (
+      <Dialog
+        open={!!nstrBookId && !bShowEditModal}
+        onClose={handleBookDeselect}
+        fullWidth
+      >
+        <DialogContent className={classes.bookDetailsContainer}>
+          {nstrBookId && (
+            <BookDetails
+              strBookId={nstrBookId}
+              setBShowEditModal={setBShowEditModal}
+              handleBookSelect={handleBookSelect}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
+    );
+
+  return (
+    <Fragment>
+      {renderBookDetails()}
+      <Dialog
+        open={bShowEditModal && !!nstrBookId}
+        onClose={handleCloseEditModal}
+        fullWidth
+      >
+        <EditBook
+          strSelectedBookId={nstrBookId!}
+          onSumbit={handleCloseEditModal}
+        />
+      </Dialog>
+    </Fragment>
   );
 };
 

@@ -19,12 +19,23 @@ export const typeDefs = gql`
     users: [User]
   }
 
+  type Image {
+    id: ID!
+    publicId: String!
+    imageUrl: String!
+    width: Int
+    height: Int
+    size: Int
+  }
+
   type Book {
     id: ID!
     name: String
     genre: String
     author: Author
     addedBy: String # user's email
+    description: String
+    image: Image
   }
 
   type Author {
@@ -58,6 +69,8 @@ export const typeDefs = gql`
       genre: String!
       authorId: ID!
       addedBy: String
+      description: String
+      strBase64ImageFile: String
     ): Book!
     editBook(
       id: ID!
@@ -65,6 +78,8 @@ export const typeDefs = gql`
       genre: String!
       authorId: ID!
       addedBy: String
+      description: String
+      strBase64ImageFile: String
     ): Book!
     removeAuthor(id: ID!): Author!
     removeBook(id: ID!): Book!
