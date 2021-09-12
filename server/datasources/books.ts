@@ -1,5 +1,6 @@
 import { MongoDataSource } from "apollo-datasource-mongodb";
 import { ContextType, BookType } from "../types/types";
+import { ApolloError } from "apollo-server";
 
 /**
  * @description datasource class for books entity
@@ -43,8 +44,10 @@ export class BooksDataSource extends MongoDataSource<BookType, ContextType> {
   saveAndGetDocFromDB = async (objNewBook: Record<string, any>) => {
     try {
       return await this.model.create(objNewBook);
-    } catch (error) {
-      throw new Error(error);
+    } catch (error: any) {
+      throw new ApolloError(
+        `Book cannot be saved to Database. ${error.message ?? ""}`
+      );
     }
   };
 
@@ -76,8 +79,10 @@ export class BooksDataSource extends MongoDataSource<BookType, ContextType> {
       });
 
       return await this.model.findOne({ _id: id });
-    } catch (error) {
-      throw new Error(error);
+    } catch (error: any) {
+      throw new ApolloError(
+        `Book ${name} cannot be updated. ${error.message ?? ""}`
+      );
     }
   };
 
@@ -90,8 +95,10 @@ export class BooksDataSource extends MongoDataSource<BookType, ContextType> {
     try {
       await this.deleteFromCacheById(strBookId);
       return await this.model.findByIdAndDelete(strBookId);
-    } catch (error) {
-      throw new Error(error);
+    } catch (error: any) {
+      throw new ApolloError(
+        `Book ${strBookId} cannot be deleted. ${error.message ?? ""}`
+      );
     }
   };
 
@@ -103,8 +110,12 @@ export class BooksDataSource extends MongoDataSource<BookType, ContextType> {
   deleteBooksByAuthor = async (strAuthorId: string) => {
     try {
       return await this.model.deleteMany({ authorId: strAuthorId });
-    } catch (error) {
-      throw new Error(error);
+    } catch (error: any) {
+      throw new ApolloError(
+        `Failed to delete all books by author: ${strAuthorId}. ${
+          error.message ?? ""
+        }`
+      );
     }
   };
 }

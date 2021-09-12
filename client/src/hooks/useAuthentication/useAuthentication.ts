@@ -40,7 +40,7 @@ export const useAuthentication = (): HookReturnType => {
       try {
         const { data } = await getUserInfo();
         setObjAuthInfo({ nObjUserData: data!.userInfo.user || null });
-      } catch (error) {
+      } catch (error: any) {
         console.log(`error session init: `, error.message);
       }
     };

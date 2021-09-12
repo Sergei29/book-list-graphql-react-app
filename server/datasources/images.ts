@@ -57,9 +57,9 @@ export class ImagesDataSource extends MongoDataSource<ImageType, ContextType> {
         height,
         size,
       };
-    } catch (error) {
+    } catch (error: any) {
       throw new ApolloError(
-        `Image cannot be uploaded to Cloudinary. ${error.message}`
+        `Image cannot be uploaded to Cloudinary. ${error.message ?? ""}`
       );
     }
   };
@@ -74,9 +74,9 @@ export class ImagesDataSource extends MongoDataSource<ImageType, ContextType> {
   ): Promise<{ result: string }> => {
     try {
       return await cloudinary.uploader.destroy(strPublicId);
-    } catch (error) {
+    } catch (error: any) {
       throw new ApolloError(
-        `Image cannot be deleted from Cloudinary. ${error.message}`
+        `Image cannot be deleted from Cloudinary. ${error.message ?? ""}`
       );
     }
   };
@@ -89,10 +89,11 @@ export class ImagesDataSource extends MongoDataSource<ImageType, ContextType> {
   deleteManyFromCloudinaryByIds = async (arrImagePublicIds: string[]) => {
     try {
       return await cloudinary.api.delete_resources(arrImagePublicIds);
-    } catch (error) {
+    } catch (error: any) {
       throw new ApolloError(
-        `the list of images cannot be deleted from Cloudinary.`,
-        error
+        `the list of images cannot be deleted from Cloudinary. ${
+          error.message ?? ""
+        }`
       );
     }
   };
@@ -108,9 +109,9 @@ export class ImagesDataSource extends MongoDataSource<ImageType, ContextType> {
         strBase64ImageFile
       );
       return await this.model.create(objNewImage);
-    } catch (error) {
+    } catch (error: any) {
       throw new ApolloError(
-        `the image cannot be saved to database. ${error.mesage}`
+        `the image cannot be saved to database. ${error.message ?? ""}`
       );
     }
   };
@@ -144,8 +145,8 @@ export class ImagesDataSource extends MongoDataSource<ImageType, ContextType> {
       }
 
       return await this.saveAndGetDocFromDB(newImageFile);
-    } catch (error) {
-      throw new ApolloError("Failed to update image: ", error);
+    } catch (error: any) {
+      throw new ApolloError(`Failed to update image:  ${error.message ?? ""}`);
     }
   };
 
@@ -162,8 +163,10 @@ export class ImagesDataSource extends MongoDataSource<ImageType, ContextType> {
       }
 
       return nObjDeletedImage;
-    } catch (error) {
-      throw new ApolloError("Failed to delete image from database ", error);
+    } catch (error: any) {
+      throw new ApolloError(
+        `Failed to delete image from database ${error.message ?? ""}`
+      );
     }
   };
 
@@ -191,10 +194,9 @@ export class ImagesDataSource extends MongoDataSource<ImageType, ContextType> {
       );
 
       return arrDeletedImageIds;
-    } catch (error) {
+    } catch (error: any) {
       throw new ApolloError(
-        "Failed to delete the images from database ",
-        error
+        `Failed to delete the images from database ${error.message ?? ""} `
       );
     }
   };

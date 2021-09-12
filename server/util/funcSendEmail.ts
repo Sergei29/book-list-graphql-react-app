@@ -41,7 +41,7 @@ export const funcSendEmail = async (
     const mixedSentMessageInfo = await transporter.sendMail(objEmail);
     const strEmailAddressAccepted = mixedSentMessageInfo.accepted[0];
     return strEmailAddressAccepted as string;
-  } catch (error) {
+  } catch (error: any) {
     console.log("Error sending email: ", error.messsage);
   }
 };
