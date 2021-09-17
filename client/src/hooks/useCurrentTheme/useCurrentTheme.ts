@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
 import { currentThemeVar } from "../../graphql/ApolloProvider/reactiveVars";
 import { GET_CURRENT_THEME } from "../../graphql/queries";
@@ -27,6 +28,25 @@ const useCurrentTheme = (): HookReturnValue => {
     const strNewTheme = data!.strCurrentTheme === LIGHT ? DARK : LIGHT;
     currentThemeVar(strNewTheme);
   };
+
+  /**
+   * @description effect to persist theme into loal storage
+   * @returns {undefined}
+   */
+  useEffect(() => {
+    if (!!data?.strCurrentTheme) {
+      localStorage.setItem("strCurrentTheme", data?.strCurrentTheme);
+    }
+  }, [data?.strCurrentTheme]);
+
+  /**
+   * @description effect to retireve theme from loal storage in mount
+   * @returns {undefined}
+   */
+  useEffect(() => {
+    const strRetrievedTheme = localStorage.getItem("strCurrentTheme");
+    currentThemeVar(strRetrievedTheme === DARK ? DARK : LIGHT);
+  }, []);
 
   return {
     bLightTheme: data?.strCurrentTheme === LIGHT,
