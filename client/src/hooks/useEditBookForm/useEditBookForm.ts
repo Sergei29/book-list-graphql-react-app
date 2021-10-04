@@ -163,9 +163,12 @@ const useEditBookForm = (nObjBook: BookType | null, onSubmit?: () => void) => {
         bIsValid && objCurrentValidation.bIsValid,
       true
     );
+    
+    const {strBase64ImageFile, description, ...objMandatoryFields } = objNewBook;
+    const bFormCompleted = Object.values(objMandatoryFields).reduce((bCompleted, strCurrentValue) => bCompleted && strCurrentValue.length > 0, true);
 
-    setBFormValid(bFormIsValid);
-  }, [objFormValidation]);
+    setBFormValid(bFormIsValid && bFormCompleted);
+  }, [objFormValidation, objNewBook]);
 
   return {
     bFormValid,
