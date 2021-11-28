@@ -69,6 +69,16 @@ const SignUpForm: React.FC<Props> = ({ funcCloseModal, setBSignUp }) => {
           Log in
         </Button>
       </Typography>
+      <Typography  color="secondary">
+        currently signup service is unavailable. Please, use sample credentils at the login 
+        <Button
+          endIcon={<ExitToAppIcon />}
+          onClick={() => setBSignUp(false)}
+          className={classes.authHelperText__button}
+        >
+          Log in
+        </Button>
+      </Typography>
       <Box
         component="form"
         onSubmit={handleSubmit}

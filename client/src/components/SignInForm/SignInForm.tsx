@@ -45,6 +45,14 @@ const SignInForm: React.FC<Props> = ({ funcCloseModal, setBSignUp }) => {
           Sign Up
         </Button>
       </Typography>
+      <Typography  color="secondary">
+        currently signup service is unavailable. Please, use sample credentils below:
+      </Typography>
+      <Typography className={classes.authHelperText}>
+        email: user123@gmail.com
+        <br />
+        password: secret123
+      </Typography>
       <Box
         component="form"
         onSubmit={handleSubmit}
