@@ -24,7 +24,7 @@ const BookListPage: React.FC = () => {
 
   const funcToggleLayout = () => setbDisplayCloud((bPrevState) => !bPrevState);
   return (
-    <div className={classes.bookListPage}>
+    <div className={classes.bookListPage} data-testid="book-list-page">
       <Typography
         className={classes.bookListPage__heading}
         variant="h4"

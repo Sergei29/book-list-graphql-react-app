@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useQuery } from "@apollo/client";
 import { currentThemeVar } from "../../graphql/ApolloProvider/reactiveVars";
 import { GET_CURRENT_THEME } from "../../graphql/queries";
