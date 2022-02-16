@@ -4,6 +4,10 @@
  * @returns {undefined} sets global window inner width, fires `resize` event
  */
 export const resizeWindowWidth = (intWidth: number) => {
-  global.window = Object.assign(global.window, { innerWidth: intWidth });
+  Object.defineProperty(window, "innerWidth", {
+    writable: true,
+    configurable: true,
+    value: intWidth,
+  });
   global.window.dispatchEvent(new Event("resize"));
 };

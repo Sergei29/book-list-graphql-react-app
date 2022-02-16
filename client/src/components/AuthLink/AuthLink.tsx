@@ -46,7 +46,7 @@ const AuthLink: React.FC<Props> = ({
   }
 
   return (
-    <div>
+    <div data-testid="auth-link">
       {bLoggedIn ? (
         <IconButton
           onClick={handleLogout}

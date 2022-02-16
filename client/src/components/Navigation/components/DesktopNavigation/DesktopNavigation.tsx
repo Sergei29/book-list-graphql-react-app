@@ -64,7 +64,11 @@ const DesktopNavigation: React.FC<Props> = ({
         </li>
         <li className={classes.navigation__list__item_last}>
           <Tooltip title={`switch theme to ${bLightTheme ? DARK : LIGHT}`}>
-            <Switch checked={bLightTheme} onChange={funcToggleTheme} />
+            <Switch
+              checked={bLightTheme}
+              onChange={funcToggleTheme}
+              data-testid="switch-theme"
+            />
           </Tooltip>
         </li>
       </ul>

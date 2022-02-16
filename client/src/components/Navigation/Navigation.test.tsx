@@ -7,7 +7,6 @@ describe("Navigation", () => {
     // @ts-ignore jest.spyOn adds this functionallity
     console.error.mockImplementation(() => null);
   });
-
   afterEach(() => {
     // @ts-ignore jest.spyOn adds this functionallity
     console.error.mockRestore();
