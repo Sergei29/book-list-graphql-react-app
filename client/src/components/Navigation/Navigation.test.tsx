@@ -1,5 +1,13 @@
-import { render, screen } from "../../testUtils";
+import { MockedProvider } from "@apollo/client/testing";
+import { render, screen, arrMockResponses } from "../../testUtils";
 import Navigation from "./Navigation";
+
+const renderNav = () =>
+  render(
+    <MockedProvider mocks={arrMockResponses}>
+      <Navigation />
+    </MockedProvider>
+  );
 
 describe("Navigation", () => {
   beforeEach(() => {
@@ -12,12 +20,12 @@ describe("Navigation", () => {
     console.error.mockRestore();
   });
   it("should render desktop navbar", () => {
-    render(<Navigation />);
+    renderNav();
     const navigationDesktop = screen.getByTestId("navigation-desktop");
     expect(navigationDesktop).toBeInTheDocument();
   });
   it("should NOT render mobile navbar", () => {
-    render(<Navigation />);
+    renderNav();
     const navigationMobile = screen.queryByTestId("navigation-mobile");
     expect(navigationMobile).not.toBeInTheDocument();
   });

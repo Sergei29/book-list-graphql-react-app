@@ -1,15 +1,35 @@
-import { render, screen, fireEvent } from "../../../../testUtils";
-import MobileNavigation from "./MobileNavigation";
+import { MockedProvider } from "@apollo/client/testing";
+import {
+  render,
+  screen,
+  fireEvent,
+  arrMockResponses,
+} from "../../../../testUtils";
+import MobileNavigation, { Props } from "./MobileNavigation";
+
+const mockProps = {
+  bAdmin: true,
+  bLoggedIn: true,
+  bLightTheme: true,
+  funcModalOpen: jest.fn(),
+  funcToggleTheme: jest.fn(),
+  handleLogout: jest.fn(),
+};
+
+const renderMenu = (props: Partial<Props> = {}) =>
+  render(
+    <MockedProvider mocks={arrMockResponses}>
+      <MobileNavigation {...mockProps} {...props} />
+    </MockedProvider>
+  );
+
+const renderMenuOpen = (props: Partial<Props> = {}) => {
+  renderMenu(props);
+  const menuToggle = screen.getByTestId("mobile-menu-toggle-button");
+  fireEvent.click(menuToggle);
+};
 
 describe("MobileNavigation", () => {
-  const mockProps = {
-    bAdmin: true,
-    bLoggedIn: true,
-    bLightTheme: true,
-    funcModalOpen: jest.fn(),
-    funcToggleTheme: jest.fn(),
-    handleLogout: jest.fn(),
-  };
   beforeEach(() => {
     jest.spyOn(console, "error");
     // @ts-ignore jest.spyOn adds this functionallity
@@ -20,49 +40,39 @@ describe("MobileNavigation", () => {
     console.error.mockRestore();
   });
   it("should render", () => {
-    render(<MobileNavigation {...mockProps} />);
+    renderMenu();
   });
   it("should render mobile menu toggle button", () => {
-    render(<MobileNavigation {...mockProps} />);
+    renderMenu();
     const menuToggle = screen.getByTestId("mobile-menu-toggle-button");
     expect(menuToggle).toBeInTheDocument();
   });
   it("should render Home and Admin navlinks if admin role", async () => {
-    render(<MobileNavigation {...mockProps} />);
-    const menuToggle = screen.getByTestId("mobile-menu-toggle-button");
-    fireEvent.click(menuToggle);
+    renderMenuOpen();
     const linkHome = await screen.findByText(/Home/);
     const linkAdmin = await screen.findByText(/Admin/);
     expect(linkHome).toBeInTheDocument();
     expect(linkAdmin).toBeInTheDocument();
   });
   it("should NOT render admin navlink if NOT an admin role", async () => {
-    render(<MobileNavigation {...mockProps} bAdmin={false} />);
-    const menuToggle = screen.getByTestId("mobile-menu-toggle-button");
-    fireEvent.click(menuToggle);
+    renderMenuOpen({ bAdmin: false });
     const linkHome = await screen.findByText(/Home/);
     const linkAdmin = screen.queryByText(/Admin/);
     expect(linkHome).toBeInTheDocument();
     expect(linkAdmin).not.toBeInTheDocument();
   });
   it("should render authentication button", async () => {
-    render(<MobileNavigation {...mockProps} />);
-    const menuToggle = screen.getByTestId("mobile-menu-toggle-button");
-    fireEvent.click(menuToggle);
+    renderMenuOpen();
     const buttonAuth = await screen.findByTestId("auth-link");
     expect(buttonAuth).toBeInTheDocument();
   });
   it("should render link to github source code", async () => {
-    render(<MobileNavigation {...mockProps} />);
-    const menuToggle = screen.getByTestId("mobile-menu-toggle-button");
-    fireEvent.click(menuToggle);
+    renderMenuOpen();
     const linkGithub = await screen.findByTestId("link-github");
     expect(linkGithub).toBeInTheDocument();
   });
   it("should render Theme switch", async () => {
-    render(<MobileNavigation {...mockProps} />);
-    const menuToggle = screen.getByTestId("mobile-menu-toggle-button");
-    fireEvent.click(menuToggle);
+    renderMenuOpen();
     const switchTheme = await screen.findByTestId("switch-theme-mobile");
     expect(switchTheme).toBeInTheDocument();
   });

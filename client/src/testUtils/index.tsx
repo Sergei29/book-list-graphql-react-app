@@ -1,18 +1,15 @@
 import React, { ReactElement } from "react";
 import { render, RenderOptions } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
-import { MockedProvider } from "@apollo/client/testing";
 import { AuthProvider } from "../containers/AuthProvider";
-import { mocks } from "./mocks";
 export * from "./utils";
+export * from "./mocks";
 
 const AllTheProviders: React.FC = ({ children }) => {
   return (
-    <MockedProvider mocks={mocks}>
-      <BrowserRouter>
-        <AuthProvider>{children}</AuthProvider>
-      </BrowserRouter>
-    </MockedProvider>
+    <BrowserRouter>
+      <AuthProvider>{children}</AuthProvider>
+    </BrowserRouter>
   );
 };
 

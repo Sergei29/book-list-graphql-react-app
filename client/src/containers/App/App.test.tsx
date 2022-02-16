@@ -1,5 +1,13 @@
-import { render, screen } from "../../testUtils";
+import { MockedProvider } from "@apollo/client/testing";
+import { render, screen, arrMockResponses } from "../../testUtils";
 import App from "./App";
+
+const renderApp = () =>
+  render(
+    <MockedProvider mocks={arrMockResponses}>
+      <App />
+    </MockedProvider>
+  );
 
 describe("App", () => {
   beforeEach(() => {
@@ -14,20 +22,20 @@ describe("App", () => {
   });
 
   it("should render App", () => {
-    render(<App />);
+    renderApp();
   });
   it("should render PageBackgound", () => {
-    render(<App />);
+    renderApp();
     const pageBackgound = screen.getByTestId("page-background");
     expect(pageBackgound).toBeInTheDocument();
   });
   it("should render navigation container", () => {
-    render(<App />);
+    renderApp();
     const navigation = screen.getByTestId("nav-container");
     expect(navigation).toBeInTheDocument();
   });
   it("should render book list as home page", () => {
-    render(<App />);
+    renderApp();
     const homepage = screen.getByTestId("book-list-page");
     expect(homepage).toBeInTheDocument();
   });

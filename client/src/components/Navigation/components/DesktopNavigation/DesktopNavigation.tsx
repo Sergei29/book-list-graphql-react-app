@@ -11,7 +11,7 @@ import { useStyles } from "./style";
 
 const { LIGHT, DARK } = MuiSelectedTheme;
 
-type Props = {
+export type Props = {
   bAdmin: boolean;
   bLoggedIn: boolean;
   bLightTheme: boolean;
