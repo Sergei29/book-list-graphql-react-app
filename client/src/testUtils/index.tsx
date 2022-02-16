@@ -1,9 +1,15 @@
-import React, { FC, ReactElement } from "react";
+import React, { ReactElement } from "react";
 import { render, RenderOptions } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
+import { MockedProvider } from "@apollo/client/testing";
+import { mocks } from "./mocks";
 
-const AllTheProviders: FC = ({ children }) => {
-  return <BrowserRouter>{children}</BrowserRouter>;
+const AllTheProviders: React.FC = ({ children }) => {
+  return (
+    <MockedProvider mocks={mocks}>
+      <BrowserRouter>{children}</BrowserRouter>
+    </MockedProvider>
+  );
 };
 
 const customRender = (
