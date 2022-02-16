@@ -56,6 +56,7 @@ const MobileNavigation: React.FC<Props> = ({
       <IconButton
         onClick={handleMenuOpen}
         className={classes.mobileNavigation__button}
+        data-testid="mobile-menu-toggle-button"
       >
         <MenuIcon color="secondary" />
       </IconButton>
@@ -101,7 +102,11 @@ const MobileNavigation: React.FC<Props> = ({
           </ListItem>
           <Divider />
           <ListItem>
-            <Switch checked={bLightTheme} onChange={funcToggleTheme} />
+            <Switch
+              checked={bLightTheme}
+              onChange={funcToggleTheme}
+              data-testid="switch-theme-mobile"
+            />
             <ListItemText>{`switch to ${
               bLightTheme ? DARK : LIGHT
             }`}</ListItemText>
