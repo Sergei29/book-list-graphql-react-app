@@ -36,7 +36,7 @@ const DesktopNavigation: React.FC<Props> = ({
   const classes = useStyles();
 
   return (
-    <nav className={classes.navigation}>
+    <nav className={classes.navigation} data-testid="navigation-desktop">
       <ul className={classes.navigation__list}>
         <li className={classes.navigation__list__item}>
           <NavLink exact to="/" className={classes.navLink}>

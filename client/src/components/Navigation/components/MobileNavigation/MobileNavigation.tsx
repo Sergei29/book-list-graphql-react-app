@@ -52,7 +52,7 @@ const MobileNavigation: React.FC<Props> = ({
   const handleMenuClose = () => setbOpenMenu(false);
 
   return (
-    <div className={classes.mobileNavigation}>
+    <div className={classes.mobileNavigation} data-testid="navigation-mobile">
       <IconButton
         onClick={handleMenuOpen}
         className={classes.mobileNavigation__button}
