@@ -26,6 +26,7 @@ const GitHubButton: React.FC<Props> = ({ bLightTheme }) => {
         href="https://github.com/Sergei29/book-list-graphql-react-app"
         target="_blank"
         classes={{ root: classes.linkToGithub__text }}
+        data-testid="link-github"
       >
         <ListItemIcon classes={{ root: classes.linkToGithub__text }}>
           <GitHubIcon fontSize="small" />
@@ -40,6 +41,7 @@ const GitHubButton: React.FC<Props> = ({ bLightTheme }) => {
       href="https://github.com/Sergei29/book-list-graphql-react-app"
       target="_blank"
       className={classes.linkToGithub}
+      data-testid="link-github"
     >
       <GitHubIcon fontSize="small" />
       <span>Source code</span>

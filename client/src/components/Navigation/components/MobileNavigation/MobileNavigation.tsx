@@ -22,7 +22,7 @@ import { useStyles } from "./style";
 
 const { LIGHT, DARK } = MuiSelectedTheme;
 
-type Props = {
+export type Props = {
   bAdmin: boolean;
   bLightTheme: boolean;
   bLoggedIn: boolean;
@@ -52,10 +52,11 @@ const MobileNavigation: React.FC<Props> = ({
   const handleMenuClose = () => setbOpenMenu(false);
 
   return (
-    <div className={classes.mobileNavigation}>
+    <div className={classes.mobileNavigation} data-testid="navigation-mobile">
       <IconButton
         onClick={handleMenuOpen}
         className={classes.mobileNavigation__button}
+        data-testid="mobile-menu-toggle-button"
       >
         <MenuIcon color="secondary" />
       </IconButton>
@@ -101,7 +102,11 @@ const MobileNavigation: React.FC<Props> = ({
           </ListItem>
           <Divider />
           <ListItem>
-            <Switch checked={bLightTheme} onChange={funcToggleTheme} />
+            <Switch
+              checked={bLightTheme}
+              onChange={funcToggleTheme}
+              data-testid="switch-theme-mobile"
+            />
             <ListItemText>{`switch to ${
               bLightTheme ? DARK : LIGHT
             }`}</ListItemText>
