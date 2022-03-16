@@ -6,6 +6,7 @@ import {
   arrMockResponses,
 } from "../../../../testUtils";
 import MobileNavigation, { Props } from "./MobileNavigation";
+import { OBJ_TEST_IDS } from "../../../../constants";
 
 const mockProps = {
   bAdmin: true,
@@ -25,7 +26,7 @@ const renderMenu = (props: Partial<Props> = {}) =>
 
 const renderMenuOpen = (props: Partial<Props> = {}) => {
   renderMenu(props);
-  const menuToggle = screen.getByTestId("mobile-menu-toggle-button");
+  const menuToggle = screen.getByTestId(OBJ_TEST_IDS.navigationMobileToggle);
   fireEvent.click(menuToggle);
 };
 
@@ -44,7 +45,7 @@ describe("MobileNavigation", () => {
   });
   it("should render mobile menu toggle button", () => {
     renderMenu();
-    const menuToggle = screen.getByTestId("mobile-menu-toggle-button");
+    const menuToggle = screen.getByTestId(OBJ_TEST_IDS.navigationMobileToggle);
     expect(menuToggle).toBeInTheDocument();
   });
   it("should render Home and Admin navlinks if admin role", async () => {
@@ -63,17 +64,19 @@ describe("MobileNavigation", () => {
   });
   it("should render authentication button", async () => {
     renderMenuOpen();
-    const buttonAuth = await screen.findByTestId("auth-link");
+    const buttonAuth = await screen.findByTestId(OBJ_TEST_IDS.authLink);
     expect(buttonAuth).toBeInTheDocument();
   });
   it("should render link to github source code", async () => {
     renderMenuOpen();
-    const linkGithub = await screen.findByTestId("link-github");
+    const linkGithub = await screen.findByTestId(OBJ_TEST_IDS.gitHubLink);
     expect(linkGithub).toBeInTheDocument();
   });
   it("should render Theme switch", async () => {
     renderMenuOpen();
-    const switchTheme = await screen.findByTestId("switch-theme-mobile");
+    const switchTheme = await screen.findByTestId(
+      OBJ_TEST_IDS.themeSwitchMobile
+    );
     expect(switchTheme).toBeInTheDocument();
   });
 });

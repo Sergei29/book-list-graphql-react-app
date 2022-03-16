@@ -1,6 +1,7 @@
 import { MockedProvider } from "@apollo/client/testing";
 import { render, screen, arrMockResponses } from "../../../../testUtils";
 import DesktopNavigation, { Props } from "./DesktopNavigation";
+import { OBJ_TEST_IDS } from "../../../../constants";
 
 const mockProps = {
   bAdmin: true,
@@ -48,17 +49,17 @@ describe("DesktopNavigation", () => {
   });
   it("should render authentication button", () => {
     renderMenu();
-    const buttonAuth = screen.getByTestId("auth-link");
+    const buttonAuth = screen.getByTestId(OBJ_TEST_IDS.authLink);
     expect(buttonAuth).toBeInTheDocument();
   });
   it("should render link to github source code", () => {
     renderMenu();
-    const linkGithub = screen.getByTestId("link-github");
+    const linkGithub = screen.getByTestId(OBJ_TEST_IDS.gitHubLink);
     expect(linkGithub).toBeInTheDocument();
   });
   it("should render Theme switch", () => {
     renderMenu();
-    const switchTheme = screen.getByTestId("switch-theme");
+    const switchTheme = screen.getByTestId(OBJ_TEST_IDS.themeSwitch);
     expect(switchTheme).toBeInTheDocument();
   });
 });

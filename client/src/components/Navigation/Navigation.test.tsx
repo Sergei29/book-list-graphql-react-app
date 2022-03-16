@@ -1,6 +1,7 @@
 import { MockedProvider } from "@apollo/client/testing";
 import { render, screen, arrMockResponses } from "../../testUtils";
 import Navigation from "./Navigation";
+import { OBJ_TEST_IDS } from "../../constants";
 
 const renderNav = () =>
   render(
@@ -21,12 +22,16 @@ describe("Navigation", () => {
   });
   it("should render desktop navbar", () => {
     renderNav();
-    const navigationDesktop = screen.getByTestId("navigation-desktop");
+    const navigationDesktop = screen.getByTestId(
+      OBJ_TEST_IDS.navigationDesktop
+    );
     expect(navigationDesktop).toBeInTheDocument();
   });
   it("should NOT render mobile navbar", () => {
     renderNav();
-    const navigationMobile = screen.queryByTestId("navigation-mobile");
+    const navigationMobile = screen.queryByTestId(
+      OBJ_TEST_IDS.navigationMobile
+    );
     expect(navigationMobile).not.toBeInTheDocument();
   });
 });

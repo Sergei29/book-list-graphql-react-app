@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 import LockIcon from "@material-ui/icons/Lock";
+import { OBJ_TEST_IDS } from "../../constants";
 // styles:
 import { useStyles } from "./style";
 
@@ -46,7 +47,7 @@ const AuthLink: React.FC<Props> = ({
   }
 
   return (
-    <div data-testid="auth-link">
+    <div data-testid={OBJ_TEST_IDS.authLink}>
       {bLoggedIn ? (
         <IconButton
           onClick={handleLogout}
