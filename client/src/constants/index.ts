@@ -1,4 +1,5 @@
 import { ValidationType } from "../types";
+export * from "./testIds";
 
 export const objInitialValidation: Readonly<ValidationType> = {
   bIsValid: true,

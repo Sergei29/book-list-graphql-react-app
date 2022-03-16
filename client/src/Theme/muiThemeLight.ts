@@ -1,4 +1,4 @@
-import { createMuiTheme, ThemeOptions } from "@material-ui/core/styles";
+import { createMuiTheme } from "@material-ui/core/styles";
 import { pink, grey, orange } from "@material-ui/core/colors";
 
 const muiThemeLight = createMuiTheme({

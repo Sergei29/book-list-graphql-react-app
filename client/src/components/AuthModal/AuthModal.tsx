@@ -22,6 +22,7 @@ const AuthModal: React.FC<Props> = ({ bOpen, children, handleClose }) => {
     <Dialog
       aria-labelledby="authentication-modal"
       aria-describedby="login or register the user"
+      data-testid="authentication-modal"
       open={bOpen}
       onClose={handleClose}
       closeAfterTransition

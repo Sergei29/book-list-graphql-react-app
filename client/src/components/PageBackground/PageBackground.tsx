@@ -17,7 +17,9 @@ export const useStyles = makeStyles((theme: Theme) =>
 
 const PageBackground = () => {
   const classes = useStyles();
-  return <div className={classes.pageBackground} />;
+  return (
+    <div className={classes.pageBackground} data-testid="page-background" />
+  );
 };
 
 export default PageBackground;

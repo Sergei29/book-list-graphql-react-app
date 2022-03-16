@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { useTheme, useMediaQuery } from "@material-ui/core";
 import { useAuthentication } from "../../hooks/useAuthentication";
 import useCurrentTheme from "../../hooks/useCurrentTheme/useCurrentTheme";
@@ -25,7 +25,7 @@ const Navigation: React.FC = () => {
   const [bSignUp, setBSignUp] = useState<boolean>(false);
 
   return (
-    <Fragment>
+    <div data-testid="nav-container">
       {true === bIsMobileScreen ? (
         <MobileNavigation
           bAdmin={getIsAdmin()}
@@ -52,7 +52,7 @@ const Navigation: React.FC = () => {
           <SignInForm funcCloseModal={funcModalClose} setBSignUp={setBSignUp} />
         )}
       </AuthModal>
-    </Fragment>
+    </div>
   );
 };
 
