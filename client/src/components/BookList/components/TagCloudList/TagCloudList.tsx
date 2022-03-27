@@ -1,10 +1,19 @@
 import React, { memo } from "react";
-import TagCloud from "react-tag-cloud";
-import randomColor from "randomcolor";
-import useCurrentTheme from "../../../../hooks/useCurrentTheme/useCurrentTheme";
+// import TagCloud from "react-tag-cloud";
+import { random } from "lodash";
+import { TagCloud } from "react-tagcloud";
+// import randomColor from "randomcolor";
+// import useCurrentTheme from "../../../../hooks/useCurrentTheme/useCurrentTheme";
 import { BookType } from "../../../../types/types";
-import CloudItem from "./components/CloudItem/CloudItem";
-import { useStyles } from "./style";
+// import CloudItem from "./components/CloudItem/CloudItem";
+// import { useStyles } from "./style";
+
+const formatBooks = (arrBookList: BookType[]) =>
+  arrBookList.map((book) => ({
+    value: book.name || "Book title",
+    count: random(1, 5, false),
+    key: book.id,
+  }));
 
 type Props = {
   arrBooks: BookType[];
@@ -18,38 +27,48 @@ type Props = {
  * @returns {JSX} component markup
  */
 const TagCloudList: React.FC<Props> = ({ arrBooks, onBookSelect }) => {
-  const classes = useStyles();
-  const { bLightTheme } = useCurrentTheme();
+  // const classes = useStyles();
+  // const { bLightTheme } = useCurrentTheme();
 
   return (
-    <TagCloud
-      style={
-        {
-          fontFamily: "sans-serif",
-          fontSize: () => Math.round(Math.random() * 30) + 16,
-          fontWeight: "bold",
-          fontStyle: "italic",
-          color: () =>
-            randomColor({
-              luminosity: bLightTheme ? "dark" : "light",
-            }),
-          padding: 5,
-          width: "100%",
-          height: "90vh",
-          zIndex: 2,
-        } as any
-      }
-      spiral="rectangular"
-    >
-      {arrBooks.map((objBook) => (
-        <CloudItem
-          strTitle={objBook!.name!}
-          key={objBook!.id}
-          onClick={onBookSelect!(objBook!.id)}
-          className={classes.bookList__cloudItem}
-        />
-      ))}
-    </TagCloud>
+    <div>
+      <TagCloud
+        minSize={12}
+        maxSize={35}
+        tags={formatBooks(arrBooks)}
+        onClick={(tag: Record<string, any>) =>
+          console.log("tag.value: ", tag.value)
+        }
+      />
+    </div>
+    // <TagCloud
+    //   style={
+    //     {
+    //       fontFamily: "sans-serif",
+    //       fontSize: () => Math.round(Math.random() * 30) + 16,
+    //       fontWeight: "bold",
+    //       fontStyle: "italic",
+    //       color: () =>
+    //         randomColor({
+    //           luminosity: bLightTheme ? "dark" : "light",
+    //         }),
+    //       padding: 5,
+    //       width: "100%",
+    //       height: "90vh",
+    //       zIndex: 2,
+    //     } as any
+    //   }
+    //   spiral="rectangular"
+    // >
+    //   {arrBooks.map((objBook) => (
+    //     <CloudItem
+    //       strTitle={objBook!.name!}
+    //       key={objBook!.id}
+    //       onClick={onBookSelect!(objBook!.id)}
+    //       className={classes.bookList__cloudItem}
+    //     />
+    //   ))}
+    // </TagCloud>
   );
 };
 
