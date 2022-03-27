@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import ApolloProvider from "./graphql/ApolloProvider/ApolloProvider";
 import { AuthProvider } from "./containers/AuthProvider";
-import App from "./App";
+import App from "./containers/App";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
