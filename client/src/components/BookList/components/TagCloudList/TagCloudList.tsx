@@ -36,7 +36,9 @@ const TagCloudList: React.FC<Props> = ({ arrBooks, onBookSelect }) => {
         minSize={12}
         maxSize={35}
         tags={formatBooks(arrBooks)}
-        onClick={(tag: Record<string, any>) => onBookSelect!(tag.value)}
+        onClick={(tag: Record<string, any>) =>
+          console.log("tag.value: ", tag.value)
+        }
       />
     </div>
     // <TagCloud
