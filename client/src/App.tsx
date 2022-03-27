@@ -1,24 +1,12 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{display: 'flex', flexDirection: 'column', gap: '8px', justifyContent: 'center', alignItems: 'center'}}>
+      <h1>Oups! This App is temporary broken</h1>
+      <p>Sorry guys, I am currently fixing it...</p>
+      <div style={{height: '50vh'}}>
+      <img style={{height: '100%'}} src="https://i.imgur.com/FOeYt4E.png" alt="broken" /></div>
     </div>
   );
 }
