@@ -1,6 +1,5 @@
 import React, { memo } from "react";
 // import TagCloud from "react-tag-cloud";
-import randomColor from "randomcolor";
 import useCurrentTheme from "../../../../hooks/useCurrentTheme";
 import { BookType } from "../../../../types/types";
 import CloudItem from "./components/CloudItem";
