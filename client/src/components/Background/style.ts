@@ -1,7 +1,8 @@
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 
+const BACKGROUND_IMG_URL = `https://res.cloudinary.com/dlw2jic1w/image/upload/v1648406178/image_list_images/lincoln-freitas-qgpCWCjaC9w-unsplash_igvcet.jpg`;
+
 export const useStyles = makeStyles((theme: Theme) => {
-  const imgUrl = `${process.env.PUBLIC_URL}/images/lincoln-freitas-qgpCWCjaC9w-unsplash.jpg`;
   const objBaseStyle: any = {
     [theme.breakpoints.up("md")]: {
       width: "60vw",
@@ -16,7 +17,7 @@ export const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     backgroundBookList: {
       ...objBaseStyle,
-      backgroundImage: `url(${imgUrl})`,
+      backgroundImage: `url(${BACKGROUND_IMG_URL})`,
       backgroundSize: "cover",
       opacity: theme.components?.bookList?.backgroundImage.opacity,
     },
