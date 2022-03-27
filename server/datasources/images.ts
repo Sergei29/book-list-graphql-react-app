@@ -1,7 +1,7 @@
 import { MongoDataSource } from "apollo-datasource-mongodb";
 import { ApolloError } from "apollo-server";
 import { cloudinary } from "../util/cloudinary";
-import { ContextType, ImageType } from "../types/types";
+import { ContextType, ImageType } from "../types";
 
 /**
  * @description datasource class for images entity

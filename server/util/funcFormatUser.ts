@@ -1,4 +1,4 @@
-import { UserType } from "../types/types";
+import { UserType } from "../types";
 
 /**
  * @description formats user object to have `id` property

@@ -1,5 +1,5 @@
 import { MongoDataSource } from "apollo-datasource-mongodb";
-import { ContextType, UserType } from "../types/types";
+import { ContextType, UserType } from "../types";
 
 /**
  * @description datasource class for users entity

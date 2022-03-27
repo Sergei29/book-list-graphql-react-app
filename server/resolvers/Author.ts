@@ -1,6 +1,6 @@
 import { IFieldResolver } from "apollo-server-express";
 import BooksDB from "../models/book";
-import { ContextType } from "../types/types";
+import { ContextType } from "../types";
 
 type ParentType = Record<string, any>;
 type ArgsType = Record<string, any>;

@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { AuthorType } from "../types/types";
+import { AuthorType } from "../types";
 
 const authorSchema = new Schema({
   name: String,

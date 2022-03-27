@@ -1,5 +1,5 @@
 import { MongoDataSource } from "apollo-datasource-mongodb";
-import { ContextType, AuthorType } from "../types/types";
+import { ContextType, AuthorType } from "../types";
 
 /**
  * @description datasource class for authors entity
