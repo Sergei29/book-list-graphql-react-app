@@ -1,7 +1,12 @@
 import React from "react";
+import UnderConstruction from "../../components/UnderConstruction";
 
 const BookListPage = () => {
-  return <div>BookListPage</div>;
+  return (
+    <div>
+      <UnderConstruction />
+    </div>
+  );
 };
 
 export default BookListPage;

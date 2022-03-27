@@ -6,8 +6,8 @@ import useModal from "../../hooks/useModal";
 import { objAuthContext } from "../../containers/AuthProvider";
 // components:
 import AuthModal from "../AuthModal";
-// import SignInForm from "../SignInForm";
-// import SignUpForm from "../SignUpForm";
+import SignInForm from "../SignInForm";
+import SignUpForm from "../SignUpForm";
 import MobileNavigation from "./components/MobileNavigation";
 import DesktopNavigation from "./components/DesktopNavigation";
 
@@ -46,11 +46,11 @@ const Navigation: React.FC = () => {
         />
       )}
       <AuthModal bOpen={bOpenModal} handleClose={funcModalClose}>
-        {/* {bSignUp ? (
+        {bSignUp ? (
           <SignUpForm funcCloseModal={funcModalClose} setBSignUp={setBSignUp} />
         ) : (
           <SignInForm funcCloseModal={funcModalClose} setBSignUp={setBSignUp} />
-        )} */}
+        )}
       </AuthModal>
     </Fragment>
   );
