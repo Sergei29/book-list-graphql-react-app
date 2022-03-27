@@ -1,5 +1,5 @@
 import { MongoDataSource } from "apollo-datasource-mongodb";
-import { ContextType, BookType } from "../types/types";
+import { ContextType, BookType } from "../types";
 import { ApolloError } from "apollo-server";
 
 /**

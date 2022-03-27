@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { ImageType } from "../types/types";
+import { ImageType } from "../types";
 
 const imageSchema = new Schema({
   publicId: String,

@@ -4,13 +4,7 @@ import {
   UserInputError,
   ApolloError,
 } from "apollo-server-express";
-import {
-  ErrorMessage,
-  ContextType,
-  Role,
-  Expiry,
-  ImageType,
-} from "../types/types";
+import { ErrorMessage, ContextType, Role, Expiry, ImageType } from "../types";
 import {
   funcHashPassword,
   funcCreateToken,
