@@ -1,9 +1,9 @@
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import { makeStyles, createStyles } from "@material-ui/core/styles";
 
-export const useStyles = makeStyles((theme: Theme) =>
+export const useStyles = makeStyles((theme: any) =>
   createStyles({
     addButton: {
-      color: theme.components?.bookButton?.color || "#fff",
+      color: theme.components?.bookButton?.color,
       fontSize: "2em",
       background: theme.palette.secondary.main,
       border: 0,
