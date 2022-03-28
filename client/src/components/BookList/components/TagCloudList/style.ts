@@ -14,6 +14,9 @@ export const useStyles = makeStyles((theme: Theme) =>
     cloudTag: {
       position: "relative",
       zIndex: 2,
+      "& > span": {
+        cursor: "pointer",
+      },
     },
   })
 );

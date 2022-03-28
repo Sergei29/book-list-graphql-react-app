@@ -37,7 +37,7 @@ const TagCloudList: React.FC<Props> = ({ arrBooks, onBookSelect }) => {
       tags={formatBooks(arrBooks)}
       onClick={(tag: Record<string, any>) => {
         console.log("tag: ", tag);
-        onBookSelect(tag.key);
+        onBookSelect(tag.key)();
       }}
       className={classes.cloudTag}
     />
