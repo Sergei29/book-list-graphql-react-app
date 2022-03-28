@@ -1,13 +1,14 @@
 import React, { memo } from "react";
 import { TagCloud } from "react-tagcloud";
-// import TagCloud from "react-tag-cloud";
-// import useCurrentTheme from "../../../../hooks/useCurrentTheme";
+import useCurrentTheme from "../../../../hooks/useCurrentTheme";
 import { BookType } from "../../../../types/types";
-// import classNames from "classnames";
-// import CloudItem from "./components/CloudItem";
-// import UnderConstruction from "../../../UnderConstruction";
 import { useStyles } from "./style";
 
+/**
+ * @description formatting array, inteerface adaptor func
+ * @param {array} arrBookList book index list
+ * @returns {array} same book index with adaprted interface for tagcoud to consume
+ */
 const formatBooks = (arrBookList: BookType[]) =>
   arrBookList.map((book) => ({
     value: book.name || "Book title",
@@ -28,20 +29,19 @@ type Props = {
  */
 const TagCloudList: React.FC<Props> = ({ arrBooks, onBookSelect }) => {
   const classes = useStyles();
-  // const { bLightTheme } = useCurrentTheme();
+  const { bLightTheme } = useCurrentTheme();
 
   return (
     <TagCloud
       minSize={12}
       maxSize={35}
       tags={formatBooks(arrBooks)}
-      onClick={(tag: Record<string, any>) => {
-        console.log("tag: ", tag);
-        onBookSelect(tag.key)();
-      }}
+      onClick={(tag: Record<string, any>) => onBookSelect(tag.key)()}
       className={classes.cloudTag}
+      colorOptions={{
+        luminosity: bLightTheme ? "dark" : "light",
+      }}
     />
-    // <UnderConstruction />
   );
 };
 
