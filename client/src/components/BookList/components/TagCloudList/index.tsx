@@ -1,10 +1,19 @@
 import React, { memo } from "react";
+import { random } from "lodash";
+import { TagCloud } from "react-tagcloud";
 // import TagCloud from "react-tag-cloud";
-import useCurrentTheme from "../../../../hooks/useCurrentTheme";
+// import useCurrentTheme from "../../../../hooks/useCurrentTheme";
 import { BookType } from "../../../../types/types";
-import CloudItem from "./components/CloudItem";
-import UnderConstruction from "../../../UnderConstruction";
-import { useStyles } from "./style";
+// import CloudItem from "./components/CloudItem";
+// import UnderConstruction from "../../../UnderConstruction";
+// import { useStyles } from "./style";
+
+const formatBooks = (arrBookList: BookType[]) =>
+  arrBookList.map((book) => ({
+    value: book.name || "Book title",
+    count: random(1, 5, false),
+    key: book.id,
+  }));
 
 type Props = {
   arrBooks: BookType[];
@@ -18,11 +27,19 @@ type Props = {
  * @returns {JSX} component markup
  */
 const TagCloudList: React.FC<Props> = ({ arrBooks, onBookSelect }) => {
-  const classes = useStyles();
-  const { bLightTheme } = useCurrentTheme();
+  // const classes = useStyles();
+  // const { bLightTheme } = useCurrentTheme();
 
   return (
-    <UnderConstruction />
+    <TagCloud
+      minSize={12}
+      maxSize={35}
+      tags={formatBooks(arrBooks)}
+      onClick={(tag: Record<string, any>) =>
+        console.log("tag.value: ", tag.value)
+      }
+    />
+    // <UnderConstruction />
     // <TagCloud
     //   style={
     //     {
