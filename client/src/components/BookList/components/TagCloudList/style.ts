@@ -11,5 +11,9 @@ export const useStyles = makeStyles((theme: Theme) =>
         textDecoration: "underline",
       },
     },
+    cloudTag: {
+      position: "relative",
+      zIndex: 2,
+    },
   })
 );

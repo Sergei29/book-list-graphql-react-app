@@ -1,17 +1,17 @@
 import React, { memo } from "react";
-import { random } from "lodash";
 import { TagCloud } from "react-tagcloud";
 // import TagCloud from "react-tag-cloud";
 // import useCurrentTheme from "../../../../hooks/useCurrentTheme";
 import { BookType } from "../../../../types/types";
+// import classNames from "classnames";
 // import CloudItem from "./components/CloudItem";
 // import UnderConstruction from "../../../UnderConstruction";
-// import { useStyles } from "./style";
+import { useStyles } from "./style";
 
 const formatBooks = (arrBookList: BookType[]) =>
   arrBookList.map((book) => ({
     value: book.name || "Book title",
-    count: random(1, 5, false),
+    count: Math.round(5 * Math.random()),
     key: book.id,
   }));
 
@@ -27,7 +27,7 @@ type Props = {
  * @returns {JSX} component markup
  */
 const TagCloudList: React.FC<Props> = ({ arrBooks, onBookSelect }) => {
-  // const classes = useStyles();
+  const classes = useStyles();
   // const { bLightTheme } = useCurrentTheme();
 
   return (
@@ -35,39 +35,13 @@ const TagCloudList: React.FC<Props> = ({ arrBooks, onBookSelect }) => {
       minSize={12}
       maxSize={35}
       tags={formatBooks(arrBooks)}
-      onClick={(tag: Record<string, any>) =>
-        console.log("tag.value: ", tag.value)
-      }
+      onClick={(tag: Record<string, any>) => {
+        console.log("tag: ", tag);
+        onBookSelect(tag.key);
+      }}
+      className={classes.cloudTag}
     />
     // <UnderConstruction />
-    // <TagCloud
-    //   style={
-    //     {
-    //       fontFamily: "sans-serif",
-    //       fontSize: () => Math.round(Math.random() * 30) + 16,
-    //       fontWeight: "bold",
-    //       fontStyle: "italic",
-    //       color: () =>
-    //         randomColor({
-    //           luminosity: bLightTheme ? "dark" : "light",
-    //         }),
-    //       padding: 5,
-    //       width: "100%",
-    //       height: "90vh",
-    //       zIndex: 2,
-    //     } as any
-    //   }
-    //   spiral="rectangular"
-    // >
-    //   {arrBooks.map((objBook) => (
-    //     <CloudItem
-    //       strTitle={objBook!.name!}
-    //       key={objBook!.id}
-    //       onClick={onBookSelect!(objBook!.id)}
-    //       className={classes.bookList__cloudItem}
-    //     />
-    //   ))}
-    // </TagCloud>
   );
 };
 
