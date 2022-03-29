@@ -1,5 +1,6 @@
 import React from "react";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import { OBJ_TEST_IDS } from "../../constants";
 
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -17,7 +18,12 @@ export const useStyles = makeStyles((theme: Theme) =>
 
 const PageBackground = () => {
   const classes = useStyles();
-  return <div className={classes.pageBackground} />;
+  return (
+    <div
+      className={classes.pageBackground}
+      data-testid={OBJ_TEST_IDS.pageBackground}
+    />
+  );
 };
 
 export default PageBackground;
