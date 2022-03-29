@@ -14,7 +14,7 @@ import EmailConfirmedPage from "../../pages/EmailConfirmedPage";
 import SignUpCompletePage from "../../pages/SignUpCompletePage";
 import { useStyles } from "./style";
 
-function App() {
+const App = () => {
   const { bLightTheme } = useCurrentTheme();
   const { getIsAdmin } = useContext(objAuthContext);
   const classes = useStyles();
@@ -39,6 +39,6 @@ function App() {
       </Container>
     </ThemeProvider>
   );
-}
+};
 
 export default App;

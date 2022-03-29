@@ -13,6 +13,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
 import HomeIcon from "@material-ui/icons/Home";
 import { MuiSelectedTheme } from "../../../../types/types";
+import { OBJ_TEST_IDS } from "../../../../constants";
 // components:
 import GitHubButton from "../../../GitHubButton";
 import AuthLink from "../../../AuthLink";
@@ -22,7 +23,7 @@ import { useStyles } from "./style";
 
 const { LIGHT, DARK } = MuiSelectedTheme;
 
-type Props = {
+export type Props = {
   bAdmin: boolean;
   bLightTheme: boolean;
   bLoggedIn: boolean;
@@ -52,10 +53,14 @@ const MobileNavigation: React.FC<Props> = ({
   const handleMenuClose = () => setbOpenMenu(false);
 
   return (
-    <div className={classes.mobileNavigation}>
+    <div
+      className={classes.mobileNavigation}
+      data-testid={OBJ_TEST_IDS.navigationMobile}
+    >
       <IconButton
         onClick={handleMenuOpen}
         className={classes.mobileNavigation__button}
+        data-testid={OBJ_TEST_IDS.navigationMobileToggle}
       >
         <MenuIcon color="secondary" />
       </IconButton>
@@ -100,7 +105,11 @@ const MobileNavigation: React.FC<Props> = ({
           </ListItem>
           <Divider />
           <ListItem>
-            <Switch checked={bLightTheme} onChange={funcToggleTheme} />
+            <Switch
+              checked={bLightTheme}
+              onChange={funcToggleTheme}
+              data-testid={OBJ_TEST_IDS.themeSwitchMobile}
+            />
             <ListItemText>{`switch to ${
               bLightTheme ? DARK : LIGHT
             }`}</ListItemText>

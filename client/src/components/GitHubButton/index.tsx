@@ -8,6 +8,7 @@ import {
   Link,
 } from "@material-ui/core";
 import GitHubIcon from "@material-ui/icons/GitHub";
+import { OBJ_TEST_IDS } from "../../constants";
 //styles:
 import { useStyles } from "./style";
 
@@ -40,6 +41,7 @@ const GitHubButton: React.FC<Props> = ({ bLightTheme }) => {
       href="https://github.com/Sergei29/book-list-graphql-react-app"
       target="_blank"
       className={classes.linkToGithub}
+      data-testid={OBJ_TEST_IDS.gitHubLink}
     >
       <GitHubIcon fontSize="small" />
       <span>Source code</span>

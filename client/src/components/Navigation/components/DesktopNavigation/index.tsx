@@ -2,6 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
 import { MuiSelectedTheme } from "../../../../types/types";
+import { OBJ_TEST_IDS } from "../../../../constants";
 // components:
 import GitHubButton from "../../../GitHubButton";
 import AuthLink from "../../../AuthLink";
@@ -11,7 +12,7 @@ import { useStyles } from "./style";
 
 const { LIGHT, DARK } = MuiSelectedTheme;
 
-type Props = {
+export type Props = {
   bAdmin: boolean;
   bLoggedIn: boolean;
   bLightTheme: boolean;
@@ -36,7 +37,10 @@ const DesktopNavigation: React.FC<Props> = ({
   const classes = useStyles();
 
   return (
-    <nav className={classes.navigation}>
+    <nav
+      className={classes.navigation}
+      data-testid={OBJ_TEST_IDS.navigationDesktop}
+    >
       <ul className={classes.navigation__list}>
         <li className={classes.navigation__list__item}>
           <NavLink to="/" className={classes.navLink}>
@@ -64,7 +68,11 @@ const DesktopNavigation: React.FC<Props> = ({
         </li>
         <li className={classes.navigation__list__item_last}>
           <Tooltip title={`switch theme to ${bLightTheme ? DARK : LIGHT}`}>
-            <Switch checked={bLightTheme} onChange={funcToggleTheme} />
+            <Switch
+              checked={bLightTheme}
+              onChange={funcToggleTheme}
+              data-testid={OBJ_TEST_IDS.themeSwitch}
+            />
           </Tooltip>
         </li>
       </ul>

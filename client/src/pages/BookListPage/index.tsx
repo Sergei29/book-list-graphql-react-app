@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Typography } from "@material-ui/core";
 import { objAuthContext } from "../../containers/AuthProvider";
 import useBookListPage from "../../hooks/useBookListPage";
+import { OBJ_TEST_IDS } from "../../constants";
 //components:
 import BookList from "../../components/BookList";
 import BookDetails from "../../components/BookDetails";
@@ -24,7 +25,10 @@ const BookListPage: React.FC = () => {
 
   const funcToggleLayout = () => setbDisplayCloud((bPrevState) => !bPrevState);
   return (
-    <div className={classes.bookListPage}>
+    <div
+      className={classes.bookListPage}
+      data-testid={OBJ_TEST_IDS.bookListPage}
+    >
       <Typography
         className={classes.bookListPage__heading}
         variant="h4"
