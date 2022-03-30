@@ -1,4 +1,9 @@
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import {
+  makeStyles,
+  createStyles,
+  Theme,
+  alpha,
+} from "@material-ui/core/styles";
 
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -10,6 +15,12 @@ export const useStyles = makeStyles((theme: Theme) =>
       color: theme.palette.info.main,
       fontSize: ".75rem",
       marginBottom: theme.spacing(1),
+      "& span": {
+        "&:hover": {
+          cursor: "pointer",
+          color: alpha(theme.palette.info.main, 0.5),
+        },
+      },
     },
     authHelperText__button: {
       color: "inherit",
